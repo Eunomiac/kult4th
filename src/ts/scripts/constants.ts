@@ -1,7 +1,7 @@
 // #region IMPORTS ~
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import U from "./utilities.js";
-import {K4ItemType} from "../documents/K4Item";
+import {K4ItemType} from "../documents/K4Item.js";
 import {InfluenceKeys} from "./svgdata.js";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 // #endregion

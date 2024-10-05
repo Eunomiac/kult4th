@@ -4,7 +4,7 @@ import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4CharGen from "./K4CharGen.js";
 import K4ActiveEffect, {} from "./K4ActiveEffect.js";
-import C, {Archetypes, K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType, K4ActorType, K4CharGenPhase} from "../scripts/constants.js";
+import C, {K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType, K4ActorType, K4CharGenPhase} from "../scripts/constants.js";
 import K4Socket, {UserTargetRef} from "./K4Socket.js";
 import U from "../scripts/utilities.js";
 // #endregion
@@ -363,7 +363,7 @@ class K4Actor extends Actor {
           canToggle: false,
           inStatusBar: true,
           icon: "systems/kult4th/assets/icons/modifiers/armor.svg",
-          tooltip: "<center><h2>Armor</h2></center><p>You are wearing armor that protects you from harm, conferring a bonus to your %insert.docLink.Endure Injury% rolls.</p>"
+          tooltip: "<span class=\"block-text center\"><h2>Armor</h2></span><br/><br/>You are wearing armor that protects you from harm, conferring a bonus to your <span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span> rolls."
         }),
         changeData: []
       }, this));
@@ -933,79 +933,6 @@ class K4Actor extends Actor {
   // #endregion
 
   // #region CHARGEN ~
-  getCharGenSelected(archetype?: K4Archetype) {
-    if (this.type !== K4ActorType.pc) {return {advantages: [], disadvantages: [], darkSecrets: []};}
-    const pcData = this.system as K4Actor.System<K4ActorType.pc>;
-    archetype = (archetype ?? pcData.archetype) || K4Archetype.academic;
-    let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
-
-    selAdvantages = selAdvantages.map((adv) => adv.replace(/^!?/, ""));
-    selDisadvantages = selDisadvantages.map((dis) => dis.replace(/^!?/, ""));
-    selDarkSecrets = selDarkSecrets.map((ds) => ds.replace(/^!?/, ""));
-
-    const archetypeData = {...Archetypes[archetype]};
-    const archAdvantages = archetypeData[K4ItemType.advantage] as unknown as string[];
-
-    const archDisadvantages = archetypeData[K4ItemType.disadvantage] as unknown as string[];
-    const mandatoryArchDisadvantages = archDisadvantages
-      .filter((dis) => dis.startsWith("!"))
-      .map((dis) => dis.replace(/^!?/, ""));
-    const archDarkSecrets = archetypeData[K4ItemType.darksecret] as unknown as string[];
-
-    selAdvantages = selAdvantages.filter((adv) => archAdvantages.includes(adv));
-    selDisadvantages = U.unique([
-      ...mandatoryArchDisadvantages,
-      ...selDisadvantages.filter((dis) => archDisadvantages.includes(dis))
-    ]);
-    selDarkSecrets = selDarkSecrets.filter((ds) => archDarkSecrets.includes(ds));
-
-    const allAdvantages = selAdvantages
-      .map((adv) => adv.replace(/^!?/, ""))
-      .map((adv) => (getGame().items as Collection<K4Item<K4ItemType.advantage>>).getName(adv)!);
-    const allDisadvantages = U.unique([
-      ...selDisadvantages,
-      ...extraDisadvantages
-    ])
-      .map((dis) => dis.replace(/^!?/, ""))
-      .map((dis) => (getGame().items as Collection<K4Item<K4ItemType.disadvantage>>).getName(dis)!);
-    const allDarkSecrets = U.unique([
-      ...selDarkSecrets,
-      ...extraDarkSecrets
-    ])
-      .map((ds) => ds.replace(/^!?/, ""))
-      .map((ds) => (getGame().items as Collection<K4Item<K4ItemType.darksecret>>).getName(ds)!);
-
-    return {
-      advantages: allAdvantages,
-      disadvantages: allDisadvantages,
-      darkSecrets: allDarkSecrets
-    }
-  }
-  isCharGenSelected(traitName: string, archetype?: K4Archetype) {
-    if (this.type !== K4ActorType.pc) {return false;}
-    const pcData = this.system as K4Actor.System<K4ActorType.pc>;
-    let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
-    selAdvantages = selAdvantages.map((adv) => adv.replace(/^!?/, ""));
-    selDisadvantages = selDisadvantages.map((dis) => dis.replace(/^!?/, ""));
-    selDarkSecrets = selDarkSecrets.map((ds) => ds.replace(/^!?/, ""));
-    traitName = traitName.replace(/^!?/, "");
-    if (archetype) {
-      const archetypeData = {...Archetypes[archetype]};
-      const archAdvantages = archetypeData[K4ItemType.advantage] as unknown as string[];
-      const archDisadvantages = archetypeData[K4ItemType.disadvantage] as unknown as string[];
-      const archDarkSecrets = archetypeData[K4ItemType.darksecret] as unknown as string[];
-      selAdvantages = selAdvantages.filter((adv) => archAdvantages.includes(adv));
-      selDisadvantages = selDisadvantages.filter((dis) => archDisadvantages.includes(dis));
-      selDarkSecrets = selDarkSecrets.filter((ds) => archDarkSecrets.includes(ds));
-    }
-    return [
-      ...selAdvantages,
-      ...selDisadvantages,
-      ...selDarkSecrets,
-      ...extraDisadvantages,
-      ...extraDarkSecrets
-    ].includes(traitName);
-  }
 
   _chargenSheet: Maybe<K4CharGen>;
   get chargenSheet(): K4CharGen {
@@ -1032,95 +959,7 @@ class K4Actor extends Actor {
     this.chargenSheet.precomputeArchetypeData();
   }
 
-  async charGenSelect(traitName: string, isArchetype = true, isSilent = false) {
-    if (!this.is(K4ActorType.pc)) {return;}
-    const pcData = this.system;
-    let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
-    const item = getGame().items.getName(traitName) as Maybe<K4Item>;
-    if (!item) { return; }
-    switch (item.type) {
-      case K4ItemType.advantage: {
-        if (selAdvantages.includes(traitName)) { break; }
-        selAdvantages = U.unique([...selAdvantages, traitName]);
-        await this.update({"system.charGen.selAdvantages": selAdvantages}, {render: false});
-        if (!isSilent) {
-          void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.advantage, traitName, true, true);
-          await this.chargenSheet.reRenderTraitPanels();
-        }
-        break;
-      }
-      case K4ItemType.disadvantage: {
-        if (isArchetype) {
-          if (selDisadvantages.includes(traitName)) { break; }
-          selDisadvantages = U.unique([...selDisadvantages, traitName]);
-          await this.update({"system.charGen.selDisadvantages": selDisadvantages}, {render: false});
-          if (!isSilent) {
-            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, true);
-            await this.chargenSheet.reRenderTraitPanels();
-          }
-        } else {
-          if (extraDisadvantages.includes(traitName)) { break; }
-          extraDisadvantages = U.unique([...extraDisadvantages, traitName]);
-          await this.update({"system.charGen.extraDisadvantages": extraDisadvantages}, {render: false});
-          if (!isSilent) {
-            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, false);
-            await this.chargenSheet.reRenderTraitPanels();
-          }
-        }
-        break;
-      }
-      case K4ItemType.darksecret: {
-        if (isArchetype) {
-          if (selDarkSecrets.includes(traitName)) { break; }
-          selDarkSecrets = U.unique([...selDarkSecrets, traitName]);
-          await this.update({"system.charGen.selDarkSecrets": selDarkSecrets}, {render: false});
-          if (!isSilent) {
-            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, true);
-            await this.chargenSheet.reRenderTraitPanels();
-          }
-        } else {
-          if (extraDarkSecrets.includes(traitName)) { break; }
-          extraDarkSecrets = U.unique([...extraDarkSecrets, traitName]);
-          await this.update({"system.charGen.extraDarkSecrets": extraDarkSecrets}, {render: false});
-          if (!isSilent) {
-            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, true, false);
-            await this.chargenSheet.reRenderTraitPanels();
-          }
-        }
-        break;
-      }
-    }
-  }
 
-  async charGenDeselect(traitName: string) {
-    if (!this.is(K4ActorType.pc)) {return;}
-    const pcData = this.system;
-    const {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
-    if (selAdvantages.includes(traitName)) {
-      U.pullElement(selAdvantages, traitName);
-      void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.advantage, traitName, false);
-      await this.update({"system.charGen.selAdvantages": selAdvantages}, {render: false});
-      await this.chargenSheet.reRenderTraitPanels();
-    } else if ([...selDisadvantages, ...extraDisadvantages].includes(traitName)) {
-      U.pullElement(selDisadvantages, traitName);
-      U.pullElement(extraDisadvantages, traitName);
-      void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.disadvantage, traitName, false);
-      await this.update({
-        "system.charGen.selDisadvantages": selDisadvantages,
-        "system.charGen.extraDisadvantages": extraDisadvantages
-      }, {render: false});
-      await this.chargenSheet.reRenderTraitPanels();
-    } else if ([...selDarkSecrets, ...extraDarkSecrets].includes(traitName)) {
-      U.pullElement(selDarkSecrets, traitName);
-      U.pullElement(extraDarkSecrets, traitName);
-      void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user!.id, this.id, K4ItemType.darksecret, traitName, false);
-      await this.update({
-        "system.charGen.selDarkSecrets": selDarkSecrets,
-        "system.charGen.extraDarkSecrets": extraDarkSecrets
-      }, {render: false});
-      await this.chargenSheet.reRenderTraitPanels();
-    }
-  }
   // #endregion
 
 

@@ -36,6 +36,48 @@ import {
 import {AlertType} from "../documents/K4Alert.js";
 import {UserTargetRef} from "../documents/K4Socket.js";
 
+function cleanText(text: string): string {
+  return text
+    // Remove unnecessary span closings and openings
+    .replace(/<\/span><span class="inline-text">/g, "")
+    // Replace simple inline-emphasis spans with em tags
+    .replace(/<span class="inline-emphasis">([^<]+)<\/span>/g, "<em>$1</em>")
+    // Remove standalone inline-text spans
+    .replace(/<span class="inline-text">([^<]+)<\/span>/g, "$1")
+    // Preserve specific span classes
+    .replace(/<span class="(inline-emphasis rollable-attribute|inline-doclink)"([^>]*)>/g, "<span data-preserve class=\"$1\"$2>")
+    // Remove any remaining non-preserved spans
+    .replace(/<\/?span(?!\s+data-preserve)[^>]*>/g, "")
+    // Remove the data-preserve attribute from the spans we wanted to keep
+    .replace(/(<span) data-preserve/g, "$1")
+    .trim();
+}
+
+function cleanupItemEntry(entry: any): any {
+  const cleanObject = (obj: any): any => {
+    if (typeof obj !== "object" || obj === null) {
+      return obj;
+    }
+    if (Array.isArray(obj)) {
+      return obj.map(cleanObject);
+    }
+    const newObj: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (typeof value === "string") {
+        newObj[key] = cleanText(value);
+      } else if (typeof value === "object") {
+        newObj[key] = cleanObject(value);
+      } else {
+        newObj[key] = value;
+      }
+    }
+    return newObj;
+  };
+
+  return cleanObject(entry);
+}
+
+
 console.log("Loading item-data.ts");
 console.log("K4ItemType in item-data.ts:", K4ItemType);
 // #region Types & Enums ~
@@ -107,7 +149,7 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "I know something about this (ask the GM what you know and take #>text-mod>+1 ongoing<# while acting on the answers during this scene).",
+              "I know something about this (ask the GM what you know and take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> while acting on the answers during this scene).",
               "I know where I can find more information about this (ask the GM where)."
             ]
           }
@@ -155,7 +197,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "#>text-center>You are a student of the occult.<#",
+          "intro": "<span class=\"block-text center\">You are a student of the occult.</span>",
           "trigger": "",
           "outro": "",
           "listRefs": ["options"],
@@ -169,7 +211,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
       "system": {
-        "shortDesc": "You mark Time to reroll the dice <em>(requires %insert.docLink.Condemned%)</em>.",
+        "shortDesc": "You mark Time to reroll the dice </span><span class=\"inline-text italic\">(requires <span class=\"inline-doclink\" data-doc-name=\"Condemned\">Condemned</span><span class=\"inline-text italic\">)</span><span class=\"inline-text\">.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -178,7 +220,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/to-the-last-breath.svg",
             "system": {
-              "shortDesc": "You mark Time to reroll the dice <em>(requires %insert.docLink.Condemned%)</em>.",
+              "shortDesc": "You mark Time to reroll the dice </span><span class=\"inline-text italic\">(requires <span class=\"inline-doclink\" data-doc-name=\"Condemned\">Condemned</span><span class=\"inline-text italic\">)</span><span class=\"inline-text\">.",
               "chatName": "Refuses to Give In",
               "parentItem": {
                 "name": "To the Last Breath",
@@ -237,7 +279,7 @@ const ITEM_DATA: {
                       type: AlertType.simple,
                       target: UserTargetRef.self,
                       header: "Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span>",
-                      body: "You must take the '#>text-keyword>Condemned<# Disadvantage before you can take #>text-keyword>To the Last Breath<#.",
+                      body: "You must take the '</span><span class=\"inline-emphasis\">Condemned</span><span class=\"inline-text\"> Disadvantage before you can take </span><span class=\"inline-emphasis\">To the Last Breath</span><span class=\"inline-text\">.",
                       logoImg: ""
                     }
                   ],
@@ -256,7 +298,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/extortionist.svg",
       "system": {
-        "shortDesc": "You can %insert.docLink.Read a Person.Read% others weaknesses.",
+        "shortDesc": "You can </span><span class=\"inline-doclink\" data-doc-name=\"Read a Person\">Read</span><span class=\"inline-text\"> others weaknesses.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -269,7 +311,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you %insert.docLink.Read a Person%, you may choose from these questions in addition to the usual ones:",
+          "intro": "Whenever you </span><span class=\"inline-doclink\" data-doc-name=\"Read a Person\">Read a Person</span><span class=\"inline-text\">, you may choose from these questions in addition to the usual ones:",
           "trigger": "",
           "outro": "",
           "listRefs": [
@@ -349,7 +391,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but things don't go according to plan. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but things don't go according to plan. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -376,7 +418,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
       "system": {
-        "shortDesc": "Gain #>text-keyword>Stability<# when you take risks or make sacrifices for your code of honor.",
+        "shortDesc": "Gain </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> when you take risks or make sacrifices for your code of honor.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -385,7 +427,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/code-of-honor.svg",
             "system": {
-              "shortDesc": "Gain #>text-keyword>Stability<# when you take risks or make sacrifices for your code of honor.",
+              "shortDesc": "Gain </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> when you take risks or make sacrifices for your code of honor.",
               "chatName": "Follows the Code",
               "parentItem": {
                 "name": "Code of Honor",
@@ -393,7 +435,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you take risks or make sacrifices for your code of honor,",
-                "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
+                "outro": "gain </span><span class=\"inline-emphasis positive\">+1 Stability</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -459,7 +501,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but you have missed or overlooked something crucial: #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "Choose one option from the list below, but you have missed or overlooked something crucial: </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ],
@@ -487,7 +529,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
       "system": {
-        "shortDesc": "Gain #>text-keyword>Stability<# when you help others at your own expense.",
+        "shortDesc": "Gain </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> when you help others at your own expense.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -496,7 +538,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/good-samaritan.svg",
             "system": {
-              "shortDesc": "Gain #>text-keyword>Stability<# when you help others at your own expense.",
+              "shortDesc": "Gain </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> when you help others at your own expense.",
               "chatName": "Sacrifices for Another",
               "parentItem": {
                 "name": "Good Samaritan",
@@ -504,7 +546,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you help another at your own expense,",
-                "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
+                "outro": "gain </span><span class=\"inline-emphasis positive\">+1 Stability</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -577,7 +619,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "The artifact does something unexpected, possibly dangerous. #>text-gmtext>The GM makes a Move<#."
+                  "result": "The artifact does something unexpected, possibly dangerous. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -587,7 +629,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "You own a seemingly mundane item, which actually possesses mystical powers.%insert.break%Its powers can be activated through certain methods, such as infusing it with blood or whispering forbidden words (you decide what is required).%insert.break%Work with the GM to devise a list of options appropriate to the artifact, using this list as an example: %list.examplepowers%",
+          "intro": "You own a seemingly mundane item, which actually possesses mystical powers.<br/><br/>Its powers can be activated through certain methods, such as infusing it with blood or whispering forbidden words (you decide what is required).<br/><br/>Work with the GM to devise a list of options appropriate to the artifact, using this list as an example: %list.examplepowers%",
           "trigger": "",
           "outro": "",
           "listRefs": ["powers"],
@@ -645,7 +687,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Your instincts will fail to trigger in a dangerous situation. #>text-gmtext>The GM makes a Move<# at some point during the session."
+                  "result": "Your instincts will fail to trigger in a dangerous situation. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\"> at some point during the session."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -655,7 +697,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "#>text-center>You have an intuition for things, both good and bad.<#",
+          "intro": "<span class=\"block-text center\">You have an intuition for things, both good and bad.</span>",
           "trigger": "",
           "outro": "",
           "listRefs": ["options"],
@@ -712,7 +754,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "The mole's loyalties are questionable. Can you trust them? #>text-gmtext>The GM makes a Move<#."
+                  "result": "The mole's loyalties are questionable. Can you trust them? </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -786,7 +828,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/desperate.svg",
       "system": {
-        "shortDesc": "You have <em>+1 on all rolls</em> when trying to make it through overwhelming odds.",
+        "shortDesc": "You have </span><span class=\"inline-emphasis positive\">+1 on all rolls</span><span class=\"inline-text\"> when trying to make it through overwhelming odds.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -795,7 +837,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/desperate.svg",
             "system": {
-              "shortDesc": "You have <em>+1 on all rolls</em> when trying to make it through overwhelming odds.",
+              "shortDesc": "You have </span><span class=\"inline-emphasis positive\">+1 on all rolls</span><span class=\"inline-text\"> when trying to make it through overwhelming odds.",
               "chatName": "Goes Against the Odds",
               "parentItem": {
                 "name": "Desperate",
@@ -803,7 +845,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you try to make it through overwhelming odds,",
-                "outro": "take #>text-mod>+1 ongoing<# on all rolls until you're clear of the threat."
+                "outro": "take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> on all rolls until you're clear of the threat."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -844,13 +886,13 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "People around you accept you as their leader and listen to you. Take #>text-mod>+1 ongoing<# against people in this scene."
+                  "result": "People around you accept you as their leader and listen to you. Take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> against people in this scene."
                 },
                 "partialSuccess": {
-                  "result": "People feel you're leadership material and show you respect. Choose one of them, in particular, who goes along with what you think. You have #>text-mod>+1 ongoing<# against them during this scene."
+                  "result": "People feel you're leadership material and show you respect. Choose one of them, in particular, who goes along with what you think. You have </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> against them during this scene."
                 },
                 "failure": {
-                  "result": "People feel like you're the leader, but one of them tries to challenge you for it. #>text-gmtext>The GM makes a Move<#."
+                  "result": "People feel like you're the leader, but one of them tries to challenge you for it. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -879,9 +921,9 @@ const ITEM_DATA: {
           "watchers": {
             "name": "Watchers Gang",
             "items": [
-              "Small Gang: #>text-keyword>2 Harm<#, #>text-keyword>5 Wounds<#",
-              "Medium Gang: #>text-keyword>3 Harm<#, #>text-keyword>10 Wounds<#",
-              "Large Gang: #>text-keyword>3 Harm<#, #>text-keyword>15 Wounds<#"
+              "<span class=\"inline-emphasis\">Small Gang</span> &ndash; </span><span class=\"inline-emphasis\">2 Harm</span><span class=\"inline-text\">, </span><span class=\"inline-emphasis\">5 Wounds</span><span class=\"inline-text\">",
+              "<span class=\"inline-emphasis\">Medium Gang</span> &ndash; </span><span class=\"inline-emphasis\">3 Harm</span><span class=\"inline-text\">, </span><span class=\"inline-emphasis\">10 Wounds</span><span class=\"inline-text\">",
+              "<span class=\"inline-emphasis\">Large Gang</span> &ndash; </span><span class=\"inline-emphasis\">3 Harm</span><span class=\"inline-text\">, </span><span class=\"inline-emphasis\">15 Wounds</span><span class=\"inline-text\">"
             ],
             "intro": "The GM determines the size of the gang that appears, based on the power of the threat you face."
           }
@@ -901,7 +943,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you are in mortal danger and choose to activate your Watchers,",
-                "outro": "#>text-gmtext>the GM takes 1 Hold<# and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach.",
+                "outro": "</span><span class=\"inline-emphasis gm-move\">the GM takes 1 Hold</span><span class=\"inline-text\"> and introduces your Watchers to the scene. Their sole motivation is to keep you out of harm's reach.",
                 "holdText": "The GM can spend Hold on the Watchers' behalf to let them make a Move against you.",
                 "listRefs": [
                   "watchers"
@@ -953,7 +995,7 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "The person is a friend (#>text-keyword>Relation +1<#).",
+                  "result": "The person is a friend (</span><span class=\"inline-emphasis\">Relation +1</span><span class=\"inline-text\">).",
                   "effects": [
                     {
                       "parentData": K4ActiveEffect.BuildEffectData({isUnique: false}),
@@ -971,7 +1013,7 @@ const ITEM_DATA: {
                           permanent: true,
                           title: "Describe Your Friend",
                           bodyText: "What is your friend's field of study?",
-                          subText: "<em>(Don't forget to describe how you got to know one another.)</em>",
+                          subText: "<span class=\"inline-text italic\">(Don't forget to describe how you got to know one another.)</span>",
                           target: "FLAGS.field",
                           input: PromptInputType.text
                         }),
@@ -980,7 +1022,7 @@ const ITEM_DATA: {
                           name: "%insert.FLAGS.name%",
                           img: "systems/kult4th/assets/icons/relation/relation1.svg",
                           system: {
-                            concept: "<strong>Expertise:</strong> %insert.FLAGS.field%",
+                            concept: "<span class=\"inline-text strong\">Expertise:</span> %insert.FLAGS.field%",
                             lists: {},
                             subType: K4ItemSubType.passive,
                             strength: {
@@ -995,7 +1037,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "partialSuccess": {
-                  "result": "The person is an acquaintance (#>text-keyword>Relation +0<#).",
+                  "result": "The person is an acquaintance (</span><span class=\"inline-emphasis\">Relation +0</span><span class=\"inline-text\">).",
                   "effects": [
                     {
                       "parentData": K4ActiveEffect.BuildEffectData({isUnique: false}),
@@ -1013,7 +1055,7 @@ const ITEM_DATA: {
                           permanent: true,
                           title: "Describe Your Acquaintance",
                           bodyText: "What is your contact's field of study?",
-                          subText: "<em>(Don't forget to describe how you got to know one another.)</em>",
+                          subText: "<span class=\"inline-text italic\">(Don't forget to describe how you got to know one another.)</span>",
                           target: "FLAGS.field",
                           input: PromptInputType.text
                         }),
@@ -1022,7 +1064,7 @@ const ITEM_DATA: {
                           name: "%insert.FLAGS.name%",
                           img: "systems/kult4th/assets/icons/relation/relation0.svg",
                           system: {
-                            concept: "<strong>Expertise:</strong> %insert.FLAGS.field%",
+                            concept: "<span class=\"inline-text strong\">Expertise:</span> %insert.FLAGS.field%",
                             lists: {},
                             subType: K4ItemSubType.passive,
                             strength: {
@@ -1037,7 +1079,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "You know one another, but there is an old enmity between the two of you (#>text-keyword>Relation +0<#).",
+                  "result": "You know one another, but there is an old enmity between the two of you (</span><span class=\"inline-emphasis\">Relation +0</span><span class=\"inline-text\">).",
                   "effects": [
                     {
                       "parentData": K4ActiveEffect.BuildEffectData({isUnique: false}),
@@ -1055,7 +1097,7 @@ const ITEM_DATA: {
                           permanent: true,
                           title: "Describe Your Contact",
                           bodyText: "What is your contact's field of study?",
-                          subText: "<em>(Don't forget to describe how you got to know one another, and to work with the GM and other players to determine the nature of the enmity between you.)</em>",
+                          subText: "<span class=\"inline-text italic\">(Don't forget to describe how you got to know one another, and to work with the GM and other players to determine the nature of the enmity between you.)</span>",
                           target: "FLAGS.field",
                           input: PromptInputType.text
                         }),
@@ -1064,7 +1106,7 @@ const ITEM_DATA: {
                           name: "%insert.FLAGS.name%",
                           img: "systems/kult4th/assets/icons/relation/relation0.svg",
                           system: {
-                            concept: "<strong>Expertise:</strong> %insert.FLAGS.field%",
+                            concept: "<span class=\"inline-text strong\">Expertise:</span> %insert.FLAGS.field%",
                             lists: {},
                             subType: K4ItemSubType.passive,
                             strength: {
@@ -1119,13 +1161,13 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "You hold 2 Power over them. For as long as you retain Power over them, they take 1 #>text-keyword>Serious Wound<# should they refuse or attempt to go against your order, but this loosens your grip over them by 1 Power. If they fulfill your order, all your remaining Power over them is removed."
+                  "result": "You hold 2 Power over them. For as long as you retain Power over them, they take 1 </span><span class=\"inline-emphasis\">Serious Wound</span><span class=\"inline-text\"> should they refuse or attempt to go against your order, but this loosens your grip over them by 1 Power. If they fulfill your order, all your remaining Power over them is removed."
                 },
                 "partialSuccess": {
-                  "result": "You hold 1 Power over them. For as long as you retain Power over them, they take 1 #>text-keyword>Serious Wound<# should they refuse or attempt to go against your order, but this loosens your grip over them by 1 Power. If they fulfill your order, all your remaining Power over them is removed."
+                  "result": "You hold 1 Power over them. For as long as you retain Power over them, they take 1 </span><span class=\"inline-emphasis\">Serious Wound</span><span class=\"inline-text\"> should they refuse or attempt to go against your order, but this loosens your grip over them by 1 Power. If they fulfill your order, all your remaining Power over them is removed."
                 },
                 "failure": {
-                  "result": "Something goes wrong, such as they get hurt in the process or the order's outcome is different than what you imagined. #>text-gmtext>The GM makes a Move<#."
+                  "result": "Something goes wrong, such as they get hurt in the process or the order's outcome is different than what you imagined. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -1153,9 +1195,9 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Enticement: Entice an entity to come to you.",
-              "Visions: %insert.docLink.See Through the Illusion% into a specific place of your choice.",
-              "Inspiration: Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
+              "<span class=\"inline-emphasis\">Enticement</span> &ndash; Entice an entity to come to you.",
+              "<span class=\"inline-emphasis\">Visions</span> &ndash; </span><span class=\"inline-doclink\" data-doc-name=\"See Through the Illusion\">See Through the Illusion</span><span class=\"inline-text\"> into a specific place of your choice.",
+              "<span class=\"inline-emphasis\">Inspiration</span> &ndash; Ask the GM if there is anything strange or supernatural about the situation you're in. The answer will be revealed through your art."
             ]
           }
         },
@@ -1192,7 +1234,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "You have gazed too deeply into the abyss. Choose one option from the list below, but you also experience terrifying visions or encounter something horrible. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "You have gazed too deeply into the abyss. Choose one option from the list below, but you also experience terrifying visions or encounter something horrible. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -1223,10 +1265,10 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Durable: The construction can be used multiple times and doesn't break easily.",
-              "Effective: The construction confers #>text-posmod>+1<# on rolls where it is used for its intended purpose.",
-              "Lethal: The construction causes #>text-mod>+1 Harm<#.",
-              "Protective: The construction confers #>text-posmod>+1<# armor."
+              "<span class=\"inline-emphasis\">Durable</span> &ndash; The construction can be used multiple times and doesn't break easily.",
+              "<span class=\"inline-emphasis\">Effective</span> &ndash; The construction confers </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> on rolls where it is used for its intended purpose.",
+              "<span class=\"inline-emphasis\">Lethal</span> &ndash; The construction causes </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\">.",
+              "<span class=\"inline-emphasis\">Protective</span> &ndash; The construction confers </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> armor."
             ]
           }
         },
@@ -1263,7 +1305,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "You complete the construction or repair, but it has significant flaws, some of which are hidden. #>text-gmtext>The GM makes a Move<#."
+                  "result": "You complete the construction or repair, but it has significant flaws, some of which are hidden. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -1286,7 +1328,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
       "system": {
-        "shortDesc": "You can get <em>+2 to a roll</em> by decreasing #>text-keyword>Stability (&minus;2)<#.",
+        "shortDesc": "You can get </span><span class=\"inline-emphasis positive\">+2 to a roll</span><span class=\"inline-text\"> by decreasing </span><span class=\"inline-emphasis negative\">Stability (&minus;2)</span><span class=\"inline-text\">.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -1295,7 +1337,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/at-any-cost.svg",
             "system": {
-              "shortDesc": "You can get <em>+2 to a roll</em> by decreasing #>text-keyword>Stability (&minus;2)<#.",
+              "shortDesc": "You can get </span><span class=\"inline-emphasis positive\">+2 to a roll</span><span class=\"inline-text\"> by decreasing </span><span class=\"inline-emphasis negative\">Stability (&minus;2)</span><span class=\"inline-text\">.",
               "chatName": "Will Pay Any Price",
               "parentItem": {
                 "name": "At Any Cost",
@@ -1303,7 +1345,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you truly desire something,",
-                "outro": "you may take #>text-posmod>+2<# to a roll by losing #>text-negmod>&minus;2<# #>text-keyword>Stability<#."
+                "outro": "you may take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to a roll by losing </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -1368,7 +1410,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but something goes very wrong. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but something goes very wrong. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -1380,7 +1422,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "#>text-center>Your body and mind are as one.<#",
+          "intro": "<span class=\"block-text center\">Your body and mind are as one.</span>",
           "trigger": "",
           "outro": "",
           "listRefs": ["options"],
@@ -1400,7 +1442,7 @@ const ITEM_DATA: {
             "name": "Options",
             "items": [
               "They become suspicious of someone else of your choosing.",
-              "They view you as their ally, for as long as you don't betray them (#>text-posmod>+1<# to all rolls against them).",
+              "They view you as their ally, for as long as you don't betray them (</span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> to all rolls against them).",
               "They willingly do a favor for you."
             ]
           }
@@ -1438,7 +1480,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "They're on to you. #>text-gmtext>The GM makes a Move<#."
+                  "result": "They're on to you. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -1487,7 +1529,7 @@ const ITEM_DATA: {
                   "result": "You get some basic impressions regarding the location."
                 },
                 "failure": {
-                  "result": "The Illusion tears. The veil is lifted temporarily, revealing an alternate dimension—the GM determines which one. The PC could be sucked into it or something may cross over into our reality. #>text-gmtext>The GM makes a Move<#."
+                  "result": "The Illusion tears. The veil is lifted temporarily, revealing an alternate dimension &ndash; the GM determines which one. The PC could be sucked into it or something may cross over into our reality. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -1515,9 +1557,9 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>On a Swivel<# &mdash; Discover a threat before it discovers you.",
-              "#>text-edgename>Not Today<# &mdash; Avoid an attack.",
-              "#>text-edgename>Sucker Punch<# &mdash; Get the jump on them: Harm your opponent before they can react."
+              "<span class=\"inline-emphasis edge-name\">On a Swivel</span><span class=\"inline-text\"> &ndash; Discover a threat before it discovers you.",
+              "<span class=\"inline-emphasis edge-name\">Not Today</span><span class=\"inline-text\"> &ndash; Avoid an attack.",
+              "<span class=\"inline-emphasis edge-name\">Sucker Punch</span><span class=\"inline-text\"> &ndash; Get the jump on them: Harm your opponent before they can react."
             ]
           }
         },
@@ -1540,21 +1582,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 3 Edges<#. You may spend them anytime during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 3 Edges</span><span class=\"inline-text\">. You may spend them anytime during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 3
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#. You may spend them anytime during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">. You may spend them anytime during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but you are in over your head. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\">, but you are in over your head. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "edges"
                   ],
@@ -1642,10 +1684,10 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Easy Dodge<# &mdash; Avoid an attack.",
-              "#>text-edgename>Opportunity Calls<# &mdash; Manage to snatch something.",
-              "#>text-edgename>Patience, Patience<# &mdash; Maneuver into a better position.",
-              "#>text-edgename>Clever Trick<# &mdash; Put someone in a bad position (everyone gets #>text-posmod>+2<# to any attack Moves)."
+              "<span class=\"inline-emphasis edge-name\">Easy Dodge</span><span class=\"inline-text\"> &ndash; Avoid an attack.",
+              "<span class=\"inline-emphasis edge-name\">Opportunity Calls</span><span class=\"inline-text\"> &ndash; Manage to snatch something.",
+              "<span class=\"inline-emphasis edge-name\">Patience, Patience</span><span class=\"inline-text\"> &ndash; Maneuver into a better position.",
+              "<span class=\"inline-emphasis edge-name\">Clever Trick</span><span class=\"inline-text\"> &ndash; Put someone in a bad position (everyone gets </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to any attack Moves)."
             ]
           }
         },
@@ -1668,21 +1710,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 3 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 3
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but you attract attention from the hostiles. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\">, but you attract attention from the hostiles. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "edges"
                   ],
@@ -1760,7 +1802,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to put someone in a bad position (everyone gets #>text-posmod>+2<# to any attack Moves)."
+                "outro": "... to put someone in a bad position (everyone gets </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to any attack Moves)."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -1818,7 +1860,7 @@ const ITEM_DATA: {
                   "result": "You make a minor error. The GM chooses one: %list.gmoptions%"
                 },
                 "failure": {
-                  "result": "You misunderstand the scripture and perform the ritual with no control whatsoever over the resulting outcome. #>text-gmtext>The GM makes a Move<#."
+                  "result": "You misunderstand the scripture and perform the ritual with no control whatsoever over the resulting outcome. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -1885,7 +1927,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "You may choose one option from the list below at any time during the session, but #>text-gmtext>the GM makes a Move<# for the entity at some point during the session.",
+                  "result": "You may choose one option from the list below at any time during the session, but </span><span class=\"inline-emphasis gm-move\">the GM makes a Move</span><span class=\"inline-text\"> for the entity at some point during the session.",
                   "listRefs": [
                     "options"
                   ]
@@ -1955,7 +1997,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but the animal is affected by your memories and Disadvantages. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but the animal is affected by your memories and Disadvantages. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -1967,7 +2009,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "#>text-center>You are able to understand and control animals.<#",
+          "intro": "<span class=\"block-text center\">You are able to understand and control animals.</span>",
           "trigger": "",
           "outro": "",
           "listRefs": ["options"],
@@ -1987,7 +2029,7 @@ const ITEM_DATA: {
             "name": "Options",
             "items": [
               "Scale a seemingly impossible obstacle.",
-              "Make a seemingly life-threatening leap without suffering #>text-keyword>Harm<#.",
+              "Make a seemingly life-threatening leap without suffering </span><span class=\"inline-emphasis\">Harm</span><span class=\"inline-text\">.",
               "Successfully avoid a threat."
             ]
           }
@@ -2025,7 +2067,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but a complication, cost, or new threat emerges. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but a complication, cost, or new threat emerges. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -2064,7 +2106,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you %insert.docLink.Read a Person%, you may choose from these questions in addition to the usual ones: %list.questions%",
+          "intro": "Whenever you </span><span class=\"inline-doclink\" data-doc-name=\"Read a Person\">Read a Person</span><span class=\"inline-text\">, you may choose from these questions in addition to the usual ones: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -2095,29 +2137,15 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/expert.svg",
       "system": {
-        "shortDesc": "You get to ask an additonal question about whatever you want when you %insert.docLink.Investigate% things in your fields of knowledge.",
+        "shortDesc": "You get to ask an additonal question about whatever you want when you </span><span class=\"inline-doclink\" data-doc-name=\"Investigate\">Investigate</span><span class=\"inline-text\"> things in your fields of knowledge.",
         "traitNotesTarget": "FLAGS.field_1|FLAGS.field_2",
-        "lists": {
-          "expertise": {
-            "name": "Fields of Expertise",
-            "items": [
-              "Archeology",
-              "Economics",
-              "History",
-              "Comparative Literature",
-              "Psychology",
-              "Sociology",
-              "Theology",
-              "(Other)"
-            ]
-          }
-        },
+        "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "You are an expert in certain fields of knowledge. Choose two areas of expertise when you gain this Advantage: %list.expertise%",
+          "intro": "You are an expert in certain fields of knowledge.",
           "trigger": "",
-          "outro": "Whenever you %insert.docLink.Investigate% something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
+          "outro": "Whenever you </span><span class=\"inline-doclink\" data-doc-name=\"Investigate\">Investigate</span><span class=\"inline-text\"> something associated with one of your chosen fields, you always get to ask one additional question, regardless of the outcome, and may ask any questions you want.",
           "listRefs": [],
           "effects": [{
             "parentData": K4ActiveEffect.BuildEffectData({}),
@@ -2129,7 +2157,7 @@ const ITEM_DATA: {
                 target: "FLAGS.field_1",
                 input: PromptInputType.text,
                 bodyText: "You may choose any sufficiently-broad area of academic study.",
-                subText: "<em><strong>Examples:</strong> Archeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology</em>"
+                subText: "<span class=\"inline-text strong italic\">Examples:</span> <span class=\"inline-text italic\">Archeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology</span>"
               }),
               K4ActiveEffect.BuildChangeData("PromptForData", {
                 filter: "player",
@@ -2138,25 +2166,25 @@ const ITEM_DATA: {
                 target: "FLAGS.field_2",
                 input: PromptInputType.text,
                 bodyText: "You may choose any sufficiently-broad area of academic study.",
-                subText: "<em><strong>Examples:</strong> Archeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology</em>"
+                subText: "<span class=\"inline-text strong italic\">Examples:</span> <span class=\"inline-text italic\">Archeology, Economics, History, Comparative Literature, Psychology, Sociology, Theology</span>"
               }),
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Investigate",
                 target: "system.results.completeSuccess.result",
                 mode: "AppendText",
-                value: "%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.FLAGS.field_1%<# or #>text-keyword>%insert.FLAGS.field_2%<# you may ask an additional question, any question you want."
+                value: "<br/><br/>If the subject of your inquiry is associated with </span><span class=\"inline-emphasis\">%insert.FLAGS.field_1%</span><span class=\"inline-text\"> or </span><span class=\"inline-emphasis\">%insert.FLAGS.field_2%</span><span class=\"inline-text\"> you may ask an additional question, any question you want."
               }),
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Investigate",
                 target: "system.results.partialSuccess.result",
                 mode: "AppendText",
-                value: "%insert.break%If the subject of your inquiry is associated with #>text-keyword>%insert.FLAGS.field_1%<# or #>text-keyword>%insert.FLAGS.field_2%<# you may ask an additional question, any question you want."
+                value: "<br/><br/>If the subject of your inquiry is associated with </span><span class=\"inline-emphasis\">%insert.FLAGS.field_1%</span><span class=\"inline-text\"> or </span><span class=\"inline-emphasis\">%insert.FLAGS.field_2%</span><span class=\"inline-text\"> you may ask an additional question, any question you want."
               }),
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Investigate",
                 target: "system.results.failure.result",
                 mode: "AppendText",
-                value: "%insert.break%Despite your failure, if the subject of your inquiry is associated with #>text-keyword>%insert.FLAGS.field_1%<# or #>text-keyword>%insert.FLAGS.field_2%<# you may still ask any one question you want."
+                value: "<br/><br/>Despite your failure, if the subject of your inquiry is associated with </span><span class=\"inline-emphasis\">%insert.FLAGS.field_1%</span><span class=\"inline-text\"> or </span><span class=\"inline-emphasis\">%insert.FLAGS.field_2%</span><span class=\"inline-text\"> you may still ask any one question you want."
               }),
             ]
           }],
@@ -2170,12 +2198,12 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/interrogator.svg",
       "system": {
-        "shortDesc": "You are an expert in %insert.docLink.Read a Person.Reading% when others are lying.",
+        "shortDesc": "You are an expert in </span><span class=\"inline-doclink\" data-doc-name=\"Read a Person\">Reading</span><span class=\"inline-text\"> when others are lying.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you %insert.docLink.Read a Person% and mention a name, person, or object, you may always ask \"Are you lying?\"%insert.break%This doesn't count towards the number of questions you're allowed to normally ask.",
+          "intro": "Whenever you </span><span class=\"inline-doclink\" data-doc-name=\"Read a Person\">Read a Person</span><span class=\"inline-text\"> and mention a name, person, or object, you may always ask \"Are you lying?\"<br/><br/>This doesn't count towards the number of questions you're allowed to normally ask.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -2186,19 +2214,19 @@ const ITEM_DATA: {
                 filter: "Read a Person",
                 target: "system.results.completeSuccess.result",
                 mode: "AppendText",
-                value: "%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions."
+                value: "<br/><br/>If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions."
               }),
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.results.partialSuccess.result",
                 mode: "AppendText",
-                value: "%insert.break%If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions."
+                value: "<br/><br/>If you mention a name, person, or object, you may always ask 'Are you lying?' in addition to your other questions."
               }),
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.results.failure.result",
                 mode: "AppendText",
-                value: "%insert.break%Despite your failure, if you mention a name, person, or object, you may still ask 'Are you lying?'"
+                value: "<br/><br/>Despite your failure, if you mention a name, person, or object, you may still ask 'Are you lying?'"
               })
             ]
           }],
@@ -2212,7 +2240,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
       "system": {
-        "shortDesc": "You gain #>text-keyword>Stability<# when you learn about other dimensions and supernatural entities.",
+        "shortDesc": "You gain </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> when you learn about other dimensions and supernatural entities.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -2221,7 +2249,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/thirst-for-knowledge.svg",
             "system": {
-              "shortDesc": "You gain #>text-keyword>Stability<# when you learn about other dimensions and supernatural entities.",
+              "shortDesc": "You gain </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> when you learn about other dimensions and supernatural entities.",
               "chatName": "Learns Something New",
               "parentItem": {
                 "name": "Thirst for Knowledge",
@@ -2229,7 +2257,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you learn new information about alternate planes of existence, a supernatural entity, or a Higher Power,",
-                "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
+                "outro": "gain </span><span class=\"inline-emphasis positive\">+1 Stability</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -2250,7 +2278,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
       "system": {
-        "shortDesc": "You may mark Time to stabilize wounds <em>(requires %insert.docLink.Condemned%)</em>.",
+        "shortDesc": "You may mark Time to stabilize wounds </span><span class=\"inline-text italic\">(requires <span class=\"inline-doclink\" data-doc-name=\"Condemned\">Condemned</span>)</span><span class=\"inline-text\">.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -2259,15 +2287,15 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
             "system": {
-              "shortDesc": "You may mark Time to stabilize wounds <em>(requires %insert.docLink.Condemned%)</em>.",
+              "shortDesc": "You may mark Time to stabilize wounds </span><span class=\"inline-text italic\">(requires <span class=\"inline-doclink\" data-doc-name=\"Condemned\">Condemned</span>)</span><span class=\"inline-text\">.",
               "chatName": "Defies Injury",
               "parentItem": {
                 "name": "Sealed Fate",
                 "type": K4ItemType.advantage
               },
               "rules": {
-                "trigger": "Whenever you are dealt a #>text-keyword>Critical Wound<#,",
-                "outro": "you may mark 1 Time from Condemned to immediately stabilize the #>text-keyword>Wound<#."
+                "trigger": "Whenever you are dealt a </span><span class=\"inline-emphasis negative\">Critical Wound</span><span class=\"inline-text\">,",
+                "outro": "you may mark </span><span class=\"inline-emphasis negative\">1 Time</span> from <span class=\"inline-doclink\" data-doc-name=\"Condemned\">Condemned</span><span class=\"inline-text\"> to immediately stabilize the </span><span class=\"inline-emphasis negative\">Wound</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -2277,7 +2305,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/sealed-fate.svg",
             "system": {
-              "shortDesc": "You may mark Time to stabilize wounds <em>(requires %insert.docLink.Condemned%)</em>.",
+              "shortDesc": "You may mark Time to stabilize wounds </span><span class=\"inline-text italic\">(requires </span><span class=\"inline-doclink\" data-doc-name=\"Condemned\">Condemned</span><span class=\"inline-text\">)</em>.",
               "chatName": "Defies Death",
               "parentItem": {
                 "name": "Sealed Fate",
@@ -2285,7 +2313,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you die,",
-                "outro": "mark 2 Time from Condemned and reawaken, injured and weak, but alive, and with all of your #>text-keyword>Wounds<# stabilized."
+                "outro": "mark 2 Time from Condemned and reawaken, injured and weak, but alive, and with all of your </span><span class=\"inline-emphasis\">Wounds</span><span class=\"inline-text\"> stabilized."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -2306,7 +2334,7 @@ const ITEM_DATA: {
                       type: AlertType.simple,
                       target: UserTargetRef.self,
                       header: "Unmet Prerequisite: <span class='kult4th-theme-red'>Condemned</span>",
-                      body: "You must take the '#>text-keyword>Condemned<# Disadvantage before you can take #>text-keyword>Sealed Fate<#.",
+                      body: "You must take the '</span><span class=\"inline-emphasis\">Condemned</span><span class=\"inline-text\"> Disadvantage before you can take </span><span class=\"inline-emphasis\">Sealed Fate</span><span class=\"inline-text\">.",
                       logoImg: ""
                     }
                   ],
@@ -2369,7 +2397,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "At any time during the mission, choose one option from the list below, but you've failed to account for something. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "At any time during the mission, choose one option from the list below, but you've failed to account for something. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -2439,7 +2467,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "The creature resists banishment and something goes terribly wrong, such as the creature possessing you. #>text-gmtext>The GM makes a Move<#."
+                  "result": "The creature resists banishment and something goes terribly wrong, such as the creature possessing you. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -2507,7 +2535,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "You have been here before, but something bad happened. Choose one option from the list below any time during your visit. The GM explains what kind of problem awaits you here. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "You have been here before, but something bad happened. Choose one option from the list below any time during your visit. The GM explains what kind of problem awaits you here. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -2533,12 +2561,12 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/hardened.svg",
       "system": {
-        "shortDesc": "You take <em>+1 ongoing</em> to %insert.docLink.Endure Injury%.",
+        "shortDesc": "You take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span><span class=\"inline-text\">.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "You take #>text-mod>+1 ongoing<# to all %insert.docLink.Endure Injury% rolls.",
+          "intro": "You take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> to all </span><span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span><span class=\"inline-text\"> rolls.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -2546,7 +2574,7 @@ const ITEM_DATA: {
             "parentData": K4ActiveEffect.BuildEffectData({inStatusBar: true,
               canToggle: false,
               icon: "systems/kult4th/assets/icons/advantage/hardened.svg",
-              tooltip: "Applies <em>+1 ongoing</em> to all #>text-keyword>Endure Injury<# rolls."
+              tooltip: "Applies <span class=\"inline-emphasis positive\">+1 ongoing</span> to all </span><span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span><span class=\"inline-text\"> rolls."
             }),
             "changeData": [
               K4ActiveEffect.BuildChangeData("ModifyRoll", {
@@ -2600,7 +2628,7 @@ const ITEM_DATA: {
                   "result": "Complications arise. Choose one option: %list.complications%"
                 },
                 "failure": {
-                  "result": "Unbeknownst to you, your intrusion didn't work out as you wanted. Maybe you didn't succeed at your task as well as you imagined, or you may have been discovered by personal enemies, law enforcement, or something else lurking in the network. #>text-gmtext>The GM makes a Move<#."
+                  "result": "Unbeknownst to you, your intrusion didn't work out as you wanted. Maybe you didn't succeed at your task as well as you imagined, or you may have been discovered by personal enemies, law enforcement, or something else lurking in the network. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -2674,7 +2702,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "They are affected by you in a way you didn't anticipate, or the attraction is uncomfortably strong—you choose. #>text-gmtext>The GM makes a Move<#."
+                  "result": "They are affected by you in a way you didn't anticipate, or the attraction is uncomfortably strong &ndash; you choose. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -2733,7 +2761,7 @@ const ITEM_DATA: {
                   "result": "They follow your orders, but GM picks one option: %list.gmoptions%"
                 },
                 "failure": {
-                  "result": "The GM decides what went wrong, and whether it's immediately evident or will become apparent later on. #>text-gmtext>The GM makes a Move<#."
+                  "result": "The GM decides what went wrong, and whether it's immediately evident or will become apparent later on. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -2763,7 +2791,7 @@ const ITEM_DATA: {
             "items": [
               "Prevent the NPC from noticing something in her immediate vicinity.",
               "Get the NPC to disclose something important (the GM will provide the details).",
-              "Distract the NPC. You take #>text-posmod>+1<# to your next roll against them."
+              "Distract the NPC. You take </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> to your next roll against them."
             ]
           }
         },
@@ -2800,7 +2828,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but they grow suspicious of your motives. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but they grow suspicious of your motives. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -2852,7 +2880,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you move through a small crowd to gather information,",
-                "outro": "%insert.rollPrompt%.%insert.break%Examples of a 'small crowd' include a party, bar/restaurant, or an office.%insert.break%You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information.",
+                "outro": "%insert.rollPrompt%.<br/><br/>Examples of a 'small crowd' include a party, bar/restaurant, or an office.<br/><br/>You decide what specific information you are looking for, as long as it makes sense for the crowd to possess such information.",
                 "listRefs": [
                   "questions"
                 ]
@@ -2871,7 +2899,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Ask one question from the list below, but you've blown your cover. Those who have what you're looking for will be expecting you. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Ask one question from the list below, but you've blown your cover. Those who have what you're looking for will be expecting you. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "questions"
                   ]
@@ -2897,7 +2925,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/workaholic.svg",
       "system": {
-        "shortDesc": "Gain #>text-keyword>Stability<# when you create things or carry out experiments.",
+        "shortDesc": "Gain </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> when you create things or carry out experiments.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -2906,7 +2934,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/workaholic.svg",
             "system": {
-              "shortDesc": "Gain #>text-keyword>Stability<# when you create things or carry out experiments.",
+              "shortDesc": "Gain </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> when you create things or carry out experiments.",
               "chatName": "Innovates",
               "parentItem": {
                 "name": "Workaholic",
@@ -2914,7 +2942,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you create something or carry out an experiment,",
-                "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
+                "outro": "gain </span><span class=\"inline-emphasis positive\">+1 Stability</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -2940,9 +2968,9 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Refuse to Give Up<# &mdash; Postpone the effects of a critical injury until you have made it out of the threat's reach.",
-              "#>text-edgename>Will Over Skill<# &mdash; Roll #>text-rolltrait>+Willpower<# instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
-              "#>text-edgename>Steel Yourself<# &mdash; Break free from a supernatural effect."
+              "<span class=\"inline-emphasis edge-name\">Refuse to Give Up</span><span class=\"inline-text\"> &ndash; Postpone the effects of a critical injury until you have made it out of the threat's reach.",
+              "<span class=\"inline-emphasis edge-name\">Will Over Skill</span><span class=\"inline-text\"> &ndash; Roll </span><span class=\"inline-emphasis rollable-attribute\">+Willpower</span><span class=\"inline-text\"> instead of the normal attribute whenever you avoid or fight whatever is threatening you.",
+              "<span class=\"inline-emphasis edge-name\">Steel Yourself</span><span class=\"inline-text\"> &ndash; Break free from a supernatural effect."
             ]
           }
         },
@@ -2965,21 +2993,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 3 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 3
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but you push yourself past your breaking point. Decrease #>text-negmod>&minus;2<# #>text-keyword>Stability<#.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\">, but you push yourself past your breaking point. Decrease </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "edges"
                   ],
@@ -3021,7 +3049,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to roll #>text-rolltrait>+Willpower<# instead of the normal attribute whenever you avoid or fight whatever is threatening you."
+                "outro": "... to roll </span><span class=\"inline-emphasis rollable-attribute\">+Willpower</span><span class=\"inline-text\"> instead of the normal attribute whenever you avoid or fight whatever is threatening you."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -3067,7 +3095,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "#>text-center>You've competed professionally in fencing.<#%insert.break%You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: #>text-negmod><strong>Riposte</strong> [<strong>3</strong>] [Distance: <strong>arm</strong>] You can make this attack immediately after parrying.<#",
+          "intro": "<span class=\"block-text center\">You've competed professionally in fencing.</span><br/><br/>You own a rapier at home and you know how to wield it. Add the following to the attacks available to you when fighting with a sword: </span><span class=\"inline-attack\"><span class=\"attack-name\">Riposte</span><span class=\"attack-harm\">3</span><span class=\"attack-range\">arm</span><span class=\"attack-special\">You can make this attack immediately after parrying.</span></span><span class=\"inline-text\">",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -3140,7 +3168,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Ask one question from the list below, but you expose your inquisitiveness to the person you're observing. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Ask one question from the list below, but you expose your inquisitiveness to the person you're observing. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "questions"
                   ]
@@ -3192,7 +3220,7 @@ const ITEM_DATA: {
                   "result": "You can choose to stay or escape at a cost, such as leaving something important behind or take something traceable with you. The GM decides what it is."
                 },
                 "failure": {
-                  "result": "You are only half out the door when you're caught in a really bad spot. #>text-gmtext>The GM makes a Move<#."
+                  "result": "You are only half out the door when you're caught in a really bad spot. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -3201,7 +3229,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "#>text-center>You are a master at slipping away when the shit hits the fan.<#",
+          "intro": "<span class=\"block-text center\">You are a master at slipping away when the shit hits the fan.</span>",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -3223,7 +3251,7 @@ const ITEM_DATA: {
               "The person must have you, and will abandon their normally reasonable behavior to do so.",
               "The person is distracted by you for as long as you're in the vicinity, unable to concentrate on anything else.",
               "The person becomes jealous of anyone competing for your attention, and tries to dispose of them by any means necessary.",
-              "You make them uncertain and confused. You take #>text-mod>+1 ongoing<# against them during this scene."
+              "You make them uncertain and confused. You take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> against them during this scene."
             ]
           }
         },
@@ -3260,7 +3288,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below any time during this scene, but the nature of the attraction is different than you had hoped. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below any time during this scene, but the nature of the attraction is different than you had hoped. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -3306,10 +3334,10 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "You fully heal the injured person, channeling the #>text-keyword>Wound<# onto yourself or a selected target."
+                  "result": "You fully heal the injured person, channeling the </span><span class=\"inline-emphasis\">Wound</span><span class=\"inline-text\"> onto yourself or a selected target."
                 },
                 "partialSuccess": {
-                  "result": "You stabilize the injured, channeling the #>text-keyword>Wound<# onto yourself or a selected target."
+                  "result": "You stabilize the injured, channeling the </span><span class=\"inline-emphasis\">Wound</span><span class=\"inline-text\"> onto yourself or a selected target."
                 },
                 "failure": {
                   "result": "You may choose to stabilize the injured, but if you do, the powers break free from your control."
@@ -3321,7 +3349,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "You are able to heal others' #>text-keyword>Wounds<# without using medicine or first aid, but you must channel the injuries onto yourself or another living victim.%insert.break%To transfer a #>text-keyword>Wound<#, you must be able to see the victim, but not touch them and they are not required to consent.%insert.break%The #>text-keyword>Wound<# transferred is of the same type, severity, and condition as the original.",
+          "intro": "You are able to heal others' </span><span class=\"inline-emphasis\">Wounds</span><span class=\"inline-text\"> without using medicine or first aid, but you must channel the injuries onto yourself or another living victim.<br/><br/>To transfer a </span><span class=\"inline-emphasis\">Wound</span><span class=\"inline-text\">, you must be able to see the victim, but not touch them and they are not required to consent.<br/><br/>The </span><span class=\"inline-emphasis\">Wound</span><span class=\"inline-text\"> transferred is of the same type, severity, and condition as the original.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -3379,7 +3407,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but you manage to attract someone's attention. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but you manage to attract someone's attention. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -3410,8 +3438,8 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Viciousness — #>text-mod>+1 ongoing<# to %insert.docLink.Engage in Combat% rolls for the remainder of the fight.",
-              "Adrenaline Rush — #>text-mod>+1 ongoing<# to %insert.docLink.Endure Injury% rolls for the remainder of the fight."
+              "Viciousness &ndash; </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> rolls for the remainder of the fight.",
+              "Adrenaline Rush &ndash; </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span><span class=\"inline-text\"> rolls for the remainder of the fight."
             ]
           }
         },
@@ -3429,7 +3457,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you suffer a serious or critical injury yet refuse to yield,",
-                "outro": "%insert.rollPrompt%.%insert.break%On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires."
+                "outro": "%insert.rollPrompt%.<br/><br/>On a success, you may temporarily ignore the effects of the injuries, but you will need treatment to stabilize them as soon as the time limit expires."
               },
               "results": {
                 "completeSuccess": {
@@ -3488,7 +3516,7 @@ const ITEM_DATA: {
                   "result": "You discover a shortcut, but there is also some sort of obstacle you will need to get past."
                 },
                 "failure": {
-                  "result": "You discover a shortcut, but it leads you into a dangerous situation, such as the lair of some creature or an ambush set by some gang. #>text-gmtext>The GM makes a Move<#."
+                  "result": "You discover a shortcut, but it leads you into a dangerous situation, such as the lair of some creature or an ambush set by some gang. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -3556,7 +3584,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Ask one question from the list below, but someone becomes suspicious or aggressive. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Ask one question from the list below, but someone becomes suspicious or aggressive. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "questions"
                   ]
@@ -3587,16 +3615,16 @@ const ITEM_DATA: {
           "attacks": {
             "name": "Attacks (Melee)",
             "items": [
-              "#>text-negmod><strong>Launching Attack</strong> [<strong>2</strong>] [Distance: <strong>room</strong>]<#",
-              "#>text-negmod><strong>Precision Attack</strong> [<strong>2</strong>] [Distance: <strong>arm</strong>] Ignores armor<#",
-              "#>text-negmod><strong>Tripping Attack</strong> [<strong>2</strong>] [Distance: <strong>arm</strong>] Target falls prone<#",
+              "</span><span class=\"inline-attack\"><span class=\"attack-name\">Launching Attack</span><span class=\"attack-harm\">2</span><span class=\"attack-range\">room</span></span><span class=\"inline-text\">",
+              "</span><span class=\"inline-attack\"><span class=\"attack-name\">Precision Attack</span><span class=\"attack-harm\">2</span><span class=\"attack-range\">arm</span><span class=\"attack-special\">Ignores armor</span></span><span class=\"inline-text\">",
+              "</span><span class=\"inline-attack\"><span class=\"attack-name\">Tripping Attack</span><span class=\"attack-harm\">2</span><span class=\"attack-range\">arm</span><span class=\"attack-special\">Target falls prone</span></span><span class=\"inline-text\">",
             ]
           }
         },
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "#>text-center>You are a master of armed melee combat.<#%insert.break%When you %insert.docLink.Engage in Combat% in close quarters, with or without a weapon, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.attacks%",
+          "intro": "<span class=\"block-text center\">You are a master of armed melee combat.</span><br/><br/>When you </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> in close quarters, with or without a weapon, roll </span><span class=\"inline-emphasis rollable-attribute\">+Coolness</span><span class=\"inline-text\"> instead of </span><span class=\"inline-emphasis rollable-attribute\">+Violence</span><span class=\"inline-text\">, and add the following to your available attacks: %list.attacks%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -3649,7 +3677,7 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Automatically %insert.docLink.Influence% someone who has heard of your authority in your academic field, as if you had rolled a #>text-resultlabel>(15+)<#.",
+              "Automatically </span><span class=\"inline-doclink\" data-doc-name=\"Influence Other NPC\">Influence</span><span class=\"inline-text\"> someone who has heard of your authority in your academic field, as if you had rolled a </span><span class=\"inline-emphasis result-label\">(15+)</span><span class=\"inline-text\">.",
               "Gain access to a university's resources, such as their facilities, researchers, or scientific archives.",
               "Make a statement about something or someone in mass media.",
               "Gain access to people or places under the pretense of engaging in your research or studies."
@@ -3689,7 +3717,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "During this game session you may choose one option from the list below, but you also attract unwanted attention like stalkers, professional adversaries, competitors, or hostile forces. #>text-gmtext>The GM makes a Move<# for them at some point during the session.",
+                  "result": "During this game session you may choose one option from the list below, but you also attract unwanted attention like stalkers, professional adversaries, competitors, or hostile forces. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\"> for them at some point during the session.",
                   "listRefs": [
                     "options"
                   ]
@@ -3720,9 +3748,9 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Logical<# &mdash; You realize an effective way to dispose of the threat. Deal #>text-mod>+1 Harm<# whenever you exploit it.",
-              "#>text-edgename>Quick Thinking<# &mdash; You realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on %insert.docLink.Avoid Harm% whenever you exploit it.",
-              "#>text-edgename>Rational<# &mdash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
+              "<span class=\"inline-emphasis edge-name\">Logical</span><span class=\"inline-text\"> &ndash; You realize an effective way to dispose of the threat. Deal </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\"> whenever you exploit it.",
+              "<span class=\"inline-emphasis edge-name\">Quick Thinking</span><span class=\"inline-text\"> &ndash; You realize how to protect yourself from harm. Treat it as if you'd rolled a </span><span class=\"inline-emphasis result-label\">(15+)</span><span class=\"inline-text\"> on </span><span class=\"inline-doclink\" data-doc-name=\"Avoid Harm\">Avoid Harm</span><span class=\"inline-text\"> whenever you exploit it.",
+              "<span class=\"inline-emphasis edge-name\">Rational</span><span class=\"inline-text\"> &ndash; You realize how to save yourself by sacrificing someone else. Pick the person you throw under the bus to escape the threat."
             ]
           }
         },
@@ -3746,21 +3774,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 3 Edges<#, useable any time in the scene, while you're still in danger.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 3 Edges</span><span class=\"inline-text\">, useable any time in the scene, while you're still in danger.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 3
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#, useable any time in the scene, while you're still in danger.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">, useable any time in the scene, while you're still in danger.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but you also attract unwanted attention. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\">, but you also attract unwanted attention. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "edges"
                   ],
@@ -3784,7 +3812,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to realize an effective way to dispose of the threat. Deal #>text-mod>+1 Harm<# whenever you exploit it."
+                "outro": "... to realize an effective way to dispose of the threat. Deal </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\"> whenever you exploit it."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -3802,7 +3830,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to realize how to protect yourself from harm. Treat it as if you'd rolled a #>text-resultlabel>(15+)<# on %insert.docLink.Avoid Harm% whenever you exploit it."
+                "outro": "... to realize how to protect yourself from harm. Treat it as if you'd rolled a </span><span class=\"inline-emphasis result-label\">(15+)</span><span class=\"inline-text\"> on </span><span class=\"inline-doclink\" data-doc-name=\"Avoid Harm\">Avoid Harm</span><span class=\"inline-text\"> whenever you exploit it."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -3848,10 +3876,10 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Defensive Driving<# &mdash; Make a risky maneuver to get out of the way.",
-              "#>text-edgename>Evasive Driving<# &mdash; Shake off one pursuing vehicle.",
-              "#>text-edgename>Deadly Driving<# &mdash; Use your vehicle as a weapon against a pedestrian (#>text-keyword>2-4 Harm<# depending on speed).",
-              "#>text-edgename>Reckless Driving<# &mdash; Sideswipe another vehicle off the road."
+              "<span class=\"inline-emphasis edge-name\">Defensive Driving</span><span class=\"inline-text\"> &ndash; Make a risky maneuver to get out of the way.",
+              "<span class=\"inline-emphasis edge-name\">Evasive Driving</span><span class=\"inline-text\"> &ndash; Shake off one pursuing vehicle.",
+              "<span class=\"inline-emphasis edge-name\">Deadly Driving</span><span class=\"inline-text\"> &ndash; Use your vehicle as a weapon against a pedestrian (</span><span class=\"inline-emphasis\">2&ndash;4 Harm</span><span class=\"inline-text\"> depending on speed).",
+              "<span class=\"inline-emphasis edge-name\">Reckless Driving</span><span class=\"inline-text\"> &ndash; Sideswipe another vehicle off the road."
             ]
           }
         },
@@ -3874,21 +3902,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 3 Edges<#. You may spend them anytime during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 3 Edges</span><span class=\"inline-text\">. You may spend them anytime during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 3
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#. You may spend them anytime during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">. You may spend them anytime during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<# to spend any time during the scene, but the situation worsens somehow—maybe you speed past a police car, additional vehicles start pursuing you, or you or your vehicle is damaged. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\"> to spend any time during the scene, but the situation worsens somehow &ndash; maybe you speed past a police car, additional vehicles start pursuing you, or you or your vehicle is damaged. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "edges"
                   ],
@@ -3948,7 +3976,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to use your vehicle as a weapon against a pedestrian (#>text-keyword>2-4 Harm<# depending on speed)."
+                "outro": "... to use your vehicle as a weapon against a pedestrian (</span><span class=\"inline-emphasis\">2&ndash;4 Harm</span><span class=\"inline-text\"> depending on speed)."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -4065,16 +4093,16 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Improvisation: You stabilize one #>text-keyword>Wound<# without access to medical equipment.",
-              "Effective: You stabilize two #>text-keyword>Wounds<# instead of one.",
-              "Careful: The wound stabilizes and will heal much faster than normal."
+              "<span class=\"inline-emphasis\">Improvisation</span> &ndash; You stabilize one </span><span class=\"inline-emphasis\">Wound</span><span class=\"inline-text\"> without access to medical equipment.",
+              "<span class=\"inline-emphasis\">Effective</span> &ndash; You stabilize two </span><span class=\"inline-emphasis\">Wounds</span><span class=\"inline-text\"> instead of one.",
+              "<span class=\"inline-emphasis\">Careful</span> &ndash; The wound stabilizes and will heal much faster than normal."
             ]
           },
           "complications": {
             "name": "Complications",
             "items": [
-              "You leave cosmetic scars or defects (the patient loses #>text-negmod>&minus;2<# #>text-keyword>Stability<#.",
-              "There are lingering side effects (#>text-negmod>&minus;1<# to all rolls the wound could feasibly affect until it's fully healed).",
+              "You leave cosmetic scars or defects (the patient loses </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">.",
+              "There are lingering side effects (</span><span class=\"inline-emphasis negative\">&minus;1</span><span class=\"inline-text\"> to all rolls the wound could feasibly affect until it's fully healed).",
               "The patient remains knocked out until the GM determines that they awaken."
             ]
           }
@@ -4112,7 +4140,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "You stabilize the wound, even without access to medical equipment, but there are also unexpected and potentially dangerous consequences, such as infections, healing deformities, or other serious side effects. #>text-gmtext>The GM makes a Move<#."
+                  "result": "You stabilize the wound, even without access to medical equipment, but there are also unexpected and potentially dangerous consequences, such as infections, healing deformities, or other serious side effects. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -4211,7 +4239,7 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Deal #>text-mod>+1 Harm<#.",
+              "Deal </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\">.",
               "Hit another target as well.",
               "Immobilize your target.",
               "Get the target to lose control of something.",
@@ -4252,7 +4280,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "The shot didn't go where you intended it to, or you reveal your position to the enemy—expect witnesses, opponents pursuing you as you leave the scene, or other problems. #>text-gmtext>The GM makes a Move<#."
+                  "result": "The shot didn't go where you intended it to, or you reveal your position to the enemy &ndash; expect witnesses, opponents pursuing you as you leave the scene, or other problems. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -4280,15 +4308,15 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Dodge<# &mdash; Avoid an attack.",
-              "#>text-edgename>Flurry of Blows<# &mdash; Take #>text-posmod>+2<# on your roll to attack an opponent.",
-              "#>text-edgename>Dirty Strike<# &mdash; Momentarily stun an opponent by striking them where it hurts."
+              "<span class=\"inline-emphasis edge-name\">Dodge</span><span class=\"inline-text\"> &ndash; Avoid an attack.",
+              "<span class=\"inline-emphasis edge-name\">Flurry of Blows</span><span class=\"inline-text\"> &ndash; Take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> on your roll to attack an opponent.",
+              "<span class=\"inline-emphasis edge-name\">Dirty Strike</span><span class=\"inline-text\"> &ndash; Momentarily stun an opponent by striking them where it hurts."
             ]
           },
           "complications": {
             "name": "Complications",
             "items": [
-              "You risk losing control during the fight (%insert.docLink.Keep It Together% to prevent it).",
+              "You risk losing control during the fight (</span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\"> to prevent it).",
               "You earn an enemy, who will try to get back at you later."
             ]
           }
@@ -4312,21 +4340,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 3 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 3
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#, but the GM also gets to pick one complication: %list.complications%",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">, but the GM also gets to pick one complication: %list.complications%",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "failure": {
-                  "result": "You're unfocused and lose control. #>text-gmtext>The GM makes a Move<#."
+                  "result": "You're unfocused and lose control. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -4364,7 +4392,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to take #>text-posmod>+2<# on your roll to attack an opponent."
+                "outro": "... to take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> on your roll to attack an opponent."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -4431,7 +4459,7 @@ const ITEM_DATA: {
                   "result": "You avoid discovery and follow your target to their final destination."
                 },
                 "failure": {
-                  "result": "You are spotted or encounter some sort of problem along the way. #>text-gmtext>The GM makes a Move<#."
+                  "result": "You are spotted or encounter some sort of problem along the way. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -4460,7 +4488,7 @@ const ITEM_DATA: {
                   "result": "You shake your pursuers."
                 },
                 "failure": {
-                  "result": "Your pursuers are still on your tail, and they can set up an ambush, disappear without a trace (only to show up when you least expect it), or refuse to go away. #>text-gmtext>The GM makes a Move<#."
+                  "result": "Your pursuers are still on your tail, and they can set up an ambush, disappear without a trace (only to show up when you least expect it), or refuse to go away. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -4529,7 +4557,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but a problem arises. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but a problem arises. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -4555,7 +4583,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
       "system": {
-        "shortDesc": "You get <em>+2 ongoing</em> to all rolls against any one who wounds you.",
+        "shortDesc": "You get <span class=\"inline-emphasis positive\">+2 ongoing</span> to all rolls against any one who wounds you.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -4564,7 +4592,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/eye-for-an-eye.svg",
             "system": {
-              "shortDesc": "You get <em>+2 ongoing</em> to all rolls against any one who wounds you.",
+              "shortDesc": "You get <span class=\"inline-emphasis positive\">+2 ongoing</span> to all rolls against any one who wounds you.",
               "chatName": "Swears Vengeance",
               "parentItem": {
                 "name": "Eye for an Eye",
@@ -4572,7 +4600,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you suffer a serious or critical injury, name the person you feel is responsible.",
-                "outro": "You get #>text-mod>+2 ongoing<# to all rolls against them, forever. All rolls targeting the person count, but rolls targeting the person's family, friends, minions, and property only count if the GM feels they're applicable."
+                "outro": "You get </span><span class=\"inline-emphasis positive\">+2 ongoing</span><span class=\"inline-text\"> to all rolls against them, forever. All rolls targeting the person count, but rolls targeting the person's family, friends, minions, and property only count if the GM feels they're applicable."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -4598,7 +4626,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore.%insert.break%You suffer no penalties to your dice rolls from your #>text-keyword>Wounds<#.",
+          "intro": "Abuse, violence, self-harm, and assaults have become familiar, and the pain hardly affects you at all anymore.<br/><br/>You suffer no penalties to your dice rolls from your </span><span class=\"inline-emphasis\">Wounds</span><span class=\"inline-text\">.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -4658,8 +4686,8 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Take #>text-posmod>+2<# to %insert.docLink.Influence Other% rolls made against them.",
-              "Take #>text-posmod>+2<# to %insert.docLink.Hinder Other% rolls made against them."
+              "Take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Influence Other NPC\">Hinder Other</span><span class=\"inline-text\"> rolls made against them.",
+              "Take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Hinder Other\">Hinder Other</span><span class=\"inline-text\"> rolls made against them."
             ]
           }
         },
@@ -4704,10 +4732,10 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Bring 'Em On<# &mdash; Engage an additional hostile in Combat.",
-              "#>text-edgename>Savagery<# &mdash; Deal #>text-mod>+2 Harm<# with one attack.",
-              "#>text-edgename>Charge<# &mdash; Get within reach to attack a hostile.",
-              "#>text-edgename>Go Crazy<# &mdash; Frighten your opponents by laughing into the face of death (#>text-mod>+1 ongoing<# during the fight)."
+              "<span class=\"inline-emphasis edge-name\">Bring 'Em On</span><span class=\"inline-text\"> &ndash; Engage an additional hostile in Combat.",
+              "<span class=\"inline-emphasis edge-name\">Savagery</span><span class=\"inline-text\"> &ndash; Deal </span><span class=\"inline-emphasis positive\">+2 Harm</span><span class=\"inline-text\"> with one attack.",
+              "<span class=\"inline-emphasis edge-name\">Charge</span><span class=\"inline-text\"> &ndash; Get within reach to attack a hostile.",
+              "<span class=\"inline-emphasis edge-name\">Go Crazy</span><span class=\"inline-text\"> &ndash; Frighten your opponents by laughing into the face of death (</span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> during the fight)."
             ]
           }
         },
@@ -4730,21 +4758,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 3 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 3
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but afterwards you discover you have been injured without noticing it (%insert.docLink.Endure Injury%; the GM determines the amount of #>text-keyword>Harm<# based on who attacked you and how).",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\">, but afterwards you discover you have been injured without noticing it (</span><span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span><span class=\"inline-text\">; the GM determines the amount of </span><span class=\"inline-emphasis\">Harm</span><span class=\"inline-text\"> based on who attacked you and how).",
                   "listRefs": [
                     "edges"
                   ],
@@ -4786,7 +4814,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to deal #>text-mod>+2 Harm<# with one attack."
+                "outro": "... to deal </span><span class=\"inline-emphasis positive\">+2 Harm</span><span class=\"inline-text\"> with one attack."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -4822,7 +4850,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to frighten your opponents by laughing into the face of death (#>text-mod>+1 ongoing<# during the fight)."
+                "outro": "... to frighten your opponents by laughing into the face of death (</span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> during the fight)."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -4845,7 +4873,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/analyst.svg",
       "system": {
-        "shortDesc": "You are good at making connections when you %insert.docLink.Investigate%.",
+        "shortDesc": "You are good at making connections when you </span><span class=\"inline-doclink\" data-doc-name=\"Investigate\">Investigate</span><span class=\"inline-text\">.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -4859,7 +4887,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "When you %insert.docLink.Investigate%, you may also choose from these additional questions: %list.questions%",
+          "intro": "When you </span><span class=\"inline-doclink\" data-doc-name=\"Investigate\">Investigate</span><span class=\"inline-text\">, you may also choose from these additional questions: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -4931,7 +4959,7 @@ const ITEM_DATA: {
                   "result": "They do as you want, but there is a complication (choose one): %list.complications%"
                 },
                 "failure": {
-                  "result": "Problems arise. Maybe something goes wrong when carrying out your orders, or they doubt your abilities as a leader. #>text-gmtext>The GM makes a Move<#."
+                  "result": "Problems arise. Maybe something goes wrong when carrying out your orders, or they doubt your abilities as a leader. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -4940,7 +4968,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "#>text-center>You're the boss of a small gang of criminals.<#",
+          "intro": "<span class=\"block-text center\">You're the boss of a small gang of criminals.</span>",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -4961,7 +4989,7 @@ const ITEM_DATA: {
             "items": [
               "It will cost you something extra, such as in-kind services, tasks, or an inflated price.",
               "You can get it handled, but only by dealing with someone you're already indebted to.",
-              "\"Shit, I had one, but I just let it go to [insert name]—maybe you can buy it from her?\"",
+              "\"Shit, I had one, but I just let it go to [insert name] &ndash; maybe you can buy it from her?\"",
               "\"Sorry, that's a bit outside of my area, but maybe this will work instead?\""
             ]
           }
@@ -4984,13 +5012,13 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "No problem—you get what you're after. Someone will fix you right up."
+                  "result": "No problem &ndash; you get what you're after. Someone will fix you right up."
                 },
                 "partialSuccess": {
                   "result": "The GM chooses one option from the list below: %list.gmoptions%"
                 },
                 "failure": {
-                  "result": "You think you find what you're looking for, but there will be costly stipulations, considerable flaws, or major complications. #>text-gmtext>The GM makes a Move<#."
+                  "result": "You think you find what you're looking for, but there will be costly stipulations, considerable flaws, or major complications. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -5090,7 +5118,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities.%insert.break%You take #>text-mod>+1 ongoing<# to all rolls relevant to running, throwing, or catching objects.",
+          "intro": "You've competed professionally in an athletic sport (baseball, football, tennis, etc.), through which you have developed your physical capabilities.<br/><br/>You take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> to all rolls relevant to running, throwing, or catching objects.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -5124,7 +5152,7 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "You make eye contact with an NPC, causing them to freeze up and be unable to take any actions until you break eye contact. You also get #>text-mod>+2 ongoing<# against your target."
+                  "result": "You make eye contact with an NPC, causing them to freeze up and be unable to take any actions until you break eye contact. You also get </span><span class=\"inline-emphasis positive\">+2 ongoing</span><span class=\"inline-text\"> against your target."
                 },
                 "partialSuccess": {
                   "result": "You make eye contact with an NPC, causing them to freeze up and be unable to take any actions until you break eye contact."
@@ -5158,9 +5186,9 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Reveal a Weapon<# &mdash; You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
-              "#>text-edgename>Spot a Weakness<# &mdash; You realize your opponent has a weakness you can exploit (take #>text-posmod>+2<# to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
-              "#>text-edgename>Find an Exit<# &mdash; You spot a way out. Ask the GM what it is. Take #>text-posmod>+2<# to your next roll to make use of it."
+              "<span class=\"inline-emphasis edge-name\">Reveal a Weapon</span><span class=\"inline-text\"> &ndash; You have a small, concealed lethal weapon (stiletto or similar), which you can produce unnoticed.",
+              "<span class=\"inline-emphasis edge-name\">Spot a Weakness</span><span class=\"inline-text\"> &ndash; You realize your opponent has a weakness you can exploit (take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to your next roll, if it involves exploiting the weakness). Ask the GM what it is.",
+              "<span class=\"inline-emphasis edge-name\">Find an Exit</span><span class=\"inline-text\"> &ndash; You spot a way out. Ask the GM what it is. Take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to your next roll to make use of it."
             ]
           }
         },
@@ -5183,21 +5211,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 1 Edge<#. You may spend it at any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\">. You may spend it at any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 1
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but the situation is worse than you imagined. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\">, but the situation is worse than you imagined. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "edges"
                   ],
@@ -5239,7 +5267,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to realize your opponent has a weakness you can exploit (take #>text-posmod>+2<# to your next roll, if it involves exploiting the weakness). Ask the GM what it is."
+                "outro": "... to realize your opponent has a weakness you can exploit (take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to your next roll, if it involves exploiting the weakness). Ask the GM what it is."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -5257,7 +5285,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to spot a way out. Ask the GM what it is. Take #>text-posmod>+2<# to your next roll to make use of it."
+                "outro": "... to spot a way out. Ask the GM what it is. Take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to your next roll to make use of it."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -5300,13 +5328,13 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "The power attacks all opponents in your vicinity, causing #>text-keyword>2 Harm<#."
+                  "result": "The power attacks all opponents in your vicinity, causing </span><span class=\"inline-emphasis\">2 Harm</span><span class=\"inline-text\">."
                 },
                 "partialSuccess": {
-                  "result": "The power attacks your closest opponent, causing #>text-keyword>2 Harm<#."
+                  "result": "The power attacks your closest opponent, causing </span><span class=\"inline-emphasis\">2 Harm</span><span class=\"inline-text\">."
                 },
                 "failure": {
-                  "result": "The power attacks all living beings, including yourself, in the vicinity, causing #>text-keyword>2 Harm<#."
+                  "result": "The power attacks all living beings, including yourself, in the vicinity, causing </span><span class=\"inline-emphasis\">2 Harm</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -5375,7 +5403,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Ask one question from the list below, but the person you're inquiring about finds out you're snooping around. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Ask one question from the list below, but the person you're inquiring about finds out you're snooping around. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "questions"
                   ]
@@ -5445,7 +5473,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below useable while you remain in this situation, but you've also overlooked something important. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below useable while you remain in this situation, but you've also overlooked something important. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -5476,10 +5504,10 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>\"Attack!\"<# &mdash; One ally gets #>text-posmod>+2<# to their next roll to %insert.docLink.Engage in Combat%.",
-              "#>text-edgename>\"Coordinate Fire!\"<# &mdash; All allies get #>text-posmod>+1<# to their next roll to %insert.docLink.Engage in Combat% with firearms while in the fight.",
-              "#>text-edgename>\"Go For The Head!\"<# &mdash; You or one of your allies' %insert.docLink.Engage in Combat% deals #>text-mod>+1 Harm<#.",
-              "#>text-edgename>\"Take Cover!\"<# &mdash; You or an ally receive #>text-keyword>2 Armor<# against a ranged attack."
+              "<span class=\"inline-emphasis edge-name\">\"Attack!\"</span><span class=\"inline-text\"> &ndash; One ally gets </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to their next roll to </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\">.",
+              "<span class=\"inline-emphasis edge-name\">\"Coordinate Fire!\"</span><span class=\"inline-text\"> &ndash; All allies get </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> to their next roll to </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> with firearms while in the fight.",
+              "<span class=\"inline-emphasis edge-name\">\"Go For The Head!\"</span><span class=\"inline-text\"> &ndash; You or one of your allies' </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> deals </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\">.",
+              "<span class=\"inline-emphasis edge-name\">\"Take Cover!\"</span><span class=\"inline-text\"> &ndash; You or an ally receive </span><span class=\"inline-emphasis\">2 Armor</span><span class=\"inline-text\"> against a ranged attack."
             ]
           }
         },
@@ -5502,21 +5530,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 3 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 3
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "failure": {
-                  "result": "You misjudge the situation. Choose whether you have put yourself or one of your allies in harm's way. #>text-gmtext>The GM makes a Move<# for your opponent."
+                  "result": "You misjudge the situation. Choose whether you have put yourself or one of your allies in harm's way. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\"> for your opponent."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -5536,7 +5564,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to one ally gets #>text-posmod>+2<# to their next roll to %insert.docLink.Engage in Combat%."
+                "outro": "... to one ally gets </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to their next roll to </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -5554,7 +5582,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to give all allies #>text-posmod>+1<# to their next roll to %insert.docLink.Engage in Combat% with firearms while in the fight."
+                "outro": "... to give all allies </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> to their next roll to </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> with firearms while in the fight."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -5572,7 +5600,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to have you or one of your allies' %insert.docLink.Engage in Combat% deals #>text-mod>+1 Harm<#."
+                "outro": "... to have you or one of your allies' </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> deals </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -5590,7 +5618,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to have you or an ally receive #>text-keyword>2 Armor<# against a ranged attack."
+                "outro": "... to have you or an ally receive </span><span class=\"inline-emphasis\">2 Armor</span><span class=\"inline-text\"> against a ranged attack."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -5657,7 +5685,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but you risk discovery or face unexpected obstacles. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but you risk discovery or face unexpected obstacles. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -5703,13 +5731,13 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "Everyone involved takes #>text-mod>+1 ongoing<# to carry out the plan, and you get #>text-keyword>one Experience<# if the plan is successful."
+                  "result": "Everyone involved takes </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> to carry out the plan, and you get </span><span class=\"inline-emphasis\">one Experience</span><span class=\"inline-text\"> if the plan is successful."
                 },
                 "partialSuccess": {
-                  "result": "You get #>text-keyword>one Experience<# if the plan is successful, but you have overlooked or miscalculated something."
+                  "result": "You get </span><span class=\"inline-emphasis\">one Experience</span><span class=\"inline-text\"> if the plan is successful, but you have overlooked or miscalculated something."
                 },
                 "failure": {
-                  "result": "Your plan is inadequate, revealed, and/or misguided. #>text-gmtext>The GM makes a Move<#."
+                  "result": "Your plan is inadequate, revealed, and/or misguided. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -5737,8 +5765,8 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "They trust you (PC takes #>text-posmod>+1<# #>text-keyword>Relation<# with you).",
-              "They're spellbound by you (take #>text-mod>+1 ongoing<# against them during this scene).",
+              "They trust you (PC takes </span><span class=\"inline-emphasis positive\">+1 Relation</span><span class=\"inline-text\"> with you).",
+              "They're spellbound by you (take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> against them during this scene).",
               "They reveal a weakness, which you can exploit later."
             ]
           },
@@ -5817,7 +5845,7 @@ const ITEM_DATA: {
               "a vision of a portal between dimensions.",
               "a vision of the cult's enemies.",
               "a vision of an object's purpose.",
-              "a vision revealing your deity's wishes (take #>text-posmod>+1<# to all rolls while fulfilling their wishes)."
+              "a vision revealing your deity's wishes (take </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> to all rolls while fulfilling their wishes)."
             ]
           }
         },
@@ -5854,7 +5882,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one vision, but the Illusion tears as a result. You may temporarily be transported into another dimension, attract a demonic being's attention, or receive a horrifying omen. #>text-gmtext>The GM makes a Move<#."
+                  "result": "Choose one vision, but the Illusion tears as a result. You may temporarily be transported into another dimension, attract a demonic being's attention, or receive a horrifying omen. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -5882,10 +5910,10 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Take Cover<# &mdash; Avoid a ranged attack by diving behind an object or a person.",
-              "#>text-edgename>Choke Hold<# &mdash; Lock a human opponent in a grip they cannot get out of without taking #>text-keyword>1 Harm<#.",
-              "#>text-edgename>Disarm<# &mdash; Remove an opponent's weapon in close combat.",
-              "#>text-edgename>Improvised Weapon<# &mdash; Make a lethal, close-combat attack with a seemingly-innocuous object #>text-negmod>(<strong>Surprise Strike</strong> [<strong>2</strong>] [Distance: <strong>arm</strong>])<#."
+              "<span class=\"inline-emphasis edge-name\">Take Cover</span><span class=\"inline-text\"> &ndash; Avoid a ranged attack by diving behind an object or a person.",
+              "<span class=\"inline-emphasis edge-name\">Choke Hold</span><span class=\"inline-text\"> &ndash; Lock a human opponent in a grip they cannot get out of without taking </span><span class=\"inline-emphasis\">1 Harm</span><span class=\"inline-text\">.",
+              "<span class=\"inline-emphasis edge-name\">Disarm</span><span class=\"inline-text\"> &ndash; Remove an opponent's weapon in close combat.",
+              "<span class=\"inline-emphasis edge-name\">Improvised Weapon</span><span class=\"inline-text\"> &ndash; Make a lethal, close-combat attack with a seemingly-innocuous object: </span><span class=\"inline-attack\"><span class=\"attack-name\">Surprise Strike</span><span class=\"attack-harm\">2</span><span class=\"attack-range\">arm</span></span><span class=\"inline-text\">."
             ]
           }
         },
@@ -5907,21 +5935,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 3 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 3
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but you have made a bad call. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\">, but you have made a bad call. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "edges"
                   ],
@@ -5963,7 +5991,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to lock a human opponent in a grip they cannot get out of without taking #>text-keyword>1 Harm<#."
+                "outro": "... to lock a human opponent in a grip they cannot get out of without taking </span><span class=\"inline-emphasis\">1 Harm</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -5999,7 +6027,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to make a lethal, close-combat attack with a seemingly-innocuous object #>text-negmod>(<strong>Surprise Strike</strong> [<strong>2</strong>] [Distance: <strong>arm</strong>])<#."
+                "outro": "... to make a lethal, close-combat attack with a seemingly-innocuous object: </span><span class=\"inline-attack\"><span class=\"attack-name\">Surprise Strike</span><span class=\"attack-harm\">2</span><span class=\"attack-range\">arm</span></span><span class=\"inline-text\">."
               },
               "results": {
                 "triggered": {
@@ -6047,9 +6075,9 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "You realize how to get through your opponent's defenses (take #>text-posmod>+1<# to %insert.docLink.Engage in Combat% with them).",
-              "You find your opponent's weak spot (deal #>text-mod>+1 Harm<# whenever you %insert.docLink.Engage in Combat% with them).",
-              "You perceive your opponent's pattern of attack (take #>text-posmod>+1<# to %insert.docLink.Avoid Harm% whenever they attack you)."
+              "You realize how to get through your opponent's defenses (take </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> with them).",
+              "You find your opponent's weak spot (deal </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\"> whenever you </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> with them).",
+              "You perceive your opponent's pattern of attack (take </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Avoid Harm\">Avoid Harm</span><span class=\"inline-text\"> whenever they attack you)."
             ]
           }
         },
@@ -6254,7 +6282,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you look for information on a subject in a library, research archive, or on the Internet,",
-                "outro": "%insert.rollPrompt%.%insert.break%In response to the inquiries you make, the GM will tell you what you uncover, in as much detail as can be expected from the source you have utilized.",
+                "outro": "%insert.rollPrompt%.<br/><br/>In response to the inquiries you make, the GM will tell you what you uncover, in as much detail as can be expected from the source you have utilized.",
                 "listRefs": [
                   "questions"
                 ]
@@ -6273,7 +6301,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Ask one question from the list below, but you also discover something unexpected. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Ask one question from the list below, but you also discover something unexpected. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "questions"
                   ]
@@ -6342,7 +6370,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "You may choose one option from the list below, but after using it the creature becomes determined to possess you. It might try to devour you or perhaps capture you. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "You may choose one option from the list below, but after using it the creature becomes determined to possess you. It might try to devour you or perhaps capture you. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -6381,7 +6409,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you %insert.docLink.Observe a Situation%, you may choose from these questions, in addition to the ones normally acquired: %list.questions%",
+          "intro": "Whenever you </span><span class=\"inline-doclink\" data-doc-name=\"Observe a Situation\">Observe a Situation</span><span class=\"inline-text\">, you may choose from these questions, in addition to the ones normally acquired: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6458,7 +6486,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Ask one question from the list below, but you have missed or overlooked something crucial. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "Ask one question from the list below, but you have missed or overlooked something crucial. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "questions"
                   ],
@@ -6568,7 +6596,7 @@ const ITEM_DATA: {
                   "result": "They can arrange for it, but you have to repay the favor later."
                 },
                 "failure": {
-                  "result": "They arrange for what you want, but you get on a powerful person's bad side or attract negative publicity. #>text-gmtext>The GM makes a Move<#."
+                  "result": "They arrange for what you want, but you get on a powerful person's bad side or attract negative publicity. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -6577,7 +6605,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "#>text-center>You have friends with power and influence.<#",
+          "intro": "<span class=\"block-text center\">You have friends with power and influence.</span>",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6635,7 +6663,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but you also get an unexpected vision or attract attention. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but you also get an unexpected vision or attract attention. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -6661,12 +6689,12 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/intuitive.svg",
       "system": {
-        "shortDesc": "You get to ask an additional question when you succed in %insert.docLink.Read a Person.Reading% someone.",
+        "shortDesc": "You get to ask an additional question when you succed in </span><span class=\"inline-doclink\" data-doc-name=\"Read a Person\">Reading</span><span class=\"inline-text\"> someone.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.%insert.break%Whenever you %insert.docLink.Read a Person%, you may always ask one additional question, regardless of the outcome of your roll.",
+          "intro": "You can sense people's motives through subconscious readings of their body language, word choices, and behavior.<br/><br/>Whenever you </span><span class=\"inline-doclink\" data-doc-name=\"Read a Person\">Read a Person</span><span class=\"inline-text\">, you may always ask one additional question, regardless of the outcome of your roll.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6677,19 +6705,19 @@ const ITEM_DATA: {
                 filter: "Read a Person",
                 target: "system.results.completeSuccess.result",
                 mode: "AppendText",
-                value: "%insert.break%You may ask one additional question (3 total)."
+                value: "<br/><br/>You may ask one additional question (3 total)."
               }),
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.results.partialSuccess.result",
                 mode: "AppendText",
-                value: "%insert.break%You may ask one additional question (2 total)."
+                value: "<br/><br/>You may ask one additional question (2 total)."
               }),
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
                 target: "system.results.failure.result",
                 mode: "AppendText",
-                value: "%insert.break%Despite your failure, you may ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene."
+                value: "<br/><br/>Despite your failure, you may ask one question from the list below any time you are in conversation with the subject of your scrutiny during this scene."
               }),
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Read a Person",
@@ -6714,15 +6742,15 @@ const ITEM_DATA: {
           "attacks": {
             "name": "Attacks (Firearms)",
             "items": [
-              "#>text-negmod><strong>Two in the Chest, One in the Head</strong> [<strong>4</strong>] [Distance: <strong>room</strong>] [Ammo: <strong>●●</strong>]<#",
-              "#>text-negmod><strong>Disarming Shot</strong> [<strong>1</strong>] [Distance: <strong>room</strong>] [Ammo: <strong>●</strong>] Disarm target on success. A targeted PC must<# %insert.docLink.Act Under Pressure%"
+              "<span class=\"inline-attack\"><span class=\"attack-name\">Two in the Chest, One in the Head</span><span class=\"attack-harm\">4</span><span class=\"attack-range\">room</span><span class=\"ammo-cost\">&bull;&bull;</span></span>",
+              "<span class=\"inline-attack\"><span class=\"attack-name\">Disarming Shot</span><span class=\"attack-harm\">1</span><span class=\"attack-range\">room</span><span class=\"ammo-cost\">&bull;</span><span class=\"attack-special\">Disarm target on success. A targeted PC must <span class=\"inline-doclink\" data-doc-name=\"Act Under Pressure\">Act Under Pressure</span></span>"
             ]
           }
         },
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "#>text-center>You are a master of gunplay.<#%insert.break%When you %insert.docLink.Engage in Combat% with a firearm, roll #>text-rolltrait>+Coolness<# instead of #>text-rolltrait>+Violence<#, and add the following to your available attacks: %list.attacks%",
+          "intro": "<span class=\"block-text center\">You are a master of gunplay.</span><br/><br/>When you </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> with a firearm, roll </span><span class=\"inline-emphasis rollable-attribute\">+Coolness</span><span class=\"inline-text\"> instead of </span><span class=\"inline-emphasis rollable-attribute\">+Violence</span><span class=\"inline-text\">, and add the following to your available attacks: %list.attacks%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6750,7 +6778,7 @@ const ITEM_DATA: {
                 ammo: 1,
                 tags: ["ranged", "firearm"],
                 name: "Disarming Shot",
-                special: "Disarm target; a targeted PC must #>text-docLink>Act Under Pressure<#."
+                special: "Disarm target; a targeted PC must </span><span class=\"inline-doclink\" data-doc-name=\"Act Under Pressure\">Act Under Pressure</span><span class=\"inline-text\">."
               })
             ]
           }],
@@ -6799,7 +6827,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "#>text-center>You are a talented, self-taught dream wanderer.<#",
+          "intro": "<span class=\"block-text center\">You are a talented, self-taught dream wanderer.</span>",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6831,7 +6859,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you fight your deity's enemies or fight to protect a sacred object,",
-                "outro": "you do #>text-mod>+1 Harm<# and take #>text-mod>+1 ongoing<# to %insert.docLink.Endure Injury%.%insert.break%#>text-trigger>If you lose such a battle,<# your deity becomes irate: You take #>text-negmod>&minus;1<# #>text-keyword>ongoing<# to all actions related to your deity until you have atoned for your failure."
+                "outro": "you do </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\"> and take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span><span class=\"inline-text\">.<br/><br/></span><span class=\"inline-text italic strong\">If you lose such a battle,</span><span class=\"inline-text\"> your deity becomes irate: You take </span><span class=\"inline-emphasis negative\">&minus;1 ongoing</span><span class=\"inline-text\"> to all actions related to your deity until you have atoned for your failure."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -6852,12 +6880,12 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/instinct.svg",
       "system": {
-        "shortDesc": "You get +2 on your questions when you %insert.docLink.Observe a Situation%.",
+        "shortDesc": "You get +2 on your questions when you </span><span class=\"inline-doclink\" data-doc-name=\"Observe a Situation\">Observe a Situation</span><span class=\"inline-text\">.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you %insert.docLink.Observe a Situation% and act on the GM's answers, take #>text-posmod>+2<# instead of #>text-posmod>+1<#.",
+          "intro": "Whenever you </span><span class=\"inline-doclink\" data-doc-name=\"Observe a Situation\">Observe a Situation</span><span class=\"inline-text\"> and act on the GM's answers, take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> instead of </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\">.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6868,13 +6896,13 @@ const ITEM_DATA: {
                 filter: "Observe a Situation",
                 target: "system.results.completeSuccess.result",
                 mode: "AppendText",
-                value: "%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
+                value: "<br/><br/>Take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> instead of </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> for acting on the GM's answers."
               }),
               K4ActiveEffect.BuildChangeData("ModifyMove", {
                 filter: "Observe a Situation",
                 target: "system.results.partialSuccess.result",
                 mode: "AppendText",
-                value: "%insert.break%Take #>text-posmod>+2<# instead of #>text-posmod>+1<# for acting on the GM's answers."
+                value: "<br/><br/>Take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> instead of </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> for acting on the GM's answers."
               }),
               K4ActiveEffect.BuildChangeData("ModifyChange", {
                 filter: "Observe a Situation",
@@ -6904,7 +6932,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/vigilant.svg",
       "system": {
-        "shortDesc": "You can %insert.docLink.Read a Person.Read% when others hide things from you.",
+        "shortDesc": "You can </span><span class=\"inline-doclink\" data-doc-name=\"Read a Person\">Read</span><span class=\"inline-text\"> when others hide things from you.",
         "lists": {
           "questions": {
             "name": "Questions",
@@ -6917,7 +6945,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you %insert.docLink.Read a Person%, you may choose from these questions in addition to the usual ones: %list.questions%",
+          "intro": "Whenever you </span><span class=\"inline-doclink\" data-doc-name=\"Read a Person\">Read a Person</span><span class=\"inline-text\">, you may choose from these questions in addition to the usual ones: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -6948,13 +6976,13 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/scientist.svg",
       "system": {
-        "shortDesc": "You are good at %insert.docLink.Investigate.Investigating% objects or entities.",
+        "shortDesc": "You are good at </span><span class=\"inline-doclink\" data-doc-name=\"Investigate\">Investigating</span><span class=\"inline-text\"> objects or entities.",
         "lists": {
           "questions": {
             "name": "Questions",
             "items": [
-              "What properties does this have? (take #>text-posmod>+1<# to any rolls against entities or objects of a similar type next time you encounter it).",
-              "How do I make use of this? (take #>text-posmod>+1<# to any rolls associated with using the object).",
+              "What properties does this have? (take </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> to any rolls against entities or objects of a similar type next time you encounter it).",
+              "How do I make use of this? (take </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> to any rolls associated with using the object).",
               "What is its purpose?"
             ]
           }
@@ -6962,7 +6990,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you %insert.docLink.Investigate% an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list.questions%",
+          "intro": "Whenever you </span><span class=\"inline-doclink\" data-doc-name=\"Investigate\">Investigate</span><span class=\"inline-text\"> an object or entity using the proper equipment, you may choose from these following questions, in addition to those acquired through investigation: %list.questions%",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -7094,7 +7122,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but someone present becomes obsessed, wanting to have you, keep you, and own you for themselves. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but someone present becomes obsessed, wanting to have you, keep you, and own you for themselves. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -7120,12 +7148,12 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/dead-shot.svg",
       "system": {
-        "shortDesc": "Any #>text-keyword>Harm<# with a firearm is considered #>text-keyword>+1 Harm<#.",
+        "shortDesc": "Any </span><span class=\"inline-emphasis\">Harm</span><span class=\"inline-text\"> with a firearm is considered </span><span class=\"inline-emphasis\">+1 Harm</span><span class=\"inline-text\">.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "#>text-center>You are a seasoned marksman.<# #>text-center>You deal #>text-mod>+1 Harm<# with firearms.<#",
+          "intro": "<span class=\"block-text center\">You are a seasoned marksman.</span><span class=\"block-text center\">You deal <span class=\"inline-emphasis positive\">+1 Harm</span> with firearms.</span>",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -7155,10 +7183,10 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Block<# &mdash; Avoid a melee attack.",
-              "#>text-edgename>Roundhouse Strike<# &mdash; %insert.docLink.Engage in Combat% against several opponents surrounding you, counting as a single attack.",
-              "#>text-edgename>Disarm<# &mdash; Remove an opponent's weapon.",
-              "#>text-edgename>Throw<# &mdash; Reposition an opponent or drop them to the ground."
+              "<span class=\"inline-emphasis edge-name\">Block</span><span class=\"inline-text\"> &ndash; Avoid a melee attack.",
+              "<span class=\"inline-emphasis edge-name\">Roundhouse Strike</span><span class=\"inline-text\"> &ndash; </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> against several opponents surrounding you, counting as a single attack.",
+              "<span class=\"inline-emphasis edge-name\">Disarm</span><span class=\"inline-text\"> &ndash; Remove an opponent's weapon.",
+              "<span class=\"inline-emphasis edge-name\">Throw</span><span class=\"inline-text\"> &ndash; Reposition an opponent or drop them to the ground."
             ]
           }
         },
@@ -7181,21 +7209,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 1 Edge<#.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 1
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but you underestimate your opponents, who may be more numerous or skilled than you first assumed. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\">, but you underestimate your opponents, who may be more numerous or skilled than you first assumed. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "edges"
                   ],
@@ -7237,7 +7265,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to %insert.docLink.Engage in Combat% against several opponents surrounding you, counting as a single attack."
+                "outro": "... to </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> against several opponents surrounding you, counting as a single attack."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -7340,7 +7368,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but you also attract unwanted attention. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but you also attract unwanted attention. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -7371,9 +7399,9 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Dodge<# &mdash; Avoid an attack.",
-              "#>text-edgename>Blinding Speed<# &mdash; %insert.docLink.Engage in Combat% with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
-              "#>text-edgename>Uncanny Precision<# &mdash; Hit your opponent's weak spot. Deal #>text-mod>+1 Harm<#."
+              "<span class=\"inline-emphasis edge-name\">Dodge</span><span class=\"inline-text\"> &ndash; Avoid an attack.",
+              "<span class=\"inline-emphasis edge-name\">Blinding Speed</span><span class=\"inline-text\"> &ndash; </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo.",
+              "<span class=\"inline-emphasis edge-name\">Uncanny Precision</span><span class=\"inline-text\"> &ndash; Hit your opponent's weak spot. Deal </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\">."
             ]
           }
         },
@@ -7396,21 +7424,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 3 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 3
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "failure": {
-                  "result": "#>text-keyword>Gain 1 Edge<#, but you also end up in a bad spot or face unexpected resistance. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 1 Edge</span><span class=\"inline-text\">, but you also end up in a bad spot or face unexpected resistance. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "edges"
                   ],
@@ -7452,7 +7480,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to %insert.docLink.Engage in Combat% with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo."
+                "outro": "... to </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> with every opponent within reach of your weapon as a single attack. If you're attacking with a firearm, this uses up all its ammo."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -7470,7 +7498,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to hit your opponent's weak spot. Deal #>text-mod>+1 Harm<#."
+                "outro": "... to hit your opponent's weak spot. Deal </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -7500,7 +7528,7 @@ const ITEM_DATA: {
             "items": [
               "They want to see more of your art.",
               "They are affected by the emotion you wanted to convey (e.g., anger, sorrow, fear, joy, lust, etc).",
-              "They look up to you (take #>text-mod>+1 ongoing<# with the audience during this scene).",
+              "They look up to you (take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> with the audience during this scene).",
               "Their attention is fixed entirely on you throughout your performance."
             ]
           }
@@ -7538,7 +7566,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but a complication/threat manifests. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but a complication/threat manifests. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -7564,12 +7592,12 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/jaded.svg",
       "system": {
-        "shortDesc": "You can suppress the effects of a <strong>(10–14)</strong> on %insert.docLink.Keep It Together%.",
+        "shortDesc": "You can suppress the effects of a </span><span class=\"inline-emphasis result-label\">(10&ndash;&14)</span><span class=\"inline-text\"> on </span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\">.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Whenever you %insert.docLink.Keep It Together% and the result is a #>text-resultlabel>(9—14)<#, you may suppress your emotions and postpone their effects until the next scene.",
+          "intro": "Whenever you </span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\"> and the result is a </span><span class=\"inline-emphasis result-label\">(9&ndash;14)</span><span class=\"inline-text\">, you may suppress your emotions and postpone their effects until the next scene.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -7580,7 +7608,7 @@ const ITEM_DATA: {
                 filter: "Keep It Together",
                 target: "system.results.partialSuccess.result",
                 mode: "AppendText",
-                value: "%insert.break%You may suppress your emotions, postponing their effects until the next scene."
+                value: "<br/><br/>You may suppress your emotions, postponing their effects until the next scene."
               })
             ]
           }],
@@ -7599,7 +7627,7 @@ const ITEM_DATA: {
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.%insert.break%You take #>text-mod>+1 ongoing<# to %insert.docLink.Endure Injury% rolls against close-combat attacks.",
+          "intro": "You've competed professionally in a contact sport (e.g. ice hockey, football), through which you have learned to take a hit.<br/><br/>You take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span><span class=\"inline-text\"> rolls against close-combat attacks.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -7656,9 +7684,9 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Aim for the sensitive parts: Deal #>text-mod>+1 Harm<#.",
-              "Knock out: The NPC is rendered unconcious. PCs roll to %insert.docLink.Endure Injury% and become neutralized on a #>text-resultlabel>(—9)<#.",
-              "Careful: You act soundlessly and, if your victim dies, you leave no clues or traces behind."
+              "<span class=\"inline-emphasis\">Hit Where It Hurts</span> &ndash; Deal </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\">.",
+              "<span class=\"inline-emphasis\">Knock-Out</span> &ndash; The NPC is rendered unconcious. PCs roll to </span><span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span><span class=\"inline-text\"> and become neutralized on a </span><span class=\"inline-emphasis result-label\">(&ndash;9)</span><span class=\"inline-text\">.",
+              "<span class=\"inline-emphasis\">Careful</span> &ndash; You act soundlessly and, if your victim dies, you leave no clues or traces behind."
             ]
           }
         },
@@ -7695,7 +7723,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "You expose your betrayal and your target gets to react to your attack as usual. #>text-gmtext>The GM makes a Move<#."
+                  "result": "You expose your betrayal and your target gets to react to your attack as usual. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -7724,7 +7752,7 @@ const ITEM_DATA: {
             "name": "Options",
             "items": [
               "You discover a portal to another dimension, and a path you can trace back to it later.",
-              "You make contact with someone—or something—who can help you, for the right price.",
+              "You make contact with someone &ndash; or something &ndash; who can help you, for the right price.",
               "You find something valuable or important, in addition to what you were looking for. The GM will tell you what it is."
             ]
           }
@@ -7750,10 +7778,10 @@ const ITEM_DATA: {
                   "result": "You discover what you're looking for, and may also choose one option: %list.options%"
                 },
                 "partialSuccess": {
-                  "result": "You find what you're looking for, but you're also exposed to repulsive and frightening stimuli. You must %insert.rollLink.Keep It Together% to see how it affects you."
+                  "result": "You find what you're looking for, but you're also exposed to repulsive and frightening stimuli. You must <span class=\"inline-rolllink\" data-roll-name=\"Keep It Together\">Keep It Together</span> to see how it affects you."
                 },
                 "failure": {
-                  "result": "You find what you're after, but also contact something very dangerous. It might attempt to latch onto you or follow you back into reality. #>text-gmtext>The GM makes a Move<#."
+                  "result": "You find what you're after, but also contact something very dangerous. It might attempt to latch onto you or follow you back into reality. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -7799,10 +7827,10 @@ const ITEM_DATA: {
                   "result": "You construct a functional bomb."
                 },
                 "partialSuccess": {
-                  "result": "The bomb's blast potential is lower than usual (decrease #>text-keyword>Harm<# dealt by #>text-negmod>&minus;1<#)."
+                  "result": "The bomb's blast potential is lower than usual (decrease </span><span class=\"inline-emphasis\">Harm</span><span class=\"inline-text\"> dealt by </span><span class=\"inline-emphasis negative\">&minus;1</span><span class=\"inline-text\">)."
                 },
                 "failure": {
-                  "result": "The bomb is unpredictable. Maybe it doesn't detonate, detonates prematurely, or it is more powerful and volatile than expected. #>text-gmtext>The GM makes a Move<#."
+                  "result": "The bomb is unpredictable. Maybe it doesn't detonate, detonates prematurely, or it is more powerful and volatile than expected. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -7831,7 +7859,7 @@ const ITEM_DATA: {
                   "result": "Complications arise. Maybe you can't completely turn it off, just delay the timer, weaken the explosive effect, or something else turns up and makes thing worse."
                 },
                 "failure": {
-                  "result": "Fuck, that's not good! The bomb may go off in your hands, the timer starts counting down from 10, 9, 8, 7…, or even bigger problems occur. #>text-gmtext>The GM makes a Move<#."
+                  "result": "Fuck, that's not good! The bomb may go off in your hands, the timer starts counting down from 10, 9, 8, 7…, or even bigger problems occur. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -7898,7 +7926,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Someone tries to take advantage of you and your position. #>text-gmtext>The GM makes a Move<#."
+                  "result": "Someone tries to take advantage of you and your position. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -7921,7 +7949,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/opportunist.svg",
       "system": {
-        "shortDesc": "Gain #>text-keyword>Stability<# when you sacrifice someone to further your own goals.",
+        "shortDesc": "Gain </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> when you sacrifice someone to further your own goals.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -7930,7 +7958,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/opportunist.svg",
             "system": {
-              "shortDesc": "Gain #>text-keyword>Stability<# when you sacrifice someone to further your own goals.",
+              "shortDesc": "Gain </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> when you sacrifice someone to further your own goals.",
               "chatName": "Exploits Someone",
               "parentItem": {
                 "name": "Opportunist",
@@ -7938,7 +7966,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you sacrifice someone else to further your own goals,",
-                "outro": "gain #>text-posmod>+1<# #>text-keyword>Stability<#."
+                "outro": "gain </span><span class=\"inline-emphasis positive\">+1 Stability</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -7959,7 +7987,7 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/grudge.svg",
       "system": {
-        "shortDesc": "You take <em>+1 ongoing</em> to revenge when someone ruin your plans.",
+        "shortDesc": "You take <span class=\"inline-emphasis positive\">+1 ongoing</span> to revenge when someone ruin your plans.",
         "lists": {},
         "subType": K4ItemSubType.activeStatic,
         "subItems": [
@@ -7968,7 +7996,7 @@ const ITEM_DATA: {
             "type": K4ItemType.move,
             "img": "systems/kult4th/assets/icons/advantage/grudge.svg",
             "system": {
-              "shortDesc": "You take <em>+1 ongoing</em> to revenge when someone ruin your plans.",
+              "shortDesc": "You take <span class=\"inline-emphasis positive\">+1 ongoing</span> to revenge when someone ruin your plans.",
               "chatName": "Will Remember That",
               "parentItem": {
                 "name": "Grudge",
@@ -7976,7 +8004,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "When someone directly or indirectly ruins your plans,",
-                "outro": "you take #>text-mod>+1 ongoing<# against them until you have taken revenge or received restitution of equal worth to what you lost."
+                "outro": "you take </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> against them until you have taken revenge or received restitution of equal worth to what you lost."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -7997,12 +8025,12 @@ const ITEM_DATA: {
       "type": K4ItemType.advantage,
       "img": "systems/kult4th/assets/icons/advantage/endure-trauma.svg",
       "system": {
-        "shortDesc": "Whenever you reduce #>text-keyword>Stability<#, you always lose 1 fewer level than normal.",
+        "shortDesc": "Whenever you reduce </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\">, you always lose 1 fewer level than normal.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "#>text-center>You are not as easily affected by trauma as others.<#%insert.break%Whenever you would lose #>text-keyword>Stability<#, lose one fewer level than normal.",
+          "intro": "<span class=\"block-text center\">You are not as easily affected by trauma as others.</span><br/><br/>Whenever you would lose </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\">, lose one fewer level than normal.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -8021,9 +8049,9 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Brutal Assault<# &mdash; Add #>text-mod>+1 Harm<# to your attack.",
-              "#>text-edgename>What Pain?<# &mdash; Take #>text-posmod>+2<# to %insert.docLink.Endure Injury%.",
-              "#>text-edgename>See Only Red<# &mdash; Shake off and ignore psychological or supernatural influence."
+              "<span class=\"inline-emphasis edge-name\">Brutal Assault</span><span class=\"inline-text\"> &ndash; Add </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\"> to your attack.",
+              "<span class=\"inline-emphasis edge-name\">What Pain?</span><span class=\"inline-text\"> &ndash; Take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span><span class=\"inline-text\">.",
+              "<span class=\"inline-emphasis edge-name\">See Only Red</span><span class=\"inline-text\"> &ndash; Shake off and ignore psychological or supernatural influence."
             ]
           }
         },
@@ -8042,7 +8070,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "When you choose to awaken your inner rage in combat,",
-                "outro": "lose #>text-negmod>&minus;1<# #>text-keyword>Stability<# and mark 1 Rage.%insert.break%Every time you get a wound and every time you defeat a foe, increase Rage (#>text-posmod>+1<#).%insert.break%Rage lasts until the end of the combat.%insert.break%During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
+                "outro": "lose </span><span class=\"inline-emphasis negative\">&minus;1 Stability</span><span class=\"inline-text\"> and mark 1 Rage.<br/><br/>Every time you get a wound and every time you defeat a foe, increase Rage (</span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\">).<br/><br/>Rage lasts until the end of the combat.<br/><br/>During combat, you may spend 1 Rage to activate 1 Edge from the list below:",
                 "listRefs": [
                   "edges"
                 ]
@@ -8063,7 +8091,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to add #>text-mod>+1 Harm<# to your attack."
+                "outro": "... to add </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\"> to your attack."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -8081,7 +8109,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to take #>text-posmod>+2<# to %insert.docLink.Endure Injury%."
+                "outro": "... to take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -8127,8 +8155,8 @@ const ITEM_DATA: {
             "items": [
               "They offer you something they think you'd rather have.",
               "Retreat from the scene.",
-              "They are terrorized; you have #>text-mod>+1 ongoing<# on all rolls against them until they've proven they're not afraid of you.",
-              "They attack you from a disadvantaged position. You take #>text-posmod>+2<# on your roll to %insert.docLink.Engage in Combat% if you counterattack."
+              "They are terrorized; you have </span><span class=\"inline-emphasis positive\">+1 ongoing</span><span class=\"inline-text\"> on all rolls against them until they've proven they're not afraid of you.",
+              "They attack you from a disadvantaged position. You take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> on your roll to </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> if you counterattack."
             ]
           }
         },
@@ -8156,7 +8184,7 @@ const ITEM_DATA: {
                   "result": "You must give them a third option. Choose one: %list.options%"
                 },
                 "failure": {
-                  "result": "Turns out you didn't have the advantage you thought you did. #>text-gmtext>The GM makes a Move<#."
+                  "result": "Turns out you didn't have the advantage you thought you did. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -8225,7 +8253,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, useable any time during this scene. However, the crowd becomes uncontrollable and volatile, and cannot be dispersed. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, useable any time during this scene. However, the crowd becomes uncontrollable and volatile, and cannot be dispersed. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -8259,8 +8287,8 @@ const ITEM_DATA: {
               "Give you something you want.",
               "Reveal a secret.",
               "Fight to protect you. NPCs who fall in love with you cannot oppose you, as long as you haven't expended all your options. Against PCs, you may only choose the following options:",
-              "Make them feel bad for opposing you (they must %insert.docLink.Keep It Together%)",
-              "They feel happy in your presence, and gain #>text-posmod>+2<# #>text-keyword>Stability<#."
+              "Make them feel bad for opposing you (they must </span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\">)",
+              "They feel happy in your presence, and gain </span><span class=\"inline-emphasis positive\">+2 Stability</span><span class=\"inline-text\">."
             ]
           }
         },
@@ -8297,7 +8325,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, useable any time in the story, but you also develop feelings for the person. Increase your #>text-keyword>Relation<# to them by #>text-posmod>+1<#.",
+                  "result": "Choose one option from the list below, useable any time in the story, but you also develop feelings for the person. Increase your </span><span class=\"inline-emphasis\">Relation</span><span class=\"inline-text\"> to them by </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -8309,7 +8337,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "#>text-center>You can consciously make people fall in love with you.<#",
+          "intro": "<span class=\"block-text center\">You can consciously make people fall in love with you.</span>",
           "trigger": "",
           "outro": "",
           "listRefs": ["options"],
@@ -8344,7 +8372,7 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take #>text-posmod>+2<# to your next roll to %insert.docLink.Influence% them."
+                  "result": "They know of your reputation; you can decide what they have heard. The GM will have them act accordingly. You take </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> to your next roll to </span><span class=\"inline-doclink\" data-doc-name=\"Influence\">Influence</span><span class=\"inline-text\"> them."
                 },
                 "partialSuccess": {
                   "result": "They know of your reputation; you can decide what they have heard."
@@ -8359,7 +8387,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "#>text-center>You are famous in your trade.<#",
+          "intro": "<span class=\"block-text center\">You are famous in your trade.</span>",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -8378,9 +8406,9 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "Prepare Ambush - Deal your weapon's #>text-keyword>Harm<# when your enemy stumbles in.",
-              "Camouflage - Take #>text-mod>+2 ongoing<# to %insert.docLink.Act Under Pressure% for as long as you remain hiding.",
-              "Move in Shadows - Take #>text-mod>+2 ongoing<# to %insert.docLink.Avoid Harm% from ranged weapons."
+              "Prepare Ambush - Deal your weapon's </span><span class=\"inline-emphasis\">Harm</span><span class=\"inline-text\"> when your enemy stumbles in.",
+              "Camouflage - Take </span><span class=\"inline-emphasis positive\">+2 ongoing</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Act Under Pressure\">Act Under Pressure</span><span class=\"inline-text\"> for as long as you remain hiding.",
+              "Move in Shadows - Take </span><span class=\"inline-emphasis positive\">+2 ongoing</span><span class=\"inline-text\"> to </span><span class=\"inline-doclink\" data-doc-name=\"Avoid Harm\">Avoid Harm</span><span class=\"inline-text\"> from ranged weapons."
             ]
           }
         },
@@ -8417,7 +8445,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Choose one option from the list below, but you become the prey. #>text-gmtext>The GM makes a Move<#.",
+                  "result": "Choose one option from the list below, but you become the prey. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "options"
                   ]
@@ -8488,7 +8516,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must %insert.docLink.Keep It Together%."
+                  "result": "Your intended victim's own terrors and Dark Secrets manifest within you, instead. You must </span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -8537,7 +8565,7 @@ const ITEM_DATA: {
                   "result": "They run away from you or give in to you, GM's choice."
                 },
                 "failure": {
-                  "result": "They see you as their primary threat and act accordingly. #>text-gmtext>The GM makes a Move<# for them."
+                  "result": "They see you as their primary threat and act accordingly. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\"> for them."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -8565,9 +8593,9 @@ const ITEM_DATA: {
           "edges": {
             "name": "Edges",
             "items": [
-              "#>text-edgename>Meat Shield<# &mdash; Force them to take all the #>text-keyword>Harm<# from one attack for you.",
-              "#>text-edgename>Nothing But Bait<# &mdash; Expose someone to danger so you can flank an enemy (deal #>text-mod>+1 Harm<#).",
-              "#>text-edgename>Leave Them Behind<# &mdash; Abandon them to the enemy while you slip away."
+              "<span class=\"inline-emphasis edge-name\">Meat Shield</span><span class=\"inline-text\"> &ndash; Force them to take all the </span><span class=\"inline-emphasis\">Harm</span><span class=\"inline-text\"> from one attack for you.",
+              "<span class=\"inline-emphasis edge-name\">Nothing But Bait</span><span class=\"inline-text\"> &ndash; Expose someone to danger so you can flank an enemy (deal </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\">).",
+              "<span class=\"inline-emphasis edge-name\">Leave Them Behind</span><span class=\"inline-text\"> &ndash; Abandon them to the enemy while you slip away."
             ]
           }
         },
@@ -8590,21 +8618,21 @@ const ITEM_DATA: {
               },
               "results": {
                 "completeSuccess": {
-                  "result": "#>text-keyword>Gain 3 Edges<#. You may spend them any time during the scene.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 3 Edges</span><span class=\"inline-text\">. You may spend them any time during the scene.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 3
                 },
                 "partialSuccess": {
-                  "result": "#>text-keyword>Gain 2 Edges<#.",
+                  "result": "</span><span class=\"inline-emphasis\">Gain 2 Edges</span><span class=\"inline-text\">.",
                   "listRefs": [
                     "edges"
                   ],
                   "edges": 2
                 },
                 "failure": {
-                  "result": "Things turns out in a bad way for you instead. #>text-gmtext>The GM makes a Move<#."
+                  "result": "Things turns out in a bad way for you instead. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -8624,7 +8652,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to force them to take all the #>text-keyword>Harm<# from one attack for you."
+                "outro": "... to force them to take all the </span><span class=\"inline-emphasis\">Harm</span><span class=\"inline-text\"> from one attack for you."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -8642,7 +8670,7 @@ const ITEM_DATA: {
               },
               "isEdge": true,
               "rules": {
-                "outro": "... to expose someone to danger so you can flank an enemy (deal #>text-mod>+1 Harm<#)."
+                "outro": "... to expose someone to danger so you can flank an enemy (deal </span><span class=\"inline-emphasis positive\">+1 Harm</span><span class=\"inline-text\">)."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -8691,7 +8719,7 @@ const ITEM_DATA: {
               "Lie - Come up with a convincing lie.",
               "Gear Up - Find something you can use as a makeshift melee weapon. The GM will tell you what it is.",
               "Hide - Stay out of a pursuer's sight.",
-              "Prepare - Set a trap that gives you a #>text-posmod>+2<# surprise bonus the first time you %insert.docLink.Engage in Combat% after the trap is sprung."
+              "Prepare - Set a trap that gives you a </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\"> surprise bonus the first time you </span><span class=\"inline-doclink\" data-doc-name=\"Engage in Combat\">Engage in Combat</span><span class=\"inline-text\"> after the trap is sprung."
             ]
           }
         },
@@ -8728,7 +8756,7 @@ const ITEM_DATA: {
                   ]
                 },
                 "failure": {
-                  "result": "Your improvisation makes the situation worse. #>text-gmtext>The GM makes a Move<#."
+                  "result": "Your improvisation makes the situation worse. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -8778,11 +8806,11 @@ const ITEM_DATA: {
                   "result": "You are safe from your competitor, for the moment."
                 },
                 "partialSuccess": {
-                  "result": "You have been careless. Your competitor may strike against you. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "You have been careless. Your competitor may strike against you. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "You hand your competitor a golden opportunity, and they move against your interests. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "You hand your competitor a golden opportunity, and they move against your interests. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -8847,10 +8875,10 @@ const ITEM_DATA: {
                   "result": "You control your compulsions and can focus on other things."
                 },
                 "partialSuccess": {
-                  "result": "You become distracted and take #>text-negmod>&minus;1<# #>text-keyword>ongoing<# to all rolls until you have removed yourself from the situation or succumbed to your compulsion, taking any actions it demands of you."
+                  "result": "You become distracted and take </span><span class=\"inline-emphasis negative\">&minus;1 ongoing</span><span class=\"inline-text\"> to all rolls until you have removed yourself from the situation or succumbed to your compulsion, taking any actions it demands of you."
                 },
                 "failure": {
-                  "result": "You become completely obsessed with your compulsion. If you focus on anything else, reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#."
+                  "result": "You become completely obsessed with your compulsion. If you focus on anything else, reduce </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -8907,7 +8935,7 @@ const ITEM_DATA: {
                   "result": "You can control your urges."
                 },
                 "partialSuccess": {
-                  "result": "Choose between having sex with the person or reduce your #>text-negmod>&minus;1<# #>text-keyword>Stability<#."
+                  "result": "Choose between having sex with the person or reduce your </span><span class=\"inline-emphasis negative\">&minus;1 Stability</span><span class=\"inline-text\">."
                 },
                 "failure": {
                   "result": "You cannot resist having sex with the person and the GM chooses one option from the list below: %list.gmoptions%"
@@ -8919,7 +8947,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "Your sexuality is a destructive, controlling force in your life. You compulsively seek out superficial sexual encounters and are willing to perform degrading acts—or even commit crimes—to satisfy your fantasies.",
+          "intro": "Your sexuality is a destructive, controlling force in your life. You compulsively seek out superficial sexual encounters and are willing to perform degrading acts &ndash; or even commit crimes &ndash; to satisfy your fantasies.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -8950,7 +8978,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "trigger": "Whenever you're confronted by the object of your phobia,",
-                "outro": "you must %insert.docLink.Keep It Together%."
+                "outro": "you must </span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\">."
               },
               "subType": K4ItemSubType.activeStatic,
             }
@@ -8994,10 +9022,10 @@ const ITEM_DATA: {
                   "result": "Your condition is under control."
                 },
                 "partialSuccess": {
-                  "result": "Your condition triggers, causing pain and daze (#>text-negmod>&minus;1<# to all rolls until the scene ends)."
+                  "result": "Your condition triggers, causing pain and daze (</span><span class=\"inline-emphasis negative\">&minus;1</span><span class=\"inline-text\"> to all rolls until the scene ends)."
                 },
                 "failure": {
-                  "result": "Your condition is aggravated with life threatening results (%insert.docLink.Endure Injury% with #>text-keyword>2 Harm<#)."
+                  "result": "Your condition is aggravated with life threatening results (</span><span class=\"inline-doclink\" data-doc-name=\"Endure Injury\">Endure Injury</span><span class=\"inline-text\"> with </span><span class=\"inline-emphasis\">2 Harm</span><span class=\"inline-text\">)."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -9037,18 +9065,18 @@ const ITEM_DATA: {
               "rules": {
                 "trigger": "In the first game session and whenever you have been using, or have the opportunity to use,",
                 "outro": "%insert.rollPrompt%.",
-                "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
+                "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you &ndash; like a relationship &ndash; while under the influence."
               },
               "results": {
                 "completeSuccess": {
                   "result": "You are in control of the urge, for now."
                 },
                 "partialSuccess": {
-                  "result": "#>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "</span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "#>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "</span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9062,7 +9090,7 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you—like a relationship—while under the influence."
+          "holdText": "The GM can spend Hold to make a Move for your addiction. For example, you cannot resist using the drug, run out of drugs, become indebted to a dangerous person, put yourself in danger while under the influence of drugs, or ruin something important to you &ndash; like a relationship &ndash; while under the influence."
         },
         "currentHold": 0
       }
@@ -9089,18 +9117,18 @@ const ITEM_DATA: {
               "rules": {
                 "trigger": "In the first game session and whenever you encounter the subject of your passions (or anything resembling it),",
                 "outro": "%insert.rollPrompt%.",
-                "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (%insert.docLink.Keep It Together% to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>&minus;1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
+                "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion &ndash; you must seek it out or reduce </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger &ndash; making you want to control and damage it (</span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\"> to resist), your longing leaves you feeble vis-à-vis the objective of this passion (</span><span class=\"inline-emphasis negative\">&minus;1</span><span class=\"inline-text\"> to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
               },
               "results": {
                 "completeSuccess": {
                   "result": "You keep your passion in check."
                 },
                 "partialSuccess": {
-                  "result": "The passion awakens within you. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "The passion awakens within you. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "You are completely in the passion's grip. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "You are completely in the passion's grip. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9114,7 +9142,7 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion—you must seek it out or reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger—making you want to control and damage it (%insert.docLink.Keep It Together% to resist), your longing leaves you feeble vis-à-vis the objective of this passion (#>text-negmod>&minus;1<# to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
+          "holdText": "The GM can spend Hold to let your passion steer your actions. For example, you yearn uncontrollably for the subject of your passion &ndash; you must seek it out or reduce </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">, your desire drags the subject of your passion into your dreams (perhaps trapping them there), your passion becomes tainted with jealousy and anger &ndash; making you want to control and damage it (</span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\"> to resist), your longing leaves you feeble vis-à-vis the objective of this passion (</span><span class=\"inline-emphasis negative\">&minus;1</span><span class=\"inline-text\"> to all rolls while sharing the same scene), or your passion can attract creatures of lust wishing to feed off it or make pacts with you."
         },
         "currentHold": 0
       }
@@ -9141,18 +9169,18 @@ const ITEM_DATA: {
               "rules": {
                 "trigger": "At the first game session and whenever you encounter something associated with your obsession,",
                 "outro": "%insert.rollPrompt%.",
-                "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
+                "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\">. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
               },
               "results": {
                 "completeSuccess": {
                   "result": "You overcome your obsession for the moment."
                 },
                 "partialSuccess": {
-                  "result": "Your obsession influences your behavior. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "Your obsession influences your behavior. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "Your obsession takes over completely. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "Your obsession takes over completely. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9166,7 +9194,7 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing #>text-keyword>Stability<#. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
+          "holdText": "The GM can spend Hold to let your obsession creep into your daily life. You may be forced to choose between either engaging in your obsession or losing </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\">. You may forget about important tasks and chores, miss meetings, or neglect your interpersonal relationships to solely focus on your obsession. Your obsession may even influence your dreams, giving you visions and revelations. In turn, the object of your obsession may also take note of you and try to stop your investigations."
         },
         "currentHold": 0
       }
@@ -9176,12 +9204,12 @@ const ITEM_DATA: {
       "type": K4ItemType.disadvantage,
       "img": "systems/kult4th/assets/icons/disadvantage/broken.svg",
       "system": {
-        "shortDesc": "Your #>text-keyword>Stability<# can never increase beyond <em>Distressed</em>.",
+        "shortDesc": "Your </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> can never increase beyond </span><span class=\"inline-emphasis italic negative\">Distressed</span><span class=\"inline-text\">.",
         "lists": {},
         "subType": K4ItemSubType.passive,
         "subItems": [],
         "rules": {
-          "intro": "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it.%insert.break%Your #>text-keyword>Stability<# can never increase beyond Distressed (6).",
+          "intro": "Some experience in your past has broken your psyche so badly you've been unable to recuperate from it.<br/><br/>Your </span><span class=\"inline-emphasis\">Stability</span><span class=\"inline-text\"> can never increase beyond Distressed (6).",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -9238,7 +9266,7 @@ const ITEM_DATA: {
                   "result": "You sleep in peace."
                 },
                 "partialSuccess": {
-                  "result": "The nightmares torment you. #>text-gmtext>The GM may make a Move<# for your nightmares. For example, you are unable to sleep at all during the night (#>text-negmod>&minus;1<# #>text-keyword>ongoing<# until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (%insert.docLink.Keep It Together%) when you wake up."
+                  "result": "The nightmares torment you. </span><span class=\"inline-emphasis gm-move\">The GM may make a Move</span><span class=\"inline-text\"> for your nightmares. For example, you are unable to sleep at all during the night (</span><span class=\"inline-emphasis negative\">&minus;1 ongoing</span><span class=\"inline-text\"> until you sleep), something follows you back into reality, the nightmares provide you insight into the Truth, or you are forced to process some trauma (</span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\">) when you wake up."
                 },
                 "failure": {
                   "result": "The nightmares take over completely. You are trapped in the dream until you find a way to wake up, and everything that happens there also directly affects your sleeping body."
@@ -9281,18 +9309,18 @@ const ITEM_DATA: {
               "rules": {
                 "trigger": "In the first session and whenever things seem in control,",
                 "outro": "%insert.rollPrompt%.",
-                "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
+                "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for &ndash; possibly returning them dead or transformed."
               },
               "results": {
                 "completeSuccess": {
                   "result": "Your experiment leaves you alone."
                 },
                 "partialSuccess": {
-                  "result": "Your experiment is close on your heels. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "Your experiment is close on your heels. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "Your experiment is in your vicinity and acts against you. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "Your experiment is in your vicinity and acts against you. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9306,7 +9334,7 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for—possibly returning them dead or transformed."
+          "holdText": "The GM can spend Hold to make Moves on the experiment's behalf. For example, the experiment gives you a lead on the Truth, sabotages or otherwise disrupts your research, demands something from you under threat of retribution, or kidnaps someone you care for &ndash; possibly returning them dead or transformed."
         },
         "currentHold": 0
       }
@@ -9340,11 +9368,11 @@ const ITEM_DATA: {
                   "result": "You repress your true identity, remaining in the present."
                 },
                 "partialSuccess": {
-                  "result": "Your true identity is catching up to you. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "Your true identity is catching up to you. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "Your true identity resurfaces. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "Your true identity resurfaces. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9392,11 +9420,11 @@ const ITEM_DATA: {
                   "result": "Your guilt isn't on your mind at the moment."
                 },
                 "partialSuccess": {
-                  "result": "You are reminded of your guilt. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "You are reminded of your guilt. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "Your guilt catches up to you. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "Your guilt catches up to you. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9444,11 +9472,11 @@ const ITEM_DATA: {
                   "result": "The entity leaves you alone."
                 },
                 "partialSuccess": {
-                  "result": "#>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "</span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "#>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "</span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9496,11 +9524,11 @@ const ITEM_DATA: {
                   "result": "You are safe, for now."
                 },
                 "partialSuccess": {
-                  "result": "You have made a mistake. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "You have made a mistake. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "All eyes are on you. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "All eyes are on you. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9510,7 +9538,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "You are wanted by the authorities—local, state, or federal—for crimes you have committed. Determine the nature of the allegations against you when you take this Disadvantage.",
+          "intro": "You are wanted by the authorities &ndash; local, state, or federal &ndash; for crimes you have committed. Determine the nature of the allegations against you when you take this Disadvantage.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -9548,11 +9576,11 @@ const ITEM_DATA: {
                   "result": "You are safe for now."
                 },
                 "partialSuccess": {
-                  "result": "Your enemies are on to you. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "Your enemies are on to you. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "Your enemies have caught up to you. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "Your enemies have caught up to you. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9562,7 +9590,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "You are hunted by a faceless enemy. Anyone you meet could be one of their minions—or even the stalker themselves. No one can be trusted. You must constantly change your address and be vigilant at all times to avoid leaving any tracks they can follow.",
+          "intro": "You are hunted by a faceless enemy. Anyone you meet could be one of their minions &ndash; or even the stalker themselves. No one can be trusted. You must constantly change your address and be vigilant at all times to avoid leaving any tracks they can follow.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -9599,10 +9627,10 @@ const ITEM_DATA: {
                   "result": "You remain in control of your vengeful nature and can act rationally."
                 },
                 "partialSuccess": {
-                  "result": "You can't focus on anything, other than the target of your vengeance. Take #>text-negmod>&minus;1<# #>text-keyword>ongoing<# until the target's involvement in the scene ends."
+                  "result": "You can't focus on anything, other than the target of your vengeance. Take </span><span class=\"inline-emphasis negative\">&minus;1 ongoing</span><span class=\"inline-text\"> until the target's involvement in the scene ends."
                 },
                 "failure": {
-                  "result": "You become obsessed and can act only to further your revenge. Doing anything else requires you roll %insert.docLink.Keep It Together%. Your obsession cannot be assuaged while the target remains in the same scene with you."
+                  "result": "You become obsessed and can act only to further your revenge. Doing anything else requires you roll </span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\">. Your obsession cannot be assuaged while the target remains in the same scene with you."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -9648,10 +9676,10 @@ const ITEM_DATA: {
                   "result": "You maintain control over your jealousy."
                 },
                 "partialSuccess": {
-                  "result": "You're afflicted by jealousy and take #>text-negmod>&minus;1<# #>text-keyword>ongoing<# for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires."
+                  "result": "You're afflicted by jealousy and take </span><span class=\"inline-emphasis negative\">&minus;1 ongoing</span><span class=\"inline-text\"> for as long as you remain in the subject's vicinity, and you do not suppress your jealous desires."
                 },
                 "failure": {
-                  "result": "Your jealousy takes hold of you. You must %insert.docLink.Keep It Together% to refrain from harming, destroying, or stealing from the subject of your jealousy."
+                  "result": "Your jealousy takes hold of you. You must </span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\"> to refrain from harming, destroying, or stealing from the subject of your jealousy."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -9698,11 +9726,11 @@ const ITEM_DATA: {
                   "result": "You've managed to keep clear of harassment."
                 },
                 "partialSuccess": {
-                  "result": "#>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "</span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "#>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "</span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9750,11 +9778,11 @@ const ITEM_DATA: {
                   "result": "All clear; your rival makes no moves against you."
                 },
                 "partialSuccess": {
-                  "result": "You've given your rival an opportunity. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "You've given your rival an opportunity. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "You've handed your rival whatever they needed to completely undermine you. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "You've handed your rival whatever they needed to completely undermine you. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9805,7 +9833,7 @@ const ITEM_DATA: {
               },
               "rules": {
                 "intro": "In addition to the standard effects,",
-                "trigger": "Whenever you %insert.docLink.See Through the Illusion% and whenever the Illusion shatters,",
+                "trigger": "Whenever you </span><span class=\"inline-doclink\" data-doc-name=\"See Through the Illusion\">See Through the Illusion</span><span class=\"inline-text\"> and whenever the Illusion shatters,",
                 "outro": "the GM may choose one option from the list below:",
                 "listRefs": [
                   "gmoptions"
@@ -9853,10 +9881,10 @@ const ITEM_DATA: {
                   "result": "You can keep your emotions in check."
                 },
                 "partialSuccess": {
-                  "result": "You become angry, confused, or frustrated. You take #>text-negmod>&minus;1<# to your next roll."
+                  "result": "You become angry, confused, or frustrated. You take </span><span class=\"inline-emphasis negative\">&minus;1</span><span class=\"inline-text\"> to your next roll."
                 },
                 "failure": {
-                  "result": "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#."
+                  "result": "You are forced to choose between taking steps to changing the person or situation to adhere to your ideology, or reduce </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -9903,11 +9931,11 @@ const ITEM_DATA: {
                   "result": "You have kept your lies tangle-free."
                 },
                 "partialSuccess": {
-                  "result": "You've told one too many lies. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "You've told one too many lies. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "Your web of lies has come completely unraveled. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "Your web of lies has come completely unraveled. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9946,20 +9974,20 @@ const ITEM_DATA: {
                 "type": K4ItemType.disadvantage
               },
               "rules": {
-                "trigger": "Whenever you consciously #>text-keyword>Harm<# someone,",
+                "trigger": "Whenever you consciously </span><span class=\"inline-emphasis\">Harm</span><span class=\"inline-text\"> someone,",
                 "outro": "%insert.rollPrompt%.",
-                "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to %insert.docLink.Keep It Together% to resist the darkness' influence."
+                "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to </span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\"> to resist the darkness' influence."
               },
               "results": {
                 "completeSuccess": {
                   "result": "You are still in control."
                 },
                 "partialSuccess": {
-                  "result": "You feed the darkness. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "You feed the darkness. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "The darkness gains power over you. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "The darkness gains power over you. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -9973,7 +10001,7 @@ const ITEM_DATA: {
           "trigger": "",
           "outro": "",
           "listRefs": [],
-          "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to %insert.docLink.Keep It Together% to resist the darkness' influence."
+          "holdText": "The GM can spend Hold to make Moves for the darkness living inside of you. For example, the darkness feeds on your life energy to sustain itself, forces you to commit murder in order to replenish its life energy, takes charge of your body and leaves you with only memory fragments of what transpired, forces you to harm someone in your vicinity, or temporarily transforms your body into something inhuman. You may have to </span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\"> to resist the darkness' influence."
         },
         "currentHold": 0
       }
@@ -10007,11 +10035,11 @@ const ITEM_DATA: {
                   "result": "You temporarily avoid the curse's influence."
                 },
                 "partialSuccess": {
-                  "result": "#>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "</span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "#>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "</span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -10059,11 +10087,11 @@ const ITEM_DATA: {
                   "result": "You are safe from your nemesis for the moment."
                 },
                 "partialSuccess": {
-                  "result": "You have been careless and your nemesis moves against you. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "You have been careless and your nemesis moves against you. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "You have compromised your position and your nemesis strikes against you in full force. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "You have compromised your position and your nemesis strikes against you in full force. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -10093,7 +10121,7 @@ const ITEM_DATA: {
             "name": "GM Options",
             "items": [
               "You mark 1 Time.",
-              "You're tortured by dreams or visions of your fate. Reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#.",
+              "You're tortured by dreams or visions of your fate. Reduce </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">.",
               "You're haunted by the entity or event that sealed your fate.",
               "Someone in your vicinity is negatively affected by your fate.",
               "Something provides you with false hope of escaping your fate."
@@ -10192,7 +10220,7 @@ const ITEM_DATA: {
                   "result": "You remain in control."
                 },
                 "partialSuccess": {
-                  "result": "You experience temporary anxiety, decreased self-confidence, or lack of will. You take #>text-negmod>&minus;1<# to your next roll.",
+                  "result": "You experience temporary anxiety, decreased self-confidence, or lack of will. You take </span><span class=\"inline-emphasis negative\">&minus;1</span><span class=\"inline-text\"> to your next roll.",
                   "effects": [{
                     "parentData": K4ActiveEffect.BuildEffectData({
                       canToggle: false,
@@ -10202,7 +10230,7 @@ const ITEM_DATA: {
                       uses: 1,
                       duration: EffectDuration.limited,
                       tooltip: "A temporary penalty to your next roll due to anxiety, decreased self-confidence, or lack of will.",
-                      from: "a roll to manage #>text-docLink>Depression<#"
+                      from: "a roll to manage </span><span class=\"inline-doclink\" data-doc-name=\"Depression\">Depression</span>"
                     }),
                     "changeData": [
                       K4ActiveEffect.BuildChangeData("ModifyRoll", {
@@ -10214,7 +10242,7 @@ const ITEM_DATA: {
                   }]
                 },
                 "failure": {
-                  "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol.",
+                  "result": "You succumb to the sense of hopelessness or blame and punish yourself; reduce </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">. Your lethargy and self-destructive urges do not go away until you numb your depression with medicine, drugs, or alcohol.",
                   "effects": [{
                     "parentData": K4ActiveEffect.BuildEffectData({}),
                     "changeData": [
@@ -10225,7 +10253,7 @@ const ITEM_DATA: {
                             type: AlertType.simple,
                             target: UserTargetRef.all,
                             header: "%insert.actor.name% Loses Stability",
-                            body: "%insert.actor.name% succumbs to depression, taking #>text-negmod>&minus;2 Stability<#.",
+                            body: "%insert.actor.name% succumbs to depression, taking </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">.",
                             logoImg: "%insert.actor.img%"
                           }
                         ],
@@ -10282,11 +10310,11 @@ const ITEM_DATA: {
                   "result": "You maintain control of your insanity."
                 },
                 "partialSuccess": {
-                  "result": "#>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "</span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "Schizophrenia overtakes you. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "Schizophrenia overtakes you. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -10334,11 +10362,11 @@ const ITEM_DATA: {
                   "result": "You blend in. Nobody is out to get you."
                 },
                 "partialSuccess": {
-                  "result": "You have been recognized. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "You have been recognized. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "Several people have recognized you. Anger and fear control their actions. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "Several people have recognized you. Anger and fear control their actions. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -10348,7 +10376,7 @@ const ITEM_DATA: {
           }
         ],
         "rules": {
-          "intro": "For some reason, you have attracted the public's disapproval—even animosity. Perhaps you've been spotlighted in the tabloids as a pedophile or murderer, falsely or otherwise.",
+          "intro": "For some reason, you have attracted the public's disapproval &ndash; even animosity. Perhaps you've been spotlighted in the tabloids as a pedophile or murderer, falsely or otherwise.",
           "trigger": "",
           "outro": "",
           "listRefs": [],
@@ -10385,10 +10413,10 @@ const ITEM_DATA: {
                   "result": "You keep your greed in check."
                 },
                 "partialSuccess": {
-                  "result": "The black void inside shrieks for more. As long as the opportunity exists and you do not take it, you suffer #>text-negmod>&minus;1<# #>text-keyword>ongoing<# to any rolls you make."
+                  "result": "The black void inside shrieks for more. As long as the opportunity exists and you do not take it, you suffer </span><span class=\"inline-emphasis negative\">&minus;1 ongoing</span><span class=\"inline-text\"> to any rolls you make."
                 },
                 "failure": {
-                  "result": "You must take advantage of every opportunity to further your wealth, or reduce #>text-negmod>&minus;2<# #>text-keyword>Stability<#."
+                  "result": "You must take advantage of every opportunity to further your wealth, or reduce </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -10435,11 +10463,11 @@ const ITEM_DATA: {
                   "result": "You resist the possession."
                 },
                 "partialSuccess": {
-                  "result": "The entity gains influence over you. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "The entity gains influence over you. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "The entity gains control over you. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "The entity gains control over you. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -10486,10 +10514,10 @@ const ITEM_DATA: {
                   "result": "You continue to suppress the memories."
                 },
                 "partialSuccess": {
-                  "result": "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must %insert.docLink.Keep It Together%."
+                  "result": "The memories partly resurface, taking the form of flashbacks and/or hallucinations. You must </span><span class=\"inline-doclink\" data-doc-name=\"Keep It Together\">Keep It Together</span><span class=\"inline-text\">."
                 },
                 "failure": {
-                  "result": "You are overwhelmed by your repressed memories, completely losing yourself to them. #>text-gmtext>The GM makes a hard Move<# and you take #>text-negmod>&minus;2<# #>text-keyword>Stability<#."
+                  "result": "You are overwhelmed by your repressed memories, completely losing yourself to them. </span><span class=\"inline-emphasis gm-move\">The GM makes a hard Move</span><span class=\"inline-text\"> and you take </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">."
                 }
               },
               "subType": K4ItemSubType.activeRolled,
@@ -10536,11 +10564,11 @@ const ITEM_DATA: {
                   "result": "For the moment, you are safe."
                 },
                 "partialSuccess": {
-                  "result": "Your former owner picks up your scent. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "Your former owner picks up your scent. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "Your owner finds you. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "Your owner finds you. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -10588,11 +10616,11 @@ const ITEM_DATA: {
                   "result": "The desire is not awakened at this moment."
                 },
                 "partialSuccess": {
-                  "result": "Someone becomes desirous of you. #>text-gmtext>The GM takes 1 Hold<#.",
+                  "result": "Someone becomes desirous of you. </span><span class=\"inline-emphasis gm-move\">The GM takes 1 Hold</span><span class=\"inline-text\">.",
                   "hold": 1
                 },
                 "failure": {
-                  "result": "A strong desire is awakened in one or several people. #>text-gmtext>The GM takes 3 Hold<#.",
+                  "result": "A strong desire is awakened in one or several people. </span><span class=\"inline-emphasis gm-move\">The GM takes 3 Hold</span><span class=\"inline-text\">.",
                   "hold": 3
                 }
               },
@@ -10772,7 +10800,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "You were subjected to medical experiments with unexpected outcomes, with or without your consent and knowledge.",
           "trigger": "",
-          "outro": "The experiments have had enduring mental and/or physical side effects. They may have shown you windows into alternate dimensions—resulting in madness. The side effects still torment you, and ridding yourself of them requires you to find the responsible parties. It's also possible your parents were the test subjects and you inherited the experimental effects, as a result.",
+          "outro": "The experiments have had enduring mental and/or physical side effects. They may have shown you windows into alternate dimensions &ndash; resulting in madness. The side effects still torment you, and ridding yourself of them requires you to find the responsible parties. It's also possible your parents were the test subjects and you inherited the experimental effects, as a result.",
           "listRefs": [
             "drives"
           ],
@@ -10874,7 +10902,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "You are afflicted by a curse, knowingly or not.",
           "trigger": "",
-          "outro": "The curse has started influencing your life and you must find a way to get rid of it.%insert.break%The curse may have been inherited or brought upon yourself through your own actions. Its effects are starting to make you lose your grasp on reality and threaten to harm those closest to you.",
+          "outro": "The curse has started influencing your life and you must find a way to get rid of it.<br/><br/>The curse may have been inherited or brought upon yourself through your own actions. Its effects are starting to make you lose your grasp on reality and threaten to harm those closest to you.",
           "listRefs": [
             "drives"
           ],
@@ -10976,7 +11004,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "You have a history of encounters with beings from the other side.",
           "trigger": "",
-          "outro": "They could be family members or friends tracking you down post-mortem, entities discovered at haunted locations, or inhuman forces taking an interest in you. Regardless of what you do, you can't seem to escape them. Every time you think it's finally over, they reappear in your life—you are never truly free.",
+          "outro": "They could be family members or friends tracking you down post-mortem, entities discovered at haunted locations, or inhuman forces taking an interest in you. Regardless of what you do, you can't seem to escape them. Every time you think it's finally over, they reappear in your life &ndash; you are never truly free.",
           "listRefs": [
             "drives"
           ],
@@ -11002,7 +11030,7 @@ const ITEM_DATA: {
               "Confront the victim or their relatives.",
               "Punish yourself.",
               "Help other people.",
-              "Bring the other perpetrators to justice—be it of the legal or personal variety.",
+              "Bring the other perpetrators to justice &ndash; be it of the legal or personal variety.",
               "Take revenge on those who made you commit the crime."
             ]
           }
@@ -11079,7 +11107,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "You have uncovered some horrid truth, which brings reality's very nature into question.",
           "trigger": "",
-          "outro": "It might be unlocking some way to move between dimensions, exposing the mayor's true demonic visage, finding proof that history has been rewritten, or discovering that the world as we know it is actually an illusion.%insert.break%The Illusion's keepers are now after you and it is only a matter of time before they find you.",
+          "outro": "It might be unlocking some way to move between dimensions, exposing the mayor's true demonic visage, finding proof that history has been rewritten, or discovering that the world as we know it is actually an illusion.<br/><br/>The Illusion's keepers are now after you and it is only a matter of time before they find you.",
           "listRefs": [
             "drives"
           ],
@@ -11113,7 +11141,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "Your family has a well-kept secret, which has haunted you for your entire life.",
           "trigger": "",
-          "outro": "They may have been members of an obscure sect or exposed to some dreadful horror.%insert.break%You may have been initiated into this secret as a child, or only recently found out the truth as an adult.%insert.break%This secret keeps you on edge and threatens to destroy your life. You likely have to take action to save yourself and your family.",
+          "outro": "They may have been members of an obscure sect or exposed to some dreadful horror.<br/><br/>You may have been initiated into this secret as a child, or only recently found out the truth as an adult.<br/><br/>This secret keeps you on edge and threatens to destroy your life. You likely have to take action to save yourself and your family.",
           "listRefs": [
             "drives"
           ],
@@ -11146,7 +11174,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "You have been chosen to protect an important object, place, or person.",
           "trigger": "",
-          "outro": "%insert.break%This sacred duty could have been inherited, assigned to you specifically, or granted to you at your own request.%insert.break%What you are protecting may be intended for accomplishing some great task in the future, or you may be safeguarding it to ensure it doesn't fall into the wrong hands.",
+          "outro": "<br/><br/>This sacred duty could have been inherited, assigned to you specifically, or granted to you at your own request.<br/><br/>What you are protecting may be intended for accomplishing some great task in the future, or you may be safeguarding it to ensure it doesn't fall into the wrong hands.",
           "listRefs": [
             "drives"
           ],
@@ -11180,7 +11208,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "You have been chosen by a god to become its advocate or sacrificial lamb.",
           "trigger": "",
-          "outro": "The god's disciples watch over you, waiting for the day of your ascension.%insert.break%You may have grown up in their cult, or were discovered by them well into your adulthood. Whichever the case, you're sure the cult has terrible plans for you. You've tried escaping from these disciples, but they always end up finding you again.",
+          "outro": "The god's disciples watch over you, waiting for the day of your ascension.<br/><br/>You may have grown up in their cult, or were discovered by them well into your adulthood. Whichever the case, you're sure the cult has terrible plans for you. You've tried escaping from these disciples, but they always end up finding you again.",
           "listRefs": [
             "drives"
           ],
@@ -11207,25 +11235,25 @@ const ITEM_DATA: {
         "rules": {
           "intro": "",
           "trigger": "When you help another player character's Move,",
-          "outro": "explain how before their roll and #>text-keyword>roll +Attribute<#, where the %insert.docLink.Attribute% is the same as the other player is rolling.",
+          "outro": "explain how before their roll and </span><span class=\"inline-emphasis\">roll +Attribute</span><span class=\"inline-text\">, where the </span><span class=\"inline-doclink\">Attribute</span> is the same as the other player is rolling.",
           "listRefs": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
-            "result": "You may modify the subsequent roll by #>text-posmod>+2<#.",
+            "result": "You may modify the subsequent roll by </span><span class=\"inline-emphasis positive\">+2</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
-            "result": "You may modify the subsequent roll by #>text-posmod>+1<#.",
+            "result": "You may modify the subsequent roll by </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
-            "result": "Your interference has unintended consequences. #>text-gmtext>The GM makes a Move<#.",
+            "result": "Your interference has unintended consequences. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
@@ -11244,12 +11272,12 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "You become angry (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).",
-              "You become sad (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).",
-              "You become scared (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).",
-              "You become guilt-ridden (#>text-negmod>&minus;1<# #>text-keyword>Stability<#).",
-              "You become obsessed (#>text-posmod>+1<# #>text-keyword>Relation<# to whatever caused the condition).",
-              "You become distracted (#>text-negmod>&minus;2<# in situations where the condition limits you).",
+              "You become angry (</span><span class=\"inline-emphasis negative\">&minus;1 Stability</span><span class=\"inline-text\">).",
+              "You become sad (</span><span class=\"inline-emphasis negative\">&minus;1 Stability</span><span class=\"inline-text\">).",
+              "You become scared (</span><span class=\"inline-emphasis negative\">&minus;1 Stability</span><span class=\"inline-text\">).",
+              "You become guilt-ridden (</span><span class=\"inline-emphasis negative\">&minus;1 Stability</span><span class=\"inline-text\">).",
+              "You become obsessed (</span><span class=\"inline-emphasis positive\">+1 Relation</span><span class=\"inline-text\"> to whatever caused the condition).",
+              "You become distracted (</span><span class=\"inline-emphasis negative\">&minus;2</span><span class=\"inline-text\"> in situations where the condition limits you).",
               "You will be haunted by the experience at a later time."
             ]
           },
@@ -11258,8 +11286,8 @@ const ITEM_DATA: {
             "items": [
               "You cower powerless in the threat's presence.",
               "You panic with no control of your actions.",
-              "You suffer emotional trauma (#>text-negmod>&minus;2<# #>text-keyword>Stability<#).",
-              "You suffer life-changing trauma (#>text-negmod>&minus;4<# #>text-keyword>Stability<#)."
+              "You suffer emotional trauma (</span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">).",
+              "You suffer life-changing trauma (</span><span class=\"inline-emphasis negative\">&minus;4 Stability</span><span class=\"inline-text\">)."
             ]
           }
         },
@@ -11279,7 +11307,7 @@ const ITEM_DATA: {
             "hold": 0
           },
           "partialSuccess": {
-            "result": "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get #>text-negmod>&minus;1<# in situations where this condition would be a hindrance to you. Choose one:",
+            "result": "The effort to resist instills a condition, which remains with you until you have had time to recuperate. You get </span><span class=\"inline-emphasis negative\">&minus;1</span><span class=\"inline-text\"> in situations where this condition would be a hindrance to you. Choose one:",
             "listRefs": ["options"],
             "effects": [
               { // "options"[0]
@@ -11294,7 +11322,7 @@ const ITEM_DATA: {
                     type: AlertType.simple,
                     target: UserTargetRef.all,
                     header: "%insert.actor.name% Is Angry",
-                    body: "%insert.actor.name% takes #>text-negmod>&minus;1 Stability<# and gains the #>text-keyword>Angry<# Stability Condition.",
+                    body: "%insert.actor.name% takes </span><span class=\"inline-emphasis negative\">&minus;1 Stability</span><span class=\"inline-text\"> and gains the </span><span class=\"inline-emphasis\">Angry</span><span class=\"inline-text\"> Stability Condition.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
@@ -11325,7 +11353,7 @@ const ITEM_DATA: {
                     type: AlertType.simple,
                     target: UserTargetRef.all,
                     header: "%insert.actor.name% Is Saddened",
-                    body: "%insert.actor.name% takes #>text-negmod>&minus;1<# #>text-keyword>Stability<# and gains the #>text-keyword>Saddened<# Stability Condition.",
+                    body: "%insert.actor.name% takes </span><span class=\"inline-emphasis negative\">&minus;1 Stability</span><span class=\"inline-text\"> and gains the </span><span class=\"inline-emphasis\">Saddened</span><span class=\"inline-text\"> Stability Condition.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
@@ -11356,7 +11384,7 @@ const ITEM_DATA: {
                     type: AlertType.simple,
                     target: UserTargetRef.all,
                     header: "%insert.actor.name% Is Frightened",
-                    body: "%insert.actor.name% takes #>text-negmod>&minus;1<# #>text-keyword>Stability<# and gains the #>text-keyword>Scared<# Stability Condition.",
+                    body: "%insert.actor.name% takes </span><span class=\"inline-emphasis negative\">&minus;1 Stability</span><span class=\"inline-text\"> and gains the </span><span class=\"inline-emphasis\">Scared</span><span class=\"inline-text\"> Stability Condition.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
@@ -11387,7 +11415,7 @@ const ITEM_DATA: {
                     type: AlertType.simple,
                     target: UserTargetRef.all,
                     header: "%insert.actor.name% Feels Guilty",
-                    body: "%insert.actor.name% takes #>text-negmod>&minus;1<# #>text-keyword>Stability<# and gains the #>text-keyword>Guilt-Ridden<# Stability Condition.",
+                    body: "%insert.actor.name% takes </span><span class=\"inline-emphasis negative\">&minus;1 Stability</span><span class=\"inline-text\"> and gains the </span><span class=\"inline-emphasis\">Guilt-Ridden</span><span class=\"inline-text\"> Stability Condition.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
@@ -11418,7 +11446,7 @@ const ITEM_DATA: {
                     type: AlertType.simple,
                     target: UserTargetRef.all,
                     header: "%insert.actor.name% Is Obsessed",
-                    body: "%insert.actor.name% gains the #>text-keyword>Obsessed<# Stability Condition, and gains #>text-posmod>+1 Relation<# towards #>text-keyword>%insert.FLAGS.name%<#.",
+                    body: "%insert.actor.name% gains the </span><span class=\"inline-emphasis\">Obsessed</span><span class=\"inline-text\"> Stability Condition, and gains </span><span class=\"inline-emphasis positive\">+1 Relation</span><span class=\"inline-text\"> towards </span><span class=\"inline-emphasis\">%insert.FLAGS.name%</span><span class=\"inline-text\">.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("PromptForData", {
@@ -11450,7 +11478,7 @@ const ITEM_DATA: {
                     permanent: true,
                     label: "Obsessed",
                     type: K4ConditionType.stability,
-                    description: "You are paradoxically enthralled by whatever initially caused you stress (#>text-posmod>%insert.FLAGS.name%<#), now finding it attractive and compelling. You may feel compelled to seek it out or to study it intensely.",
+                    description: "You are paradoxically enthralled by whatever initially caused you stress (</span><span class=\"inline-emphasis positive\">%insert.FLAGS.name%</span><span class=\"inline-text\">), now finding it attractive and compelling. You may feel compelled to seek it out or to study it intensely.",
                     modDef: {all: -1}
                   })
                 ]
@@ -11467,14 +11495,14 @@ const ITEM_DATA: {
                     type: AlertType.simple,
                     target: UserTargetRef.all,
                     header: "%insert.actor.name% Is Distracted",
-                    body: "%insert.actor.name% gains the #>text-keyword>Distracted<# Stability Condition (#>text-negmod>&minus;2<# to all rolls when relevant).",
+                    body: "%insert.actor.name% gains the </span><span class=\"inline-emphasis\">Distracted</span><span class=\"inline-text\"> Stability Condition (</span><span class=\"inline-emphasis negative\">&minus;2</span><span class=\"inline-text\"> to all rolls when relevant).",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("CreateCondition", {
                     permanent: true,
                     label: "Distracted",
                     type: K4ConditionType.stability,
-                    description: "You are confused and sidetracked by what threatens you. You cannot stop looking at it, and are inattentive to everything else around you. You take #>text-negmod>&minus;2<# to all rolls in situations where being distracted is an obstacle.",
+                    description: "You are confused and sidetracked by what threatens you. You cannot stop looking at it, and are inattentive to everything else around you. You take </span><span class=\"inline-emphasis negative\">&minus;2</span><span class=\"inline-text\"> to all rolls in situations where being distracted is an obstacle.",
                     modDef: {all: -2}
                   })
                 ]
@@ -11492,7 +11520,7 @@ const ITEM_DATA: {
                     type: AlertType.simple,
                     target: UserTargetRef.all,
                     header: "%insert.actor.name% Will Regret This ...",
-                    body: "%insert.actor.name% will be haunted by this at a later time. #>text-gmtext>The GM gets 1 Hold.<#",
+                    body: "%insert.actor.name% will be haunted by this at a later time. </span><span class=\"inline-emphasis gm-move\">The GM gets 1 Hold.</span><span class=\"inline-text\">",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("ModifyProperty", {
@@ -11585,7 +11613,7 @@ const ITEM_DATA: {
                     type: AlertType.simple,
                     target: UserTargetRef.all,
                     header: "%insert.actor.name% Suffers Emotional Trauma",
-                    body: "%insert.actor.name% takes #>text-negmod>&minus;2<# #>text-keyword>Stability<#.",
+                    body: "%insert.actor.name% takes </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("ModifyProperty", {
@@ -11609,7 +11637,7 @@ const ITEM_DATA: {
                     type: AlertType.simple,
                     target: UserTargetRef.all,
                     header: "%insert.actor.name% Suffers Life-Changing Trauma!",
-                    body: "%insert.actor.name% takes #>text-negmod>&minus;4<# #>text-keyword>Stability<#.",
+                    body: "%insert.actor.name% takes </span><span class=\"inline-emphasis negative\">&minus;4 Stability</span><span class=\"inline-text\">.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("ModifyProperty", {
@@ -11673,7 +11701,7 @@ const ITEM_DATA: {
             "hold": 0
           },
           "failure": {
-            "result": "You may get some information anyway, but you pay a price for it. You may expose yourself to dangers or costs. #>text-gmtext>The GM makes a Move<#.",
+            "result": "You may get some information anyway, but you pay a price for it. You may expose yourself to dangers or costs. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
@@ -11723,7 +11751,7 @@ const ITEM_DATA: {
             "hold": 0
           },
           "failure": {
-            "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. #>text-gmtext>The GM makes a Move<#.",
+            "result": "Your attack doesn't go as anticipated. You might be subjected to bad luck, miss your target, or pay a high price for your assault. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
@@ -11743,25 +11771,25 @@ const ITEM_DATA: {
         "rules": {
           "intro": "",
           "trigger": "When you hinder another player character's Move,",
-          "outro": "explain how before their roll and #>text-keyword>roll +Attribute<#, where the %insert.docLink.Attribute% is the same as the other player is rolling.",
+          "outro": "explain how before their roll and </span><span class=\"inline-emphasis\">roll +Attribute</span><span class=\"inline-text\">, where the </span><span class=\"inline-doclink\">Attribute</span> is the same as the other player is rolling.",
           "listRefs": [],
           "holdText": ""
         },
         "results": {
           "completeSuccess": {
-            "result": "You may modify the subsequent roll by #>text-negmod>&minus;2<#.",
+            "result": "You may modify the subsequent roll by </span><span class=\"inline-emphasis negative\">&minus;2</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
           },
           "partialSuccess": {
-            "result": "You may modify the subsequent roll by #>text-negmod>&minus;1<#.",
+            "result": "You may modify the subsequent roll by </span><span class=\"inline-emphasis negative\">&minus;1</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
-            "result": "Your interference has unintended consequences. #>text-gmtext>The GM makes a Move<#.",
+            "result": "Your interference has unintended consequences. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
@@ -11808,7 +11836,7 @@ const ITEM_DATA: {
             "hold": 0
           },
           "failure": {
-            "result": "Your attempt has unintended repercussions. #>text-gmtext>The GM makes a Move<#.",
+            "result": "Your attempt has unintended repercussions. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
@@ -11863,7 +11891,7 @@ const ITEM_DATA: {
             "hold": 0
           },
           "failure": {
-            "result": "You accidentally reveal your own intentions to the person you're trying to read. Tell the GM/player what these intentions are. #>text-gmtext>The GM makes a Move<#.",
+            "result": "You accidentally reveal your own intentions to the person you're trying to read. Tell the GM/player what these intentions are. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
@@ -11882,8 +11910,8 @@ const ITEM_DATA: {
           "options": {
             "name": "Options",
             "items": [
-              "She's motivated to do what you ask, and recieves #>text-posmod>+1<# for her next roll, if she does it.",
-              "She's worried of the consequences if she doesn't do what you ask, and gets #>text-negmod>&minus;1<# #>text-keyword>Stability<# if she doesn't do it."
+              "She's motivated to do what you ask, and recieves </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> for her next roll, if she does it.",
+              "She's worried of the consequences if she doesn't do what you ask, and gets </span><span class=\"inline-emphasis negative\">&minus;1 Stability</span><span class=\"inline-text\"> if she doesn't do it."
             ]
           }
         },
@@ -11915,7 +11943,7 @@ const ITEM_DATA: {
             "hold": 0
           },
           "failure": {
-            "result": "The character gets #>text-posmod>+1<# on her next roll against you. #>text-gmtext>The GM makes a Move<#.",
+            "result": "The character gets </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> on her next roll against you. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
@@ -11947,13 +11975,13 @@ const ITEM_DATA: {
             "hold": 0
           },
           "partialSuccess": {
-            "result": "You do it, but hesitate, are delayed, or must deal with a complication—the GM reveals an unexpected outcome, a high price, or a difficult choice.",
+            "result": "You do it, but hesitate, are delayed, or must deal with a complication &ndash; the GM reveals an unexpected outcome, a high price, or a difficult choice.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
-            "result": "There are serious consequences, you make a mistake, or you're exposed to the danger. #>text-gmtext>The GM makes a Move<#.",
+            "result": "There are serious consequences, you make a mistake, or you're exposed to the danger. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
@@ -11993,7 +12021,7 @@ const ITEM_DATA: {
         },
         "results": {
           "completeSuccess": {
-            "result": "Ask two questions from the list below. When you act on these answers, gain #>text-posmod>+1<# to your rolls.",
+            "result": "Ask two questions from the list below. When you act on these answers, gain </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> to your rolls.",
             "listRefs": [
               "questions"
             ],
@@ -12009,9 +12037,9 @@ const ITEM_DATA: {
                 icon: "systems/kult4th/assets/icons/move/observe-a-situation.svg",
                 tooltip: [
                   "<h2>Acting on Observations</h2>",
-                  "<p>Applies to any rolls made while acting on the GM's answers.</p>",
+                  "<p>Applies to any rolls made while acting on the GM's answers.</span>",
                 ].join(""),
-                from: "an #>text-docLink>Observe a Situation<# roll"
+                from: "an </span><span class=\"inline-doclink\" data-doc-name=\"Observe a Situation\">Observe a Situation</span><span class=\"inline-text\"> roll"
               }),
               "changeData": [
                 K4ActiveEffect.BuildChangeData("ModifyRoll", {
@@ -12025,7 +12053,7 @@ const ITEM_DATA: {
             "hold": 0
           },
           "partialSuccess": {
-            "result": "Ask one question from the list below. When you act on the answer, gain #>text-posmod>+1<# to your rolls.",
+            "result": "Ask one question from the list below. When you act on the answer, gain </span><span class=\"inline-emphasis positive\">+1</span><span class=\"inline-text\"> to your rolls.",
             "listRefs": [
               "questions"
             ],
@@ -12041,9 +12069,9 @@ const ITEM_DATA: {
                 icon: "systems/kult4th/assets/icons/move/observe-a-situation.svg",
                 tooltip: [
                   "<h2>Acting on Observations</h2>",
-                  "<p>Applies to any rolls made while acting on the GM's answers.</p>",
+                  "<p>Applies to any rolls made while acting on the GM's answers.</span>",
                 ].join(""),
-                from: "an #>text-docLink>Observe a Situation<# roll"
+                from: "an </span><span class=\"inline-doclink\" data-doc-name=\"Observe a Situation\">Observe a Situation</span><span class=\"inline-text\"> roll"
               }),
               "changeData": [
                 K4ActiveEffect.BuildChangeData("ModifyRoll", {
@@ -12057,7 +12085,7 @@ const ITEM_DATA: {
             "hold": 0
           },
           "failure": {
-            "result": "Ask one question from the list below, but you get no bonus for it and miss something, attract unwanted attention or expose yourself to danger. #>text-gmtext>The GM makes a Move<#.",
+            "result": "Ask one question from the list below, but you get no bonus for it and miss something, attract unwanted attention or expose yourself to danger. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
             "listRefs": [
               "questions"
             ],
@@ -12078,8 +12106,8 @@ const ITEM_DATA: {
           "options": {
             "name": "Consequences",
             "items": [
-              "...are knocked out (the GM may also choose to inflict a #>text-keyword>Serious Wound<#),",
-              "...receive a #>text-keyword>Critical Wound<#, but may continue to act (if you already have a #>text-keyword>Critical Wound<#, you may not choose this option again), or",
+              "...are knocked out (the GM may also choose to inflict a </span><span class=\"inline-emphasis\">Serious Wound</span><span class=\"inline-text\">),",
+              "...receive a </span><span class=\"inline-emphasis\">Critical Wound</span><span class=\"inline-text\">, but may continue to act (if you already have a </span><span class=\"inline-emphasis\">Critical Wound</span><span class=\"inline-text\">, you may not choose this option again), or",
               "...die."
             ]
           },
@@ -12088,7 +12116,7 @@ const ITEM_DATA: {
             "items": [
               "The injury throws you off balance.",
               "You lose something.",
-              "You receive a #>text-keyword>Serious Wound<#."
+              "You receive a </span><span class=\"inline-emphasis\">Serious Wound</span><span class=\"inline-text\">."
             ]
           }
         },
@@ -12096,7 +12124,7 @@ const ITEM_DATA: {
         "rules": {
           "intro": "",
           "trigger": "When enduring an injury,",
-          "outro": "%insert.rollPrompt% #>text-posmod>+Armor<# #>text-negmod>&minus;Harm<#.",
+          "outro": "%insert.rollPrompt% </span><span class=\"inline-emphasis positive\">+Armor</span> <span class=\"inline-emphasis negative\">&minus;Harm</span><span class=\"inline-text\">.",
           "listRefs": [],
           "effects": [
             {
@@ -12138,7 +12166,7 @@ const ITEM_DATA: {
                     filter: "gm",
                     permanent: true,
                     title: "Assign Serious Wound",
-                    bodyText: "Provide a name for the #>text-keyword>Serious Wound<#.",
+                    bodyText: "Provide a name for the </span><span class=\"inline-emphasis\">Serious Wound</span><span class=\"inline-text\">.",
                     subText: "(It should fit the sentence '&lt;name&gt; suffers a &lt;wound&gt;')",
                     target: "FLAGS.woundName",
                     input: PromptInputType.text
@@ -12147,7 +12175,7 @@ const ITEM_DATA: {
                     type: AlertType.simple,
                     target: UserTargetRef.all,
                     header: "%insert.actor.name% is Seriously Wounded",
-                    body: "%insert.actor.name% suffers a #>text-keyword>%insert.FLAGS.woundName%<#.",
+                    body: "%insert.actor.name% suffers a </span><span class=\"inline-emphasis\">%insert.FLAGS.woundName%</span><span class=\"inline-text\">.",
                     logoImg: "%insert.actor.img%"
                   }),
                   K4ActiveEffect.BuildChangeData("CreateWound", {
@@ -12208,7 +12236,7 @@ const ITEM_DATA: {
             "hold": 0
           },
           "failure": {
-            "result": "The GM explains what you see. #>text-gmtext>The GM makes a Move<#.",
+            "result": "The GM explains what you see. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
@@ -12240,13 +12268,13 @@ const ITEM_DATA: {
             "hold": 0
           },
           "partialSuccess": {
-            "result": "You avoid the worst of it, but the GM decides if you end up in a bad spot, lose something, or partially sustain #>text-keyword>Harm<#.",
+            "result": "You avoid the worst of it, but the GM decides if you end up in a bad spot, lose something, or partially sustain </span><span class=\"inline-emphasis\">Harm</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
           },
           "failure": {
-            "result": "You were too slow to react or you made a bad judgment call. Perhaps you didn't avoid any #>text-keyword>Harm<# at all, or you ended up in an even worse spot than before. #>text-gmtext>The GM makes a Move<#.",
+            "result": "You were too slow to react or you made a bad judgment call. Perhaps you didn't avoid any </span><span class=\"inline-emphasis\">Harm</span><span class=\"inline-text\"> at all, or you ended up in an even worse spot than before. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.",
             "listRefs": [],
             "edges": 0,
             "hold": 0
@@ -12260,3 +12288,4 @@ const ITEM_DATA: {
 };
 
 export default ITEM_DATA;
+export { cleanText, cleanupItemEntry };

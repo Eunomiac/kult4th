@@ -104,7 +104,7 @@ interface ChargenContext {
 export interface ChargenSummary {
   name: string,
   img: string,
-  archetype: K4Archetype|"",
+  archetype: K4Archetype | "",
   attributes: Partial<Record<K4Attribute, number>>,
   advantages: K4Item[],
   disadvantages: K4Item[],
@@ -133,6 +133,7 @@ const MAX_X = TOTAL_WIDTH / 2;
  */
 class K4CharGen {
 
+  // #region PRECOMPILED DATA ~
   static _ValidArchetypes: Maybe<K4Archetype[]>;
   static get ValidArchetypes() {
     return this._ValidArchetypes ?? (this._ValidArchetypes = Object.entries(Archetypes)
@@ -230,7 +231,9 @@ class K4CharGen {
     this._CarouselRadius = radius;
     return this._CarouselRadius;
   }
+  // #endregion
 
+  // #region INITIALIZATION ~
   static async PostInitialize() {
     if (getUser().isGM) {return;}
     // Preload getters
@@ -264,7 +267,9 @@ class K4CharGen {
 
     await userPC.preInitializeCharGen();
   }
+  // #endregion
 
+  // #region CONSTRUCTOR ~
   // archetypeData: Map<K4Archetype, Archetype.Data> = new Map<K4Archetype, Archetype.Data>();
   _user: User;
   _userPC: K4Actor<K4ActorType.pc>;
@@ -273,6 +278,9 @@ class K4CharGen {
     this._userPC = userPC;
   }
 
+  // #endregion
+
+  // #region GETTERS ~
   get actor(): K4Actor<K4ActorType.pc> {
     return this._userPC;
   }
@@ -280,9 +288,9 @@ class K4CharGen {
   get user(): User {
     return this._user;
   }
+  // #endregion
 
-
-
+  // #region UTILITY ~
   wrapIndex(index: number) {
     return ((index % K4CharGen.NumValidArchetypes) + K4CharGen.NumValidArchetypes) % K4CharGen.NumValidArchetypes;
   }
@@ -294,22 +302,6 @@ class K4CharGen {
   wrapXPos(x: number) {
     return U.gsap.utils.wrap(MIN_X, MAX_X)(x);
   }
-
-  // function revealAndReturn(elem$: JQuery) {
-  //   elem$.css({
-  //     opacity: 0,
-  //     visibility: "visible"
-  //   });
-  //   return elem$;
-  // }
-
-  // function hideAndReturn(elem$: JQuery) {
-  //   elem$.css({
-  //     opacity: 0,
-  //     visibility: "hidden"
-  //   });
-  //   return elem$;
-  // }
 
   getYRotFromIndex(index: number) {
     const boundIndex = this.wrapIndex(index);
@@ -383,6 +375,7 @@ class K4CharGen {
     const archetype = K4CharGen.ValidArchetypes[index];
     return this.getElementFromArchetype(context$, archetype);
   }
+  // #endregion
 
   precomputeTraitData(traitName: string, traitType: K4TraitType, archetype: K4Archetype | false): Archetype.TraitData {
     // kLog.log("getTraitData", traitName, traitType, archetype);
@@ -546,7 +539,6 @@ class K4CharGen {
     return K4Attribute.zero;
   }
 
-
   // Precompute archetype data for all valid archetypes
   archetypeDataMap: Map<K4Archetype, Partial<ValOf<typeof Archetypes[keyof typeof Archetypes]>>> = new Map<K4Archetype, Partial<ValOf<typeof Archetypes[keyof typeof Archetypes]>>>();
 
@@ -578,8 +570,6 @@ class K4CharGen {
     }
   }
 
-
-
   /**
    * Get the archetype carousel data.
    * This function uses precomputed values for efficiency.
@@ -602,11 +592,11 @@ class K4CharGen {
           const advSelected = advTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
           let selStringAdvantage: Maybe<string> = undefined;
           if (advSelected.length > 3) {
-            selStringAdvantage = "<span class='neon-glow-animated-red'>Too Many Advantages!</span> <br> (max: #>text-keyword>THREE<#)";
+            selStringAdvantage = "<span class='neon-glow-animated-red'>Too Many Advantages!</span> <br> (max: </span><span class=\"inline-emphasis\">THREE</span><span class=\"inline-text\">)";
           } else if (advSelected.length === 0) {
-            selStringAdvantage = "Choose #>text-keyword>THREE<# from the list below:";
+            selStringAdvantage = "Choose </span><span class=\"inline-emphasis\">THREE</span><span class=\"inline-text\"> from the list below:";
           } else if (advSelected.length < 3) {
-            selStringAdvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(3 - advSelected.length))}<# more:`;
+            selStringAdvantage = `Choose </span><span class="inline-emphasis">${U.uCase(U.verbalizeNum(3 - advSelected.length))}</span><span class="inline-text"> more:`;
           }
 
           const disTraitData = this.getArchetypeTraitData(K4ItemType.disadvantage, archetype) as Record<string, Archetype.TraitData>;
@@ -614,11 +604,11 @@ class K4CharGen {
           const disSelected = disTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
           let selStringDisadvantage: Maybe<string> = undefined;
           if (disSelected.length > 2) {
-            selStringDisadvantage = "<span class='neon-glow-animated-red'>Too Many Disadvantages!</span> <br> (max: #>text-keyword>TWO<#)";
+            selStringDisadvantage = "<span class='neon-glow-animated-red'>Too Many Disadvantages!</span> <br> (max: </span><span class=\"inline-emphasis\">TWO</span><span class=\"inline-text\">)";
           } else if (disSelected.length === 0) {
-            selStringDisadvantage = "Choose #>text-keyword>TWO<#. Suggestions:";
+            selStringDisadvantage = "Choose </span><span class=\"inline-emphasis\">TWO</span><span class=\"inline-text\">. Suggestions:";
           } else if (disSelected.length < 2) {
-            selStringDisadvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(2 - disSelected.length))}<# more. Suggestions:`;
+            selStringDisadvantage = `Choose </span><span class="inline-emphasis">${U.uCase(U.verbalizeNum(2 - disSelected.length))}</span><span class="inline-text"> more. Suggestions:`;
           }
 
           const darkSecretTraitData = this.getArchetypeTraitData(K4ItemType.darksecret, archetype) as Record<string, Archetype.TraitData>;
@@ -626,9 +616,9 @@ class K4CharGen {
           const darkSecretSelected = darkSecretTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
           let selStringDarkSecret: Maybe<string> = undefined;
           if (darkSecretSelected.length === 0) {
-            selStringDarkSecret = "Choose #>text-keyword>AT LEAST ONE<#. Suggestions:";
+            selStringDarkSecret = "Choose </span><span class=\"inline-emphasis\">AT LEAST ONE</span><span class=\"inline-text\">. Suggestions:";
           } else {
-            selStringDarkSecret = "(You #>text-keyword>MAY<# choose more.)";
+            selStringDarkSecret = "(You </span><span class=\"inline-emphasis\">MAY</span><span class=\"inline-text\"> choose more.)";
           }
           return [
             archetype,
@@ -657,124 +647,8 @@ class K4CharGen {
     );
   }
 
-  // getArchetypeCarouselData(): Archetype.Data {
-  //   // First filter Archetypes for those tiers allowed in settings
-  //   /**
-  //    * @todo Implement settings to allow multiple Archetype Tiers
-  //    * (currently defaulting to "aware" only)
-  //    */
-  //   return Object.fromEntries(
-  //     (Object.entries(Archetypes) as Array<Tuple<K4Archetype, ValOf<typeof Archetypes>>>)
-  //       .filter(([_archetype, {tier}]) => VALID_ARCHETYPE_TIERS.includes(tier))
-  //       // Map data to match Archetype.Data
-  //       .map(([archetype, data]: [K4Archetype, ValOf<typeof Archetypes>]) => {
-  //         const advTraitData = this.getArchetypeTraitData(K4ItemType.advantage, archetype) as Partial<Record<K4Attribute, Record<string, Archetype.TraitData>>>;
-  //         const advTraitDataArray = Object.values(advTraitData).flatMap(Object.values) as Archetype.TraitData[];
-  //         const advSelected = advTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
-  //         let selStringAdvantage: Maybe<string> = undefined;
-  //         if (advSelected.length > 3) {
-  //           selStringAdvantage = "<span class='neon-glow-animated-red'>Too Many Advantages!</span> <br> (max: #>text-keyword>THREE<#)";
-  //         } else if (advSelected.length === 0) {
-  //           selStringAdvantage = "Choose #>text-keyword>THREE<# from the list below:";
-  //         } else if (advSelected.length < 3) {
-  //           selStringAdvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(3 - advSelected.length))}<# more:`;
-  //         }
-
-  //         const disTraitData = this.getArchetypeTraitData(K4ItemType.disadvantage, archetype) as Record<string, Archetype.TraitData>;
-  //         const disTraitDataArray: Archetype.TraitData[] = Object.values(disTraitData);
-  //         const disSelected = disTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
-  //         let selStringDisadvantage: Maybe<string> = undefined;
-  //         if (disSelected.length > 2) {
-  //           selStringDisadvantage = "<span class='neon-glow-animated-red'>Too Many Disadvantages!</span> <br> (max: #>text-keyword>TWO<#)";
-  //         } else if (disSelected.length === 0) {
-  //           selStringDisadvantage = "Choose #>text-keyword>TWO<#. Suggestions:";
-  //         } else if (disSelected.length < 2) {
-  //           selStringDisadvantage = `Choose #>text-keyword>${U.uCase(U.verbalizeNum(2 - disSelected.length))}<# more. Suggestions:`;
-  //         }
-
-  //         const darkSecretTraitData = this.getArchetypeTraitData(K4ItemType.darksecret, archetype) as Record<string, Archetype.TraitData>;
-  //         const darkSecretTraitDataArray: Archetype.TraitData[] = Object.values(darkSecretTraitData);
-  //         const darkSecretSelected = darkSecretTraitDataArray.filter((traitData) => traitData.isMandatory || traitData.isSelected);
-  //         let selStringDarkSecret: Maybe<string> = undefined;
-  //         if (darkSecretSelected.length === 0) {
-  //           selStringDarkSecret = "Choose #>text-keyword>AT LEAST ONE<#. Suggestions:";
-  //         } else {
-  //           selStringDarkSecret = "(You #>text-keyword>MAY<# choose more.)";
-  //         }
-  //         return [
-  //           archetype,
-  //           {
-  //             label: data.label,
-  //             tier: data.tier,
-  //             img: `systems/kult4th/assets/archetypes/${archetype}.png`,
-  //             [K4ItemType.advantage]: this.getArchetypeTraitData(K4ItemType.advantage, archetype),
-  //             selStringAdvantage,
-  //             [K4ItemType.disadvantage]: this.getArchetypeTraitData(K4ItemType.disadvantage, archetype),
-  //             selStringDisadvantage,
-  //             [K4ItemType.darksecret]: this.getArchetypeTraitData(K4ItemType.darksecret, archetype),
-  //             selStringDarkSecret,
-  //             description: data.description,
-  //             occupation: this.getStringData("occupation", archetype),
-  //             looks: {
-  //               clothes: this.getStringData("looks.clothes", archetype),
-  //               face: this.getStringData("looks.face", archetype),
-  //               eyes: this.getStringData("looks.eyes", archetype),
-  //               body: this.getStringData("looks.body", archetype)
-  //             },
-  //             isSelected: this.actor.archetype === archetype
-  //           }
-  //         ];
-  //       })
-  //   );
-  // }
-
   chargenContext(): ChargenContext {
 
-    /**
-     * flagSpace: {
-     *   [arch: Archetype]: {
-     *     isSelected: boolean,
-     *     K4ItemType.advantage: Record<advantageName, boolean>,
-     *     K4ItemType.disadvantage: Record<advantageName, boolean>,
-     *     occupation: string,
-     *     looks: {
-     *       clothes: string,
-     *       face: string,
-     *       eyes: string,
-     *       body: string
-     *     }
-     *   },
-     *   locked: {
-     *     K4ItemType.advantage: Record<advantageName, boolean> // (obviously will only appear if Archetype doesn't filter it out)
-     *   }
-     * }
-     *
-     *
-     * (CONTEXT) {
-     *   selectedArchetype: Archetype,
-     *   K4ItemType.advantage: {
-     *     K4Attribute.violence: {
-     *       [advantageName]: {
-     *          name: string,
-     *          img: string,
-     *          tooltip: string,
-     *          isSelected: boolean,
-     *          isSetByLock: boolean
-     *       }
-     *     }
-     *   },
-     *
-     *
-     *   occupation: {
-     *     value: string,
-     *     examples: string[],
-     *     isValueAnExample: boolean,
-     *     isSetByLock: boolean
-     *   }
-     *
-     *
-     * }
-     */
     const selectedArchetype = this.actor.archetype;
 
     /** == COMPILE DATA FROM OTHER PLAYERS == **/
@@ -801,15 +675,6 @@ class K4CharGen {
       selectedArchetype,
       attributes: this.actor.attributeData,
       traitNotes: this.traitNotes,
-      // archetypeAdvantages: selectedArchetype
-      //   ? this.getArchetypeTraitData(K4ItemType.advantage, selectedArchetype)
-      //   : undefined,
-      // archetypeDisadvantages: (selectedArchetype
-      //   ? this.getArchetypeTraitData(K4ItemType.disadvantage, selectedArchetype)
-      //   : undefined) as Maybe<Record<string, Archetype.TraitData>>,
-      // archetypeDarkSecrets: (selectedArchetype
-      //   ? this.getArchetypeTraitData(K4ItemType.darksecret, selectedArchetype)
-      //   : undefined) as Maybe<Record<string, Archetype.TraitData>>,
       description: this.getStringData("description"),
       occupation: this.getStringData("occupation"),
       looks: {
@@ -825,15 +690,15 @@ class K4CharGen {
   get chargenSummary(): ChargenSummary {
 
     return {
-        name: this.actor.name,
-        img: this.actor.img,
-        archetype: this.actor.archetype ?? "",
-        attributes: this.actor.attributes,
-        ...this.actor.getCharGenSelected(),
-        description: this.actor.system.description,
-        occupation: this.actor.system.occupation,
-        looks: this.actor.system.looks,
-        traitNotes: this.actor.system.charGen.traitNotes
+      name: this.actor.name,
+      img: this.actor.img,
+      archetype: this.actor.archetype ?? "",
+      attributes: this.actor.attributes,
+      ...this.getCharGenSelected(),
+      description: this.actor.system.description,
+      occupation: this.actor.system.occupation,
+      looks: this.actor.system.looks,
+      traitNotes: this.actor.system.charGen.traitNotes
     };
   }
 
@@ -852,7 +717,7 @@ class K4CharGen {
       [K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.darksecret].forEach((traitType) => {
         const traitData = selArchetypeData[traitType as K4TraitType];
         const traitKeys = Object.keys(traitData);
-        const selectedTraits = traitKeys.filter((key) => this.actor.isCharGenSelected(key, selectedArchetype));
+        const selectedTraits = traitKeys.filter((key) => this.isCharGenSelected(key, selectedArchetype));
         selTraits.push(...selectedTraits.map((key) => ({
           traitType: traitType as K4TraitType,
           traitName: key
@@ -871,22 +736,6 @@ class K4CharGen {
     return traitNotes;
   }
 
-  // _minDistanceStyles: Maybe<Record<Key, string | number>> = undefined;
-  // _maxDistanceStyles: Maybe<Record<Key, string | number>> = undefined;
-
-  // get minDistanceStyles(): Record<Key, string | number> {
-  //   if (!this._minDistanceStyles) {
-  //     this._minDistanceStyles = this.getDistanceStyles(0, 0);
-  //   }
-  //   return this._minDistanceStyles;
-  // }
-  // get maxDistanceStyles(): Record<Key, string | number> {
-  //   if (!this._maxDistanceStyles) {
-  //     this._maxDistanceStyles = this.getDistanceStyles(0, Math.floor(K4CharGen.NumValidArchetypes / 2));
-  //   }
-  //   return this._maxDistanceStyles;
-  // }
-
   _element: Maybe<JQuery>;
   get element(): JQuery {
     if (!this._element || this._element.length === 0) {
@@ -896,6 +745,165 @@ class K4CharGen {
       throw new Error("Cannot find element for K4CharGen. Chargen overlay not found.");
     }
     return this._element;
+  }
+
+  getCharGenSelected(archetype?: K4Archetype) {
+    const pcData = this.actor.system;
+    archetype = (archetype ?? pcData.archetype) || K4Archetype.academic;
+    let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
+
+    selAdvantages = selAdvantages.map((adv) => adv.replace(/^!?/, ""));
+    selDisadvantages = selDisadvantages.map((dis) => dis.replace(/^!?/, ""));
+    selDarkSecrets = selDarkSecrets.map((ds) => ds.replace(/^!?/, ""));
+
+    const archetypeData = {...Archetypes[archetype]};
+    const archAdvantages = archetypeData[K4ItemType.advantage] as unknown as string[];
+
+    const archDisadvantages = archetypeData[K4ItemType.disadvantage] as unknown as string[];
+    const mandatoryArchDisadvantages = archDisadvantages
+      .filter((dis) => dis.startsWith("!"))
+      .map((dis) => dis.replace(/^!?/, ""));
+    const archDarkSecrets = archetypeData[K4ItemType.darksecret] as unknown as string[];
+
+    selAdvantages = selAdvantages.filter((adv) => archAdvantages.includes(adv));
+    selDisadvantages = U.unique([
+      ...mandatoryArchDisadvantages,
+      ...selDisadvantages.filter((dis) => archDisadvantages.includes(dis))
+    ]);
+    selDarkSecrets = selDarkSecrets.filter((ds) => archDarkSecrets.includes(ds));
+
+    const allAdvantages = selAdvantages
+      .map((adv) => adv.replace(/^!?/, ""))
+      .map((adv) => (getGame().items as Collection<K4Item<K4ItemType.advantage>>).getName(adv)!);
+    const allDisadvantages = U.unique([
+      ...selDisadvantages,
+      ...extraDisadvantages
+    ])
+      .map((dis) => dis.replace(/^!?/, ""))
+      .map((dis) => (getGame().items as Collection<K4Item<K4ItemType.disadvantage>>).getName(dis)!);
+    const allDarkSecrets = U.unique([
+      ...selDarkSecrets,
+      ...extraDarkSecrets
+    ])
+      .map((ds) => ds.replace(/^!?/, ""))
+      .map((ds) => (getGame().items as Collection<K4Item<K4ItemType.darksecret>>).getName(ds)!);
+
+    return {
+      advantages: allAdvantages,
+      disadvantages: allDisadvantages,
+      darkSecrets: allDarkSecrets
+    }
+  }
+  isCharGenSelected(traitName: string, archetype?: K4Archetype) {
+    const pcData = this.actor.system;
+    let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
+    selAdvantages = selAdvantages.map((adv) => adv.replace(/^!?/, ""));
+    selDisadvantages = selDisadvantages.map((dis) => dis.replace(/^!?/, ""));
+    selDarkSecrets = selDarkSecrets.map((ds) => ds.replace(/^!?/, ""));
+    traitName = traitName.replace(/^!?/, "");
+    if (archetype) {
+      const archetypeData = {...Archetypes[archetype]};
+      const archAdvantages = archetypeData[K4ItemType.advantage] as unknown as string[];
+      const archDisadvantages = archetypeData[K4ItemType.disadvantage] as unknown as string[];
+      const archDarkSecrets = archetypeData[K4ItemType.darksecret] as unknown as string[];
+      selAdvantages = selAdvantages.filter((adv) => archAdvantages.includes(adv));
+      selDisadvantages = selDisadvantages.filter((dis) => archDisadvantages.includes(dis));
+      selDarkSecrets = selDarkSecrets.filter((ds) => archDarkSecrets.includes(ds));
+    }
+    return [
+      ...selAdvantages,
+      ...selDisadvantages,
+      ...selDarkSecrets,
+      ...extraDisadvantages,
+      ...extraDarkSecrets
+    ].includes(traitName);
+  }
+  async charGenSelect(traitName: string, isArchetype = true, isSilent = false) {
+    const pcData = this.actor.system;
+    let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
+    const item = getGame().items.getName(traitName) as Maybe<K4Item>;
+    if (!item) { return; }
+    switch (item.type) {
+      case K4ItemType.advantage: {
+        if (selAdvantages.includes(traitName)) { break; }
+        selAdvantages = U.unique([...selAdvantages, traitName]);
+        await this.actor.update({"system.charGen.selAdvantages": selAdvantages}, {render: false});
+        if (!isSilent) {
+          void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user.id, this.actor.id, K4ItemType.advantage, traitName, true, true);
+          await this.reRenderTraitPanels();
+        }
+        break;
+      }
+      case K4ItemType.disadvantage: {
+        if (isArchetype) {
+          if (selDisadvantages.includes(traitName)) { break; }
+          selDisadvantages = U.unique([...selDisadvantages, traitName]);
+          await this.actor.update({"system.charGen.selDisadvantages": selDisadvantages}, {render: false});
+          if (!isSilent) {
+            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user.id, this.actor.id, K4ItemType.disadvantage, traitName, true, true);
+            await this.reRenderTraitPanels();
+          }
+        } else {
+          if (extraDisadvantages.includes(traitName)) { break; }
+          extraDisadvantages = U.unique([...extraDisadvantages, traitName]);
+          await this.actor.update({"system.charGen.extraDisadvantages": extraDisadvantages}, {render: false});
+          if (!isSilent) {
+            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user.id, this.actor.id, K4ItemType.disadvantage, traitName, true, false);
+            await this.reRenderTraitPanels();
+          }
+        }
+        break;
+      }
+      case K4ItemType.darksecret: {
+        if (isArchetype) {
+          if (selDarkSecrets.includes(traitName)) { break; }
+          selDarkSecrets = U.unique([...selDarkSecrets, traitName]);
+          await this.actor.update({"system.charGen.selDarkSecrets": selDarkSecrets}, {render: false});
+          if (!isSilent) {
+            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user.id, this.actor.id, K4ItemType.disadvantage, traitName, true, true);
+            await this.reRenderTraitPanels();
+          }
+        } else {
+          if (extraDarkSecrets.includes(traitName)) { break; }
+          extraDarkSecrets = U.unique([...extraDarkSecrets, traitName]);
+          await this.actor.update({"system.charGen.extraDarkSecrets": extraDarkSecrets}, {render: false});
+          if (!isSilent) {
+            void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user.id, this.actor.id, K4ItemType.disadvantage, traitName, true, false);
+            await this.reRenderTraitPanels();
+          }
+        }
+        break;
+      }
+    }
+  }
+
+  async charGenDeselect(traitName: string) {
+    const pcData = this.actor.system;
+    const {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
+    if (selAdvantages.includes(traitName)) {
+      U.pullElement(selAdvantages, traitName);
+      void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user.id, this.actor.id, K4ItemType.advantage, traitName, false);
+      await this.actor.update({"system.charGen.selAdvantages": selAdvantages}, {render: false});
+      await this.reRenderTraitPanels();
+    } else if ([...selDisadvantages, ...extraDisadvantages].includes(traitName)) {
+      U.pullElement(selDisadvantages, traitName);
+      U.pullElement(extraDisadvantages, traitName);
+      void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user.id, this.actor.id, K4ItemType.disadvantage, traitName, false);
+      await this.actor.update({
+        "system.charGen.selDisadvantages": selDisadvantages,
+        "system.charGen.extraDisadvantages": extraDisadvantages
+      }, {render: false});
+      await this.reRenderTraitPanels();
+    } else if ([...selDarkSecrets, ...extraDarkSecrets].includes(traitName)) {
+      U.pullElement(selDarkSecrets, traitName);
+      U.pullElement(extraDarkSecrets, traitName);
+      void K4Socket.Call("CharChange_Trait", UserTargetRef.other, this.user.id, this.actor.id, K4ItemType.darksecret, traitName, false);
+      await this.actor.update({
+        "system.charGen.selDarkSecrets": selDarkSecrets,
+        "system.charGen.extraDarkSecrets": extraDarkSecrets
+      }, {render: false});
+      await this.reRenderTraitPanels();
+    }
   }
 
   // For immediate user feedback, fade in the bg container and the sheet immediately.
@@ -1151,7 +1159,7 @@ class K4CharGen {
   // }
 
   #getTimeline_archetypeStyle(archetype$: JQuery): gsap.core.Timeline {
-  // #getTimeline_archetypeStyle(archetype$: JQuery): Promise<{ timeline: gsap.core.Timeline }> {
+    // #getTimeline_archetypeStyle(archetype$: JQuery): Promise<{ timeline: gsap.core.Timeline }> {
     if (archetype$.data("archetypeStyleTimeline")) {
       // return Promise.resolve({timeline: archetype$.data("archetypeStyleTimeline")});
       return archetype$.data("archetypeStyleTimeline");
@@ -1208,16 +1216,16 @@ class K4CharGen {
     // };
 
     // return new Promise<{ timeline: gsap.core.Timeline }>((resolve) => {
-      const archetypeGreyscaleImg$ = archetype$.find(".archetype-carousel-img.greyscale");
+    const archetypeGreyscaleImg$ = archetype$.find(".archetype-carousel-img.greyscale");
 
-      const archetypePanels$ = archetype$.closest(".pc-initialization").find(`.archetype-panels[data-archetype="${archetype}"]`);
-      const archetypeNamePanel$ = archetypePanels$.find(".archetype-panel-name");
-      const archetypeThe$ = archetypeNamePanel$.find(".archetype-carousel-the");
-      const archetypeName$ = archetypeNamePanel$.find(".archetype-carousel-name");
-      const archetypeDescription$ = archetypePanels$.find(".archetype-panel-description");
-      const archetypeAdvantages$ = archetypePanels$.find(".archetype-panel-advantages");
-      const archetypeDisadvantages$ = archetypePanels$.find(".archetype-panel-disadvantages");
-      const archetypeDarkSecrets$ = archetypePanels$.find(".archetype-panel-darksecrets");
+    const archetypePanels$ = archetype$.closest(".pc-initialization").find(`.archetype-panels[data-archetype="${archetype}"]`);
+    const archetypeNamePanel$ = archetypePanels$.find(".archetype-panel-name");
+    const archetypeThe$ = archetypeNamePanel$.find(".archetype-carousel-the");
+    const archetypeName$ = archetypeNamePanel$.find(".archetype-carousel-name");
+    const archetypeDescription$ = archetypePanels$.find(".archetype-panel-description");
+    const archetypeAdvantages$ = archetypePanels$.find(".archetype-panel-advantages");
+    const archetypeDisadvantages$ = archetypePanels$.find(".archetype-panel-disadvantages");
+    const archetypeDarkSecrets$ = archetypePanels$.find(".archetype-panel-darksecrets");
 
     const tl = U.gsap.timeline({
       paused: true
@@ -1320,7 +1328,7 @@ class K4CharGen {
   }
 
   #getTimeline_revealCarousel(): gsap.core.Timeline {
-  // async #getTimeline_revealCarousel(): Promise<{timeline: gsap.core.Timeline}> {
+    // async #getTimeline_revealCarousel(): Promise<{timeline: gsap.core.Timeline}> {
     // const {timeline: selectedArchetypeTimeline} = await this.#getTimeline_archetypeStyle(this.element.find(`.archetype-carousel-item[data-archetype="${this.actor.archetype ?? K4Archetype.academic}"]`));
     const selectedArchetypeTimeline = this.#getTimeline_archetypeStyle(this.element.find(`.archetype-carousel-item[data-archetype="${this.actor.archetype ?? K4Archetype.academic}"]`));
     // return {timeline: U.gsap.timeline({paused: true})
@@ -1443,13 +1451,14 @@ class K4CharGen {
       const splitTraitName = traitContainer$.data("splitTraitName") as Maybe<SplitText> ?? new SplitText(traitName$, {type: "chars"});
       traitContainer$.data("splitTraitName", splitTraitName);
 
+      const self = this;
       const actor = this.actor;
       const trait = traitContainer$.attr("data-trait")!;
 
       tl = U.gsap.timeline({
         paused: true,
         onReverseComplete() {
-          actor.charGenDeselect(trait).then(() => {
+          self.charGenDeselect(trait).then(() => {
             void K4Socket.Call("CharChange_Trait", UserTargetRef.other, getUser().id, actor.id, traitType, trait, false);
           }).catch((err: unknown) => {
             kLog.error(`[K4CharGen] #attachListeners_trait: Error deselecting trait: ${String(err)}`);
@@ -1475,7 +1484,7 @@ class K4CharGen {
         })
         .call(() => {
           if (!tl!.reversed()) {
-            void actor.charGenSelect(trait);
+            void self.charGenSelect(trait);
             traitContainer$.attr("data-is-selected", "true");
             traitContainer$.addClass(glowClass);
             void self.reRenderTraitNotesPanels();
@@ -1743,7 +1752,7 @@ class K4CharGen {
           itemList: getUnlistedItemsOfType(K4ItemType.disadvantage)
         });
         if (item) {
-          await this.actor.charGenSelect(item.name, false);
+          await this.charGenSelect(item.name, false);
           await this.reRenderTraitNotesPanels();
         }
       })();
@@ -1757,7 +1766,7 @@ class K4CharGen {
           itemList: getUnlistedItemsOfType(K4ItemType.darksecret)
         });
         if (item) {
-          await this.actor.charGenSelect(item.name, false);
+          await this.charGenSelect(item.name, false);
           await this.reRenderTraitNotesPanels();
         }
       })();
@@ -1815,7 +1824,7 @@ class K4CharGen {
   }
 
   updateArchetypeItem(item$: JQuery, rotation: number, selIndex?: number) {
-  // async updateArchetypeItem(item$: JQuery, rotation: number, selIndex?: number) {
+    // async updateArchetypeItem(item$: JQuery, rotation: number, selIndex?: number) {
     const selArchetypeIndex = selIndex ?? this.getIndexFromYRot(rotation);
     const thisIndex = U.pInt(item$.attr("data-index"));
     U.gsap.set(item$[0], {rotationY: -rotation});
@@ -1952,36 +1961,6 @@ class K4CharGen {
       });
     }
   }
-
-
-  // async #constructCarousel_OLD(carouselScene$: JQuery, timeStamp: () => number) {
-  //   kLog.log(`${timeStamp()} - ... Gathering JQuery Items`);
-  //   const carousel$ = carouselScene$.find(".archetype-carousel");
-  //   const items$ = carousel$.find(".archetype-carousel-item");
-
-  //   kLog.log(`${timeStamp()} - ... Setting carousel z-index`);
-  //   void U.gsap.set(carousel$, {z: -1 * K4CharGen.CarouselRadius});
-
-  //   kLog.log(`${timeStamp()} - ... Starting Promise.all for items`);
-  //   await Promise.all(items$.map(async (i, item) => {
-  //     kLog.log(`${timeStamp()} - ... Starting item ${i} processing`);
-  //     const item$ = $(item);
-  //     kLog.log(`${timeStamp()} - ... Getting timeline for item ${i}`);
-  //     const archTimeline = this.#getTimeline_archetypeStyle(item$);
-  //     kLog.log(`${timeStamp()} - ... Calculating distance for item ${i}`);
-  //     const distFromSelected = this.getNormalizedDistanceFromSelected(i, this.selArchetypeIndex);
-  //     kLog.log(`${timeStamp()} - ... Seeking timeline for item ${i}`);
-  //     archTimeline.seek(1 - distFromSelected, true);
-  //     kLog.log(`${timeStamp()} - ... Calculating rotation for item ${i}`);
-  //     const archYRot = this.getYRotFromIndex(i);
-  //     kLog.log(`${timeStamp()} - ... Setting transform for item ${i}`);
-  //     void U.gsap.set(item, {
-  //       transform: `rotateY(${-1 * archYRot}deg) translateZ(${K4CharGen.CarouselRadius}px) rotateY(${archYRot}deg)`
-  //     });
-  //     kLog.log(`${timeStamp()} - ... Finished item ${i} processing`);
-  //   }));
-  //   kLog.log(`${timeStamp()} - ... Finished`);
-  // }
 
   async #constructCarousel(carouselScene$: JQuery, timeStamp: () => number) {
     kLog.log(`${timeStamp()} - ... Gathering JQuery Items`);

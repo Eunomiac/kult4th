@@ -1,0 +1,88 @@
+import * as jest from 'jest';
+
+export function cleanTextOLD(text: string): string {
+  return text
+    // Remove unnecessary span closings and openings
+    // ... closing that occur without an opening:
+    .replace(/^([^<]*)<\/span>/, "$1")
+    // ... opening that occur without a closing:
+    .replace(/<span[^>]+>([^<]*)$/, "$1")
+    // Remove standalone inline-text spans
+    .replace(/<span class="inline-text">([^<]+)<\/span>/g, "$1")
+    // Preserve specific span classes
+    // .replace(/<span (class="(?:inline-emphasis rollable-attribute|inline-doclink)"[^>]*)>(.*?)<\/span>/g, "@@span $1>$2</span@@")
+    // // Remove any remaining non-preserved spans
+    // .replace(/<\/?span(?!\s+class="(?:inline-emphasis rollable-attribute|inline-doclink)")(?:[^>]*?)>/g, "")
+    // .replace(/@@span /g, "<span")
+    // .replace(/span@@/g, "span>")
+    .trim();
+}
+
+export function cleanText(text: string): string {
+  const openTags: string[] = [];
+  let result = text.replace(/<\/?span[^>]*>/g, (match, offset, string) => {
+    if (match.startsWith('</')) {
+      // Closing tag
+      if (openTags.length > 0) {
+        const lastOpenTag = openTags.pop();
+        if (lastOpenTag?.includes('class="inline-text"')) {
+          return ''; // Remove closing tag for inline-text
+        }
+        return match; // Keep other closing tags
+      } else {
+        return ''; // Remove dangling closing tag
+      }
+    } else {
+      // Opening tag
+      if (match.includes('class="inline-text"')) {
+        openTags.push(match);
+        return ''; // Remove inline-text opening tag
+      }
+      openTags.push(match);
+      return match; // Keep other opening tags
+    }
+  });
+
+  // Remove any remaining opening tags at the end
+  while (openTags.length > 0) {
+    const lastTag = openTags.pop();
+    if (lastTag && !lastTag.includes('class="inline-text"')) {
+      const lastIndex = result.lastIndexOf(lastTag);
+      if (lastIndex !== -1) {
+        result = result.slice(0, lastIndex) + result.slice(lastIndex + lastTag.length);
+      }
+    }
+  }
+
+  return result.trim();
+}
+
+export function cleanupItemEntry(entry: any): any {
+  const cleanObject = (obj: any): any => {
+    console.log('Cleaning object:', obj);
+    if (typeof obj === "string") {
+      return cleanText(obj);
+    }
+    if (typeof obj !== "object" || obj === null) {
+      return obj;
+    }
+    if (Array.isArray(obj)) {
+      console.log('Cleaning array:', obj);
+      return obj.map(cleanObject);
+    }
+    const newObj: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (typeof value === "string") {
+        console.log(`Cleaning string for key ${key}:`, value);
+        newObj[key] = cleanText(value);
+      } else if (typeof value === "object") {
+        newObj[key] = cleanObject(value);
+      } else {
+        newObj[key] = value;
+      }
+    }
+    return newObj;
+  };
+
+  return cleanObject(entry);
+}

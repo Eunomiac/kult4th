@@ -1,0 +1,331 @@
+import { cleanText, cleanupItemEntry } from './cleanup-item-data-funcsts';
+
+describe('cleanText', () => {
+  test('removes inline-text spans from array items', () => {
+    const input = [
+      '<span class="inline-text">Option <span class="inline-emphasis">1</span></span>',
+      '<span class="inline-text">Option <span class="inline-emphasis">2</span></span>'
+    ];
+    const expected = [
+      'Option <span class="inline-emphasis">1</span>',
+      'Option <span class="inline-emphasis">2</span>'
+    ];
+    expect(input.map(cleanText)).toEqual(expected);
+  });
+  test('removes unnecessary span closings', () => {
+    const input = '</span>This is some text';
+    const expected = 'This is some text';
+    expect(cleanText(input)).toBe(expected);
+  });
+
+  test('removes unnecessary span openings', () => {
+    const input = 'This is some text<span class="inline-text">';
+    const expected = 'This is some text';
+    expect(cleanText(input)).toBe(expected);
+  });
+
+  test('preserves inline-doclink spans', () => {
+    const input = 'See <span class="inline-doclink" data-doc-name="SomeDoc">this document</span>';
+    const expected = 'See <span class="inline-doclink" data-doc-name="SomeDoc">this document</span>';
+    expect(cleanText(input)).toBe(expected);
+  });
+
+  test('handles complex nested spans', () => {
+    const input = '<span class="inline-text">This <span class="inline-emphasis">is</span> a <span class="inline-emphasis rollable-attribute">complex</span> <span class="inline-doclink" data-doc-name="Test">test</span></span>';
+    const expected = 'This <span class="inline-emphasis">is</span> a <span class="inline-emphasis rollable-attribute">complex</span> <span class="inline-doclink" data-doc-name="Test">test</span>';
+    expect(cleanText(input)).toBe(expected);
+  });
+
+  test('handles complex dangling tags', () => {
+    const input = "The GM explains what you see. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.";
+    const expected = "The GM explains what you see. <span class=\"inline-emphasis gm-move\">The GM makes a Move</span>.";
+    expect(cleanText(input)).toBe(expected);
+  });
+
+  test('handles multiple dangling tags', () => {
+    const input = "</span></span>This is <span class=\"keep-me\">important</span> text<span><span>";
+    const expected = "This is <span class=\"keep-me\">important</span> text";
+    expect(cleanText(input)).toBe(expected);
+  });
+});
+
+describe('cleanupItemEntry', () => {
+  test('cleans up a simple object', () => {
+    const input = {
+      name: 'Test Item',
+      description: '<span class="inline-text">This is a <span class="inline-emphasis">test</span> item.</span>'
+    };
+    const expected = {
+      name: 'Test Item',
+      description: 'This is a <span class="inline-emphasis">test</span> item.'
+    };
+    expect(cleanupItemEntry(input)).toEqual(expected);
+  });
+
+  test('cleans up nested objects', () => {
+    const input = {
+      name: 'Complex Item',
+      system: {
+        shortDesc: '<span class="inline-text">Short <span class="inline-emphasis">description</span></span>',
+        lists: {
+          options: {
+            name: 'Options',
+            items: [
+              '<span class="inline-text">Option <span class="inline-emphasis">1</span></span>',
+              '<span class="inline-text">Option <span class="inline-emphasis">2</span></span>'
+            ]
+          }
+        }
+      }
+    };
+    const expected = {
+      name: 'Complex Item',
+      system: {
+        shortDesc: 'Short <span class="inline-emphasis">description</span>',
+        lists: {
+          options: {
+            name: 'Options',
+            items: [
+              'Option <span class="inline-emphasis">1</span>',
+              'Option <span class="inline-emphasis">2</span>'
+            ]
+          }
+        }
+      }
+    };
+    expect(cleanupItemEntry(input)).toEqual(expected);
+  });
+  test('handles complex dangling tags', () => {
+    const input = "The GM explains what you see. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">.";
+    const expected = "The GM explains what you see. <span class=\"inline-emphasis gm-move\">The GM makes a Move</span>.";
+    expect(cleanText(input)).toBe(expected);
+  });
+
+  test('handles multiple dangling tags', () => {
+    const input = "</span></span>This is <span class=\"keep-me\">important</span> text<span><span>";
+    const expected = "This is <span class=\"keep-me\">important</span> text";
+    expect(cleanText(input)).toBe(expected);
+  });
+
+  test('handles complex item data', () => {
+    const input = {
+      name: 'Worldly',
+      type: 'advantage',
+      img: 'systems/kult4th/assets/icons/advantage/worldly.svg',
+      system: {
+        shortDesc: '<span class="inline-text">Establish facts and relations when you arrive to new locations in the story.</span>',
+        subItems: [
+          {
+            name: 'Recall this Place',
+            type: 'move',
+            system: {
+              shortDesc: '<span class="inline-text">Establish facts and relations when you arrive to new locations in the story.</span>',
+              rules: {
+                trigger: '<span class="inline-text">Whenever you arrive at a new location in the mundane world,</span>',
+                outro: '<span class="inline-text">decide whether you have been here before, and if so, name some detail about the place significant to you. Also, decide if you met someone there and what you left behind. The GM will say what has changed since then.</span>'
+              },
+              subType: 'activeStatic',
+            }
+          }
+        ],
+        rules: {
+          intro: '',
+          trigger: '',
+          outro: '',
+          listRefs: [],
+          holdText: ''
+        },
+        currentHold: 0,
+      }
+    };
+    const expected = {
+      name: 'Worldly',
+      type: 'advantage',
+      img: 'systems/kult4th/assets/icons/advantage/worldly.svg',
+      system: {
+        shortDesc: 'Establish facts and relations when you arrive to new locations in the story.',
+        subItems: [
+          {
+            name: 'Recall this Place',
+            type: 'move',
+            system: {
+              shortDesc: 'Establish facts and relations when you arrive to new locations in the story.',
+              rules: {
+                trigger: 'Whenever you arrive at a new location in the mundane world,',
+                outro: 'decide whether you have been here before, and if so, name some detail about the place significant to you. Also, decide if you met someone there and what you left behind. The GM will say what has changed since then.'
+              },
+              subType: 'activeStatic',
+            }
+          }
+        ],
+        rules: {
+          intro: '',
+          trigger: '',
+          outro: '',
+          listRefs: [],
+          holdText: ''
+        },
+        currentHold: 0,
+      }
+    };
+    expect(cleanupItemEntry(input)).toEqual(expected);
+  });
+});
+
+describe('cleanupComplexItemEntry', () => {
+  test('cleans up complex Battlefield Medicine item', () => {
+    const input = {
+      "name": "Battlefield Medicine",
+      "type": "advantage",
+      "img": "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
+      "system": {
+        "shortDesc": "You are trained in stabilising wounds.",
+        "lists": {
+          "options": {
+            "name": "Options",
+            "items": [
+              "Improvisation: You stabilize one </span><span class=\"inline-emphasis\">Wound</span><span class=\"inline-text\"> without access to medical equipment.",
+              "Effective: You stabilize two </span><span class=\"inline-emphasis\">Wounds</span><span class=\"inline-text\"> instead of one.",
+              "Careful: The wound stabilizes and will heal much faster than normal."
+            ]
+          },
+          "complications": {
+            "name": "Complications",
+            "items": [
+              "You leave cosmetic scars or defects (the patient loses </span><span class=\"inline-emphasis negative\">&minus;2 Stability</span><span class=\"inline-text\">.",
+              "There are lingering side effects (</span><span class=\"inline-emphasis negative\">&minus;1</span><span class=\"inline-text\"> to all rolls the wound could feasibly affect until it's fully healed).",
+              "The patient remains knocked out until the GM determines that they awaken."
+            ]
+          }
+        },
+        "subType": "activeRolled",
+        "subItems": [
+          {
+            "name": "Stabilize Wound",
+            "type": "move",
+            "img": "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
+            "system": {
+              "shortDesc": "You are trained in stabilising wounds.",
+              "parentItem": {
+                "name": "Battlefield Medicine",
+                "type": "advantage"
+              },
+              "rules": {
+                "trigger": "Whenever you stabilize an injured person's wounds, even if you don't have access to medical equipment,",
+                "outro": "%insert.rollPrompt%.",
+                "listRefs": [
+                  "options"
+                ]
+              },
+              "results": {
+                "completeSuccess": {
+                  "result": "Choose two options from the list below.",
+                  "listRefs": [
+                    "options"
+                  ]
+                },
+                "partialSuccess": {
+                  "result": "You may choose one option from the list below, but you must also choose one complication: %list.complications%",
+                  "listRefs": [
+                    "options"
+                  ]
+                },
+                "failure": {
+                  "result": "You stabilize the wound, even without access to medical equipment, but there are also unexpected and potentially dangerous consequences, such as infections, healing deformities, or other serious side effects. </span><span class=\"inline-emphasis gm-move\">The GM makes a Move</span><span class=\"inline-text\">."
+                }
+              },
+              "subType": "activeRolled",
+              "attribute": "reason",
+            }
+          }
+        ],
+        "rules": {
+          "intro": "",
+          "trigger": "",
+          "outro": "",
+          "listRefs": ["options"],
+          "holdText": ""
+        },
+        "currentHold": 0,
+      }
+    };
+
+    const expected = {
+      "name": "Battlefield Medicine",
+      "type": "advantage",
+      "img": "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
+      "system": {
+        "shortDesc": "You are trained in stabilising wounds.",
+        "lists": {
+          "options": {
+            "name": "Options",
+            "items": [
+              "Improvisation: You stabilize one <span class=\"inline-emphasis\">Wound</span> without access to medical equipment.",
+              "Effective: You stabilize two <span class=\"inline-emphasis\">Wounds</span> instead of one.",
+              "Careful: The wound stabilizes and will heal much faster than normal."
+            ]
+          },
+          "complications": {
+            "name": "Complications",
+            "items": [
+              "You leave cosmetic scars or defects (the patient loses <span class=\"inline-emphasis negative\">&minus;2 Stability</span>.",
+              "There are lingering side effects (<span class=\"inline-emphasis negative\">&minus;1</span> to all rolls the wound could feasibly affect until it's fully healed).",
+              "The patient remains knocked out until the GM determines that they awaken."
+            ]
+          }
+        },
+        "subType": "activeRolled",
+        "subItems": [
+          {
+            "name": "Stabilize Wound",
+            "type": "move",
+            "img": "systems/kult4th/assets/icons/advantage/battlefield-medicine.svg",
+            "system": {
+              "shortDesc": "You are trained in stabilising wounds.",
+              "parentItem": {
+                "name": "Battlefield Medicine",
+                "type": "advantage"
+              },
+              "rules": {
+                "trigger": "Whenever you stabilize an injured person's wounds, even if you don't have access to medical equipment,",
+                "outro": "%insert.rollPrompt%.",
+                "listRefs": [
+                  "options"
+                ]
+              },
+              "results": {
+                "completeSuccess": {
+                  "result": "Choose two options from the list below.",
+                  "listRefs": [
+                    "options"
+                  ]
+                },
+                "partialSuccess": {
+                  "result": "You may choose one option from the list below, but you must also choose one complication: %list.complications%",
+                  "listRefs": [
+                    "options"
+                  ]
+                },
+                "failure": {
+                  "result": "You stabilize the wound, even without access to medical equipment, but there are also unexpected and potentially dangerous consequences, such as infections, healing deformities, or other serious side effects. <span class=\"inline-emphasis gm-move\">The GM makes a Move</span>."
+                }
+              },
+              "subType": "activeRolled",
+              "attribute": "reason",
+            }
+          }
+        ],
+        "rules": {
+          "intro": "",
+          "trigger": "",
+          "outro": "",
+          "listRefs": ["options"],
+          "holdText": ""
+        },
+        "currentHold": 0,
+      }
+    };
+
+    expect(cleanupItemEntry(input)).toEqual(expected);
+  });
+});

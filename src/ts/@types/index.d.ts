@@ -1,4 +1,4 @@
-import K4Config from "../scripts/config";
+import K4Config from "../scripts/config.js";
 import K4Roll from "../documents/K4Roll.js";
 import {DebugReport} from "../scripts/logger.js";
 

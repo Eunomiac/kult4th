@@ -204,14 +204,20 @@ Kult White:  #FFFFFF */
     background: var(--K4-GREY) !important;
   }
 
-  .text-negmod, .text-gmtext, .text-negmod + .text-keyword {
-    color: var(--K4-RED) !important;
-    text-shadow: none !important;
-  }
+  .inline-emphasis {
+    .rollable-attribute,
+    .edge-name,
+    .positive {
+      color: var(--K4-bBLUE) !important;
+      text-shadow: none !important;
+    }
 
-  .text-posmod, .text-posmod + .text-keyword {
-    color: var(--K4-bBLUE) !important;
-    text-shadow: none !important;
+    .result-label,
+    .gm-move,
+    .negative {
+      color: var(--K4-RED) !important;
+      text-shadow: none !important;
+    }
   }
 
 	// --K4-icon-fill: var(--K4-color-primary);

@@ -26,19 +26,16 @@ function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.SystemSche
       }
       case "insert": {
         switch (dataKey) {
-          case "break": {
-            return "<br /><br />";
-          }
           case "rollPrompt": {
             const attribute = U.getProp<string>(iData, "system.attribute");
             if (!attribute) {
               return `<span style='color: red;'>No Such Attribute: ${dataKey}</span>`;
             }
             return [
-              "#>text-attributename>",
+              "<span class=\"inline-emphasis rollable-attribute\">",
               "roll ",
               `+${attribute ? U.tCase(attribute) : "Attribute"}`,
-              "<#"
+              "</span>"
             ].join("");
           }
           default: {

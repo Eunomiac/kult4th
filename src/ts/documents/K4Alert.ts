@@ -434,7 +434,7 @@ class K4Alert {
   static ParseData(data: K4Alert.Data, docs: Record<string, FoundryDoc> = {}): K4Alert.Data {
     switch (data.type) {
       case AlertType.simple: {
-        // Must parse header, body, and logoImg for "%insert.<doc>.<dotkey>%" values and resolve them.
+        // Must parse header, body, and logoImg for doclink  values and resolve them.
         // For now we'll just use formatForKult with the actor doc, and hope that's enough!
         const {actor} = docs;
         if (!(actor instanceof K4Actor)) { return data; }

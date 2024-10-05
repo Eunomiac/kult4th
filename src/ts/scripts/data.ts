@@ -3,7 +3,7 @@
  * @description This file contains functions and constants for managing and manipulating K4Item data schemas. It includes functions for migrating data, extracting unique keys and values, generating reports, and building items from data.
  */
 import U from "../scripts/utilities.js";
-import C from "../scripts/constants";
+import C from "../scripts/constants.js";
 import K4Actor, {K4ActorType} from "../documents/K4Actor.js";
 import K4Item from "../documents/K4Item.js";
 import ITEM_DATA from "./item-data.js";

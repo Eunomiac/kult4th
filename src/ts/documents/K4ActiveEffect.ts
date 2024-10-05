@@ -525,7 +525,7 @@ const CUSTOM_FUNCTIONS = {
       img,
       type,
       system: itemData
-    }])).pop() as Maybe<K4Item>;
+    }]))?.pop() as Maybe<K4Item>;
 
     if (!newItem) {
       return false;
@@ -845,7 +845,7 @@ const CUSTOM_FUNCTIONS = {
         skipQueue: false,
         header: `Missing Prerequisite: '${filter}'`,
         displayDuration: 5,
-        body: `You currently lack #>text-keyword>${filter}<#, which is a prerequisite for gaining #>text-keyword>${this.name}<#`
+        body: `You currently lack </span><span class="inline-emphasis">${filter}</span><span class="inline-text">, which is a prerequisite for gaining </span><span class="inline-emphasis">${this.name}</span><span class="inline-text">`
       }));
       return false;
     }
@@ -1397,7 +1397,7 @@ class K4ActiveEffect extends ActiveEffect {
       ? ""
       : [
           "(from ",
-          from ?? `%insert.docLink.${origin.name}%`,
+          from ?? `<span class="inline-doclink" data-doc-name="${origin.name}">${origin.name}</span>`,
           ")"
         ].join("");
     if (parentData.inStatusBar) {
@@ -1521,7 +1521,7 @@ class K4ActiveEffect extends ActiveEffect {
           data: effectExtendedData
         }
       }
-    }])).pop() as K4ActiveEffect;
+    }]))?.pop() as K4ActiveEffect;
 
     kLog.log("[CreateFromBuildData]", {effectUUID: effect.uuid, changes: U.objClone(effect.changes)});
 
