@@ -6,7 +6,7 @@ import C, {K4Attribute} from "../scripts/constants.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Roll, {K4RollResult} from "./K4Roll.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
-import {InterfaceToObject} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
+import {InterfaceToObject, ConstructorDataType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
@@ -520,7 +520,7 @@ class K4Item extends Item {
         ITEM: this,
         subItemData: foundry.utils.deepClone(subItemData)
       });
-      await this.parent.createEmbeddedDocuments("Item", subItemData);
+      await this.parent.createEmbeddedDocuments("Item", subItemData as unknown as Array<ConstructorDataType<typeof K4Item>>);
     } else if (this.isSubItem()) {
       const [parentName, parentType] = [this.parentName, this.parentType];
       const parentDisplay = `${C.Abbreviations.ItemType[parentType]}.${U.uCase(parentName)}`;

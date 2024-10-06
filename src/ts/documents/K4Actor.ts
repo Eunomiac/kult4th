@@ -3,7 +3,7 @@ import K4Item, {K4ItemType} from "./K4Item.js";
 import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4CharGen from "./K4CharGen.js";
-import K4ActiveEffect, {} from "./K4ActiveEffect.js";
+import K4ActiveEffect from "./K4ActiveEffect.js";
 import C, {Archetypes, K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType, K4ActorType, K4CharGenPhase} from "../scripts/constants.js";
 import K4Socket, {UserTargetRef} from "./K4Socket.js";
 import U from "../scripts/utilities.js";
@@ -274,8 +274,8 @@ interface K4Actor<Type extends K4ActorType = K4ActorType> {
   get type(): Type;
   get sheet(): Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet;
   // get ownership(): Record<IDString, number>;
-  // get items(): Collection<K4Item>;
-  // get effects(): Collection<K4ActiveEffect>;
+  get items(): EmbeddedCollection<K4Item, K4Actor>;
+  get effects(): EmbeddedCollection<K4ActiveEffect, K4Actor>;
   system: K4Actor.System<Type>;
 }
 // #endregion
@@ -486,7 +486,7 @@ class K4Actor extends Actor {
    * @returns {Array<K4Item<Type>>} An array of items of the specified type.
    */
   getItemsOfType<Type extends K4ItemType>(type: Type): Array<K4Item<Type>> {
-    return [...this.items].filter((item: K4Item): item is K4Item<Type> => item.is(type));
+    return ([...this.items] as K4Item[]).filter((item: K4Item): item is K4Item<Type> => item.is(type));
   }
   /**
    * Retrieves an item by its name.

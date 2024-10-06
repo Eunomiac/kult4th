@@ -1,8 +1,10 @@
+// import {ReadyGame} from "@foundryvtt/foundry/types/types/ready-game.js";
 // #region IMPORTS ~
 import C, {K4Attribute, K4ConditionType, K4WoundType} from "../scripts/constants.js";
 import U from "../scripts/utilities.js";
 import {formatForKult} from "../scripts/helpers.js";
-import K4Actor, {K4ActorType} from "./K4Actor.js";
+import type K4Actor from "./K4Actor.js";
+import {K4ActorType} from "./K4Actor.js";
 import K4Item, {K4ItemType, K4ItemRange} from "./K4Item.js";
 import K4Roll, {K4RollResult} from "./K4Roll.js";
 import K4Scene from "./K4Scene.js";
@@ -266,8 +268,8 @@ namespace K4ActiveEffect {
     |K4Item<K4ItemType.weapon>
     |K4Item<K4ItemType.gmtracker>
     |K4Actor<K4ActorType.pc>
-    |K4Scene
     |K4ChatMessage;
+    // |K4Scene;
 
   // export type CustomFunctionActor = (
   //   this: K4Change,
@@ -628,7 +630,7 @@ const CUSTOM_FUNCTIONS = {
     return Promise.resolve(true);
   },
   async ModifyMove(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyMove): Promise<boolean> {
-    if (!(actor instanceof K4Actor)) {
+    if (!(actor.is(K4ActorType.pc))) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
 
@@ -660,7 +662,7 @@ const CUSTOM_FUNCTIONS = {
                 value,
                 this.parentEffect!.eData.fromText
               ].join("&nbsp;"));
-              void applyUpdate(move as UpdateableDoc, target, targetArray, permanent ?? false);
+              void applyUpdate(move, target, targetArray, permanent ?? false);
               break;
             }
             case "AppendText": {
@@ -684,7 +686,7 @@ const CUSTOM_FUNCTIONS = {
     return true;
   },
   async ModifyProperty(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyProperty): Promise<boolean> {
-    if (!(actor instanceof K4Actor)) {
+    if (!(actor.is(K4ActorType.pc))) {
       throw new Error(`Invalid actor for ModifyProperty: ${String(actor)}`);
     }
 
@@ -750,7 +752,7 @@ const CUSTOM_FUNCTIONS = {
     throw new Error(`Unrecognized filter for ModifyProperty: ${String(filter)}`);
   },
   async ModifyChange(this: K4Change, actor: K4Actor, data: K4Change.Schema.ModifyChange): Promise<boolean> {
-    if (!(actor instanceof K4Actor)) {
+    if (!(actor.is(K4ActorType.pc))) {
       throw new Error(`Invalid actor for ModifyChange: ${String(actor)}`);
     }
 
@@ -771,7 +773,7 @@ const CUSTOM_FUNCTIONS = {
     return true;
   },
   async PromptForData(this: K4Change, actor: K4Actor, data: K4Change.Schema.PromptForData): Promise<boolean> {
-    if (!(actor instanceof K4Actor)) {
+    if (!(actor.is(K4ActorType.pc))) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
 
@@ -827,7 +829,7 @@ const CUSTOM_FUNCTIONS = {
     throw new Error(`Unrecognized key for PromptForData: ${target}`);
   },
   async RequireItem(this: K4Change, actor: K4Actor, data: K4Change.Schema.RequireItem): Promise<boolean> {
-    if (!(actor instanceof K4Actor)) {
+    if (!(actor.is(K4ActorType.pc))) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
     const {
@@ -1103,15 +1105,7 @@ class K4Change implements EffectChangeData {
     if (typeof this.customFunctionData.name === "string") {
       return this.customFunctionData.name;
     }
-    if (typeof this.customFunctionData.name === "string") {
-      return this.customFunctionData.name;
-    }
-    if (typeof this.customFunctionData.name === "string") {
-      return this.customFunctionData.name;
-    }
-    return this.parentEffect?.name
-      ?? this.originItem?.name
-      ?? "";
+    return this.originItem?.name ?? "";
   }
   get tooltip(): string {
     let tooltipText: string = this.customFunctionData.tooltip as Maybe<string>
@@ -1216,7 +1210,7 @@ class K4Change implements EffectChangeData {
     if (!parentEffect) {
       throw new Error(`[K4Change.apply] No valid parentEffect found for '${this.customFunctionName}' K4Change`);
     }
-    if (parent instanceof K4Actor) {
+    if (parent.is(K4ActorType.pc)) {
       return this.customFunction(parent, this.customFunctionData, this.isPermanentChange);
     }
     return this.customFunction(parent, this.customFunctionData);
@@ -1295,7 +1289,7 @@ class K4ActiveEffect extends ActiveEffect {
       }
     }
 
-    if (origin instanceof K4Actor) {
+    if ("is" in origin && origin.is(K4ActorType.pc)) {
       // ActiveEffect is being created directly on an Actor
       return {
         type: EffectSourceType.actor,
@@ -1329,13 +1323,13 @@ class K4ActiveEffect extends ActiveEffect {
       };
     }
 
-    if (origin instanceof K4Scene) {
-      // ActiveEFfect is being applied by a K4Scene to actors present in that scene.
-      return {
-        type: EffectSourceType.scene,
-        docUUID: origin.uuid
-      };
-    }
+    // if (origin instanceof K4Scene) {
+    //   // ActiveEFfect is being applied by a K4Scene to actors present in that scene.
+    //   return {
+    //     type: EffectSourceType.scene,
+    //     docUUID: origin.uuid
+    //   };
+    // }
 
     throw new Error(`Invalid origin type for ActiveEffect: ${String(origin)}`);
   }
@@ -1348,8 +1342,8 @@ class K4ActiveEffect extends ActiveEffect {
 
     if (
          origin instanceof K4Item
-      || origin instanceof K4Actor
       || origin instanceof K4Scene
+      || ("is" in origin && origin.is(K4ActorType.pc))
     ) {
       effectName = origin.name;
     }
@@ -1504,7 +1498,8 @@ class K4ActiveEffect extends ActiveEffect {
 
     // If the effect is unique, delete any existing effect with the same name
     if (effectExtendedData.isUnique) {
-      const existingEffect = effectHost.effects.find((effect) => effect.name === effectExtendedData.name);
+      const existingEffect = effectHost.effects.contents
+        .find((effect) => effect.name === effectExtendedData.name);
       if (existingEffect) {
         await existingEffect.delete();
       }
@@ -1549,6 +1544,7 @@ class K4ActiveEffect extends ActiveEffect {
   inStatusBar(): this is this & { eData: {inStatusBar: true} } {
     return this.flags.kult4th.data.inStatusBar;
   }
+
   get defaultState(): boolean { return this.canToggle() ? this.eData.defaultState : true; }
   get isLocked(): boolean { return this.canToggle() ? this.eData.isLocked : false; }
   set isLocked(value: boolean) { void this.setFlag<boolean>("data.isLocked", value);}
@@ -1740,7 +1736,7 @@ class K4ActiveEffect extends ActiveEffect {
         origin: owner.uuid
       }]);
     }
-    const effect = owner.effects.get(a.dataset.target ?? "");
+    const effect = owner.effects.get(a.dataset.target ?? "") as Maybe<K4ActiveEffect>;
     if (!effect) { return null; }
     switch ( action ) {
       case "edit": return effect.sheet?.render(true);
@@ -1835,7 +1831,8 @@ class K4ActiveEffect extends ActiveEffect {
   isOwnedByActor<T extends K4ActorType = K4ActorType>(type?: T): this is {origin: string, parent: K4Actor<T>, actor: K4Actor<T>} {
     if (!this.isOwned()) { return false; }
     if (type && this.parent.type !== type) { return false; }
-    return this.parent instanceof K4Actor;
+    if (this.parent instanceof Item) { return false; }
+    return this.parent.is(K4ActorType.pc);
   }
   isOwnedByItem<T extends K4ItemType = K4ItemType>(type?: T): this is {origin: string, owner: K4Item<T>, originItem: K4Item<T>} {
     if (!this.isOwned()) { return false; }
@@ -2012,7 +2009,7 @@ class K4ActiveEffect extends ActiveEffect {
 }
 
 // #region -- INTERFACE AUGMENTATION ~
-interface K4ActiveEffect extends ActiveEffect {
+interface K4ActiveEffect {
   icon: string,
   origin: string,
   changes: EffectChangeData[],

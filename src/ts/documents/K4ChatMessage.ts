@@ -964,7 +964,7 @@ class K4ChatMessage extends ChatMessage {
     const users = await this.#resolveUserSelectors(ref);
     return users.map((user) => {
       if (user.isGM) {
-        kLog.error(`This should return a reference to the singleton GMTracker K4Item, currently unimplemented. Returning default Actor instead: ${(ACTOR as K4Actor).name}`);
+        kLog.error(`This should return a reference to the singleton GMTracker K4Item, currently unimplemented. Returning default Actor instead: ${ACTOR.name}`);
       }
       return user.character as K4Actor<K4ActorType.pc>;
     });

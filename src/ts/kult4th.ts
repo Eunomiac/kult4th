@@ -55,10 +55,10 @@ const InitializableClasses = {
 // #endregion
 
 Object.assign(globalThis, {
-  getGame: function getGame(): Game {
-    if (!(game instanceof Game)) {
+  getGame: function getGame(): ReadyGame {
+    if (!game.ready) {
       throw new Error("Game is not ready");
-  }
+    }
     return game;
   },
   getUser: function getUser(): User {

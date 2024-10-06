@@ -14425,7 +14425,7 @@ class K4Actor extends Actor {
       return;
     }
     const promises = [];
-    const { PACKS } = await import("./data-CIeIg9eW.js");
+    const { PACKS } = await import("./data-D2i8RQdk.js");
     if (this.basicMoves.length === 0) {
       promises.push(this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves));
     }
@@ -16128,9 +16128,9 @@ class K4Scene extends Scene {
   // #endregion
   // #region Type Guards ~ #endregion
   // #region GETTERS & SETTERS ~
-  get effects() {
-    return new Collection();
-  }
+  // get effects(): EmbeddedCollection<K4ActiveEffect, K4Scene> {
+  //   return new EmbeddedCollection<K4ActiveEffect, K4Scene>(this, "effects");
+  // }
   // #endregion
   // #region === CONSTRUCTOR ===  #ENDREGION
   // #region PRIVATE METHODS ~= #endregion
@@ -16280,7 +16280,7 @@ const CUSTOM_FUNCTIONS = {
     return Promise.resolve(true);
   },
   async ModifyMove(actor, data) {
-    if (!(actor instanceof K4Actor)) {
+    if (!actor.is(K4ActorType.pc)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
     const {
@@ -16339,7 +16339,7 @@ const CUSTOM_FUNCTIONS = {
     return true;
   },
   async ModifyProperty(actor, data) {
-    if (!(actor instanceof K4Actor)) {
+    if (!actor.is(K4ActorType.pc)) {
       throw new Error(`Invalid actor for ModifyProperty: ${String(actor)}`);
     }
     let {
@@ -16409,7 +16409,7 @@ const CUSTOM_FUNCTIONS = {
     throw new Error(`Unrecognized filter for ModifyProperty: ${String(filter)}`);
   },
   async ModifyChange(actor, data) {
-    if (!(actor instanceof K4Actor)) {
+    if (!actor.is(K4ActorType.pc)) {
       throw new Error(`Invalid actor for ModifyChange: ${String(actor)}`);
     }
     let {
@@ -16434,7 +16434,7 @@ const CUSTOM_FUNCTIONS = {
   },
   async PromptForData(actor, data) {
     var _a;
-    if (!(actor instanceof K4Actor)) {
+    if (!actor.is(K4ActorType.pc)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
     const {
@@ -16489,7 +16489,7 @@ const CUSTOM_FUNCTIONS = {
     throw new Error(`Unrecognized key for PromptForData: ${target}`);
   },
   async RequireItem(actor, data) {
-    if (!(actor instanceof K4Actor)) {
+    if (!actor.is(K4ActorType.pc)) {
       throw new Error(`Invalid actor for ModifyMove: ${String(actor)}`);
     }
     const {
@@ -16790,20 +16790,14 @@ class K4Change {
     return this.customFunctionData.filter ?? "all";
   }
   get name() {
-    var _a, _b;
+    var _a;
     if (["wounds", "stability"].includes(String(this.customFunctionData.value))) {
       return U.tCase(this.customFunctionData.value);
     }
     if (typeof this.customFunctionData.name === "string") {
       return this.customFunctionData.name;
     }
-    if (typeof this.customFunctionData.name === "string") {
-      return this.customFunctionData.name;
-    }
-    if (typeof this.customFunctionData.name === "string") {
-      return this.customFunctionData.name;
-    }
-    return ((_a = this.parentEffect) == null ? void 0 : _a.name) ?? ((_b = this.originItem) == null ? void 0 : _b.name) ?? "";
+    return ((_a = this.originItem) == null ? void 0 : _a.name) ?? "";
   }
   get tooltip() {
     var _a, _b;
@@ -16869,7 +16863,7 @@ class K4Change {
     if (!parentEffect) {
       throw new Error(`[K4Change.apply] No valid parentEffect found for '${this.customFunctionName}' K4Change`);
     }
-    if (parent instanceof K4Actor) {
+    if (parent.is(K4ActorType.pc)) {
       return this.customFunction(parent, this.customFunctionData, this.isPermanentChange);
     }
     return this.customFunction(parent, this.customFunctionData);
@@ -16909,7 +16903,7 @@ class K4ActiveEffect extends ActiveEffect {
         };
       }
     }
-    if (origin instanceof K4Actor) {
+    if ("is" in origin && origin.is(K4ActorType.pc)) {
       return {
         type: "actor",
         docUUID: origin.uuid
@@ -16937,12 +16931,6 @@ class K4ActiveEffect extends ActiveEffect {
         chatID: origin.id
       };
     }
-    if (origin instanceof K4Scene) {
-      return {
-        type: "scene",
-        docUUID: origin.uuid
-      };
-    }
     throw new Error(`Invalid origin type for ActiveEffect: ${String(origin)}`);
   }
   static ResolveEffectLabel(parentData, origin, explicitOnly = false) {
@@ -16951,7 +16939,7 @@ class K4ActiveEffect extends ActiveEffect {
     if (effectName ?? explicitOnly) {
       return effectName;
     }
-    if (origin instanceof K4Item || origin instanceof K4Actor || origin instanceof K4Scene) {
+    if (origin instanceof K4Item || origin instanceof K4Scene || "is" in origin && origin.is(K4ActorType.pc)) {
       effectName = origin.name;
     }
     if (origin instanceof K4ChatMessage) {
@@ -17088,7 +17076,7 @@ class K4ActiveEffect extends ActiveEffect {
       effectHost = effectHost.actor;
     }
     if (effectExtendedData.isUnique) {
-      const existingEffect = effectHost.effects.find((effect2) => effect2.name === effectExtendedData.name);
+      const existingEffect = effectHost.effects.contents.find((effect2) => effect2.name === effectExtendedData.name);
       if (existingEffect) {
         await existingEffect.delete();
       }
@@ -17478,7 +17466,10 @@ class K4ActiveEffect extends ActiveEffect {
     if (type && this.parent.type !== type) {
       return false;
     }
-    return this.parent instanceof K4Actor;
+    if (this.parent instanceof Item) {
+      return false;
+    }
+    return this.parent.is(K4ActorType.pc);
   }
   isOwnedByItem(type) {
     if (!this.isOwned()) {
@@ -23481,7 +23472,7 @@ const InitializableClasses = {
 };
 Object.assign(globalThis, {
   getGame: function getGame2() {
-    if (!(game instanceof Game)) {
+    if (!game.ready) {
       throw new Error("Game is not ready");
     }
     return game;
@@ -23524,7 +23515,7 @@ function GlobalAssignment() {
     const ITEM = getGame().items.values().next().value;
     const EMBED = ACTOR2 == null ? void 0 : ACTOR2.items.values().next().value;
     const ACTORSHEET = ACTOR2 == null ? void 0 : ACTOR2.sheet;
-    const { BUILD_ITEMS_FROM_DATA, PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys } = await import("./data-CIeIg9eW.js");
+    const { BUILD_ITEMS_FROM_DATA, PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys } = await import("./data-D2i8RQdk.js");
     const whichArchetypesHave = (traitName) => {
       return Object.values(Archetypes).filter(({ advantage, disadvantage, darksecret }) => [...advantage, ...disadvantage, ...darksecret].map((tName) => tName.replace(/^!/, "")).includes(traitName)).map(({ label }) => label);
     };
@@ -23795,4 +23786,4 @@ export {
   EffectResetOn as g,
   U as h
 };
-//# sourceMappingURL=kult4th-bJeEWeuB.js.map
+//# sourceMappingURL=kult4th-BOqlFVmi.js.map
