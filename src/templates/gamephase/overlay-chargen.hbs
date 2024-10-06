@@ -131,10 +131,9 @@
     </div>
 
     <div class="archetype-panel character-summary-panel">
-      {{#each otherPlayerData as |actorData actorID|}}
+      {{#each otherPlayerData as |summaryData actorID|}}
       <div class="character-summary" data-actor-id="{{actorID}}">
-        <img src="{{actorData.img}}">
-        <h3>{{actorData.name}}</h3>
+        {{> "systems/kult4th/templates/gamephase/parts/other-player-summary-block.hbs" summaryData=summaryData}}
       </div>
       {{/each}}
     </div>

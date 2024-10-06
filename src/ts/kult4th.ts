@@ -55,10 +55,10 @@ const InitializableClasses = {
 // #endregion
 
 Object.assign(globalThis, {
-  getGame: function getGame(): ReadyGame {
-    if (!game.ready) {
+  getGame: function getGame(): Game {
+    if (!(game instanceof Game)) {
       throw new Error("Game is not ready");
-    }
+  }
     return game;
   },
   getUser: function getUser(): User {
@@ -265,7 +265,8 @@ async function PreloadHBSTemplates() {
     ]),
     ...U.getTemplatePath("gamephase/parts", [
       "chargen-trait-editor",
-      "chargen-trait-notes-editor"
+      "chargen-trait-notes-editor",
+      "other-player-summary-block"
     ]),
     ...U.getTemplatePath("globals", [
       "svg-defs",

@@ -13344,9 +13344,12 @@ const _K4CharGen = class _K4CharGen {
     };
   }
   get chargenSummary() {
+    var _a, _b;
     return {
       name: this.actor.name,
       img: this.actor.img,
+      userName: ((_a = this.actor.user) == null ? void 0 : _a.name) ?? "",
+      userColor: ((_b = this.actor.user) == null ? void 0 : _b.color) ?? "",
       archetype: this.actor.archetype ?? "",
       attributes: this.actor.attributes,
       ...this.actor.getCharGenSelected(),
@@ -14425,7 +14428,7 @@ class K4Actor extends Actor {
       return;
     }
     const promises = [];
-    const { PACKS } = await import("./data-D2i8RQdk.js");
+    const { PACKS } = await import("./data-CMWal0jF.js");
     if (this.basicMoves.length === 0) {
       promises.push(this.createEmbeddedDocuments("Item", PACKS.basicPlayerMoves));
     }
@@ -16037,7 +16040,7 @@ const handlebarHelpers = {
     return !Object.values(args).flat().join("");
   },
   "getUniqueID"(base) {
-    return `${base}-${U.getID()}`;
+    return `${base}-${U.getID()}`.replace(/\s+/g, "_");
   },
   "getDropCap"(content) {
     if (!(content == null ? void 0 : content.length)) {
@@ -23472,7 +23475,7 @@ const InitializableClasses = {
 };
 Object.assign(globalThis, {
   getGame: function getGame2() {
-    if (!game.ready) {
+    if (!(game instanceof Game)) {
       throw new Error("Game is not ready");
     }
     return game;
@@ -23515,7 +23518,7 @@ function GlobalAssignment() {
     const ITEM = getGame().items.values().next().value;
     const EMBED = ACTOR2 == null ? void 0 : ACTOR2.items.values().next().value;
     const ACTORSHEET = ACTOR2 == null ? void 0 : ACTOR2.sheet;
-    const { BUILD_ITEMS_FROM_DATA, PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys } = await import("./data-D2i8RQdk.js");
+    const { BUILD_ITEMS_FROM_DATA, PACKS, getUniqueValuesForSystemKey, getItemSystemReport, getSubItemSystemReport, findRepresentativeSubset, checkSubsetCoverage, findUniqueKeys } = await import("./data-CMWal0jF.js");
     const whichArchetypesHave = (traitName) => {
       return Object.values(Archetypes).filter(({ advantage, disadvantage, darksecret }) => [...advantage, ...disadvantage, ...darksecret].map((tName) => tName.replace(/^!/, "")).includes(traitName)).map(({ label }) => label);
     };
@@ -23604,7 +23607,8 @@ async function PreloadHBSTemplates() {
     ]),
     ...U.getTemplatePath("gamephase/parts", [
       "chargen-trait-editor",
-      "chargen-trait-notes-editor"
+      "chargen-trait-notes-editor",
+      "other-player-summary-block"
     ]),
     ...U.getTemplatePath("globals", [
       "svg-defs",
@@ -23786,4 +23790,4 @@ export {
   EffectResetOn as g,
   U as h
 };
-//# sourceMappingURL=kult4th-BOqlFVmi.js.map
+//# sourceMappingURL=kult4th-Bhww8WNG.js.map

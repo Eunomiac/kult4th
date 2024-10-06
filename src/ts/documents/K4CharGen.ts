@@ -102,6 +102,8 @@ interface ChargenContext {
 }
 
 export interface ChargenSummary {
+  userName: string,
+  userColor: string,
   name: string,
   img: string,
   archetype: K4Archetype|"",
@@ -827,6 +829,8 @@ class K4CharGen {
     return {
         name: this.actor.name,
         img: this.actor.img,
+        userName: this.actor.user?.name ?? "",
+        userColor: this.actor.user?.color ?? "",
         archetype: this.actor.archetype ?? "",
         attributes: this.actor.attributes,
         ...this.actor.getCharGenSelected(),

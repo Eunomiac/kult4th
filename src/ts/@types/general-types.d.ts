@@ -2,16 +2,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import C from "../scripts/constants";
 import K4Config from "../scripts/config";
-import K4Actor from "../documents/K4Actor.js";
-import K4Item from "../documents/K4Item.js";
-import K4PCSheet from "../documents/K4PCSheet.js";
-import K4NPCSheet from "../documents/K4NPCSheet.js";
-import K4ItemSheet from "../documents/K4ItemSheet.js";
-import K4ActiveEffect from "../documents/K4ActiveEffect.js";
-import K4ChatMessage from "../documents/K4ChatMessage.js";
-import K4Dialog from "../documents/K4Dialog.js";
-import K4Roll from "../documents/K4Roll.js";
-import K4Scene from "../documents/K4Scene.js";
+import type K4Actor from "../documents/K4Actor.js";
+import type K4Item from "../documents/K4Item.js";
+import type K4PCSheet from "../documents/K4PCSheet.js";
+import type K4NPCSheet from "../documents/K4NPCSheet.js";
+import type K4ItemSheet from "../documents/K4ItemSheet.js";
+import type K4ActiveEffect from "../documents/K4ActiveEffect.js";
+import type K4ChatMessage from "../documents/K4ChatMessage.js";
+import type K4Dialog from "../documents/K4Dialog.js";
+import type K4Roll from "../documents/K4Roll.js";
+import type K4Scene from "../documents/K4Scene.js";
 
 import {gsap} from "gsap";
 /* eslint-enable @typescript-eslint/no-unused-vars */
