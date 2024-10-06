@@ -211,13 +211,13 @@ declare global {
      * Discriminated union of all item source schemas
      *  */
     export type Source<T extends K4ItemType = K4ItemType> =
-      T extends K4ItemType.move ? SourceSchema.Move
-      : T extends K4ItemType.advantage ? SourceSchema.Advantage
-      : T extends K4ItemType.disadvantage ? SourceSchema.Disadvantage
-      : T extends K4ItemType.darksecret ? SourceSchema.DarkSecret
-      : T extends K4ItemType.relation ? SourceSchema.Relation
-      : T extends K4ItemType.weapon ? SourceSchema.Weapon
-      : T extends K4ItemType.gear ? SourceSchema.Gear
+      T extends K4ItemType.move ? InterfaceToObject<SourceSchema.Move>
+      : T extends K4ItemType.advantage ? InterfaceToObject<SourceSchema.Advantage>
+      : T extends K4ItemType.disadvantage ? InterfaceToObject<SourceSchema.Disadvantage>
+      : T extends K4ItemType.darksecret ? InterfaceToObject<SourceSchema.DarkSecret>
+      : T extends K4ItemType.relation ? InterfaceToObject<SourceSchema.Relation>
+      : T extends K4ItemType.weapon ? InterfaceToObject<SourceSchema.Weapon>
+      : T extends K4ItemType.gear ? InterfaceToObject<SourceSchema.Gear>
       : SourceSchema.Any;
 
     /**
@@ -231,7 +231,15 @@ declare global {
       export type Relation = K4Item.SourceSchema.Relation
       export interface Weapon extends K4Item.SourceSchema.Weapon, K4Item.Components.ResultsData { }
       export interface Gear extends K4Item.SourceSchema.Gear, K4Item.Components.ResultsData { }
-      export type Any = Move | Advantage | Disadvantage | DarkSecret | Relation | Weapon | Gear;
+      // export type Any = Move | Advantage | Disadvantage | DarkSecret | Relation | Weapon | Gear;
+      export type Any =
+        | InterfaceToObject<Move>
+        | InterfaceToObject<Advantage>
+        | InterfaceToObject<Disadvantage>
+        | InterfaceToObject<DarkSecret>
+        | InterfaceToObject<Relation>
+        | InterfaceToObject<Weapon>
+        | InterfaceToObject<Gear>;
     }
 
     /**

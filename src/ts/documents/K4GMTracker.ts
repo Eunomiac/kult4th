@@ -164,15 +164,15 @@ class K4GMTracker {
         const topFog$ = overlay$.find(".rolling-fog-container.inverted");
         const bottomFog$ = overlay$.find(".rolling-fog-container:not(.inverted)");
         const title$ = overlay$.find(".overlay-title");
-        const ambientAudio$ = masterOverlay$.find(".ambient-audio") as JQuery<HTMLAudioElement>;
-        const titleBang$ = overlay$.find(".title-bang") as JQuery<HTMLAudioElement>;
+        const ambientAudio$ = masterOverlay$.find(".ambient-audio");
+        const titleBang$ = overlay$.find(".title-bang");
         const gearContainers$ = overlay$.find(".gear-container");
         const hugeGear$ = overlay$.find(".gear-huge");
         const binahGear$ = overlay$.find(".gear-binah");
         const geburahGear$ = overlay$.find(".gear-geburah");
 
         // Lower ambient volume
-        ambientAudio$[0].volume = 0.05;
+        (ambientAudio$[0] as HTMLAudioElement).volume = 0.05;
 
         // Set initial styles for animated elements
         U.gsap.set(gearContainers$, {
@@ -197,7 +197,7 @@ class K4GMTracker {
         const fogDuration = TITLE_BANG_AT * 2; // Ensures title bang happens in the middle of the fog rotation, when it's roughly horizontal.
 
         const tl = U.gsap.timeline()
-          .call(() => { void ambientAudio$[0].play(); })
+          .call(() => { void (ambientAudio$[0] as HTMLAudioElement).play(); })
           .to(overlay$, {autoAlpha: 1, duration: 0.5}, OVERLAY_FADE_IN_AT)
           .fromTo(topFog$, {
             yPercent: -175,
@@ -209,7 +209,7 @@ class K4GMTracker {
             rotate: -10,
             scale: 4
           }, {yPercent: 50, rotate: 10, scale: 1.25, duration: fogDuration, ease: "power2.inOut"}, "<")
-          .call(() => { void titleBang$[0].play(); }, [], timeTillTitleBang)
+          .call(() => { void (titleBang$[0] as HTMLAudioElement).play(); }, [], timeTillTitleBang)
           .set([title$, geburahGear$, binahGear$, hugeGear$], {autoAlpha: 1}, timeTillTitleBang);
 
         return tl;

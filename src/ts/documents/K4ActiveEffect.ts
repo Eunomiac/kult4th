@@ -525,7 +525,7 @@ const CUSTOM_FUNCTIONS = {
       img,
       type,
       system: itemData
-    }])).pop() as Maybe<K4Item>;
+    }]))?.pop() as Maybe<K4Item>;
 
     if (!newItem) {
       return false;
@@ -1521,7 +1521,9 @@ class K4ActiveEffect extends ActiveEffect {
           data: effectExtendedData
         }
       }
-    }])).pop() as K4ActiveEffect;
+    }]))?.pop() as Maybe<K4ActiveEffect>;
+
+    if (!effect) { return []; }
 
     kLog.log("[CreateFromBuildData]", {effectUUID: effect.uuid, changes: U.objClone(effect.changes)});
 
@@ -1732,7 +1734,7 @@ class K4ActiveEffect extends ActiveEffect {
     const a = event.currentTarget;
     action ??= a.dataset.action;
     if (action === "create") {
-      return owner.createEmbeddedDocuments("ActiveEffect", [{
+      return await owner.createEmbeddedDocuments("ActiveEffect", [{
         name:   owner.name,
         icon:   owner.img,
         origin: owner.uuid

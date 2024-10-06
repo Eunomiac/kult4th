@@ -78,11 +78,11 @@ Object.assign(globalThis, {
     return userPC;
   },
   getI18n: function getI18n(): Localization {
-    const i18n = getGame().i18n;
-    if (!i18n) {
+    const loc = getGame().i18n as Maybe<Localization>;
+    if (!loc) {
       throw new Error("I18n is not ready");
     }
-    return i18n;
+    return loc;
   }
 });
 
