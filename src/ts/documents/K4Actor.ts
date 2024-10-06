@@ -7,6 +7,7 @@ import K4ActiveEffect, {} from "./K4ActiveEffect.js";
 import C, {Archetypes, K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType, K4ActorType, K4CharGenPhase} from "../scripts/constants.js";
 import K4Socket, {UserTargetRef} from "./K4Socket.js";
 import U from "../scripts/utilities.js";
+import {InterfaceToObject} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
 // #endregion
 
 /** ==== REPLACE TEMPLATE.JSON WITH DATA MODELS ====
@@ -168,7 +169,6 @@ declare global {
         };
         isSheetLocked: boolean;
       }
-
       export interface NPC {
         description: string,
         notes: string
@@ -212,9 +212,13 @@ declare global {
     /**
      * Discriminated union of all actor system schemas
      *  */
+    // export type System<T extends K4ActorType = K4ActorType> =
+    //   T extends K4ActorType.pc ? SystemSchema.PC
+    //   : T extends K4ActorType.npc ? SystemSchema.NPC
+    //   : SystemSchema.Any;
     export type System<T extends K4ActorType = K4ActorType> =
-      T extends K4ActorType.pc ? SystemSchema.PC
-      : T extends K4ActorType.npc ? SystemSchema.NPC
+      T extends K4ActorType.pc ? InterfaceToObject<SystemSchema.PC>
+      : T extends K4ActorType.npc ? InterfaceToObject<SystemSchema.NPC>
       : SystemSchema.Any;
 
     /**
@@ -269,9 +273,9 @@ interface K4Actor<Type extends K4ActorType = K4ActorType> {
   get name(): string;
   get type(): Type;
   get sheet(): Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet;
-  get ownership(): Record<IDString, number>;
-  get items(): Collection<K4Item>;
-  get effects(): Collection<K4ActiveEffect>;
+  // get ownership(): Record<IDString, number>;
+  // get items(): Collection<K4Item>;
+  // get effects(): Collection<K4ActiveEffect>;
   system: K4Actor.System<Type>;
 }
 // #endregion

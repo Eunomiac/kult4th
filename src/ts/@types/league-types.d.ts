@@ -14,6 +14,8 @@ import {
   ActiveEffectDataConstructorData as _ActiveEffectDataConstructorData,
   ActiveEffectData as _ActiveEffectData
 } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/activeEffectData';
+
+
 declare module "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/effectChangeData" {
   // Extract the unexported interface for ActiveEffect changes data
   export interface EffectChangeDataProperties {

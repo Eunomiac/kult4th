@@ -6,6 +6,7 @@ import C, {K4Attribute} from "../scripts/constants.js";
 import K4Actor, {K4ActorType} from "./K4Actor.js";
 import K4Roll, {K4RollResult} from "./K4Roll.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
+import {InterfaceToObject} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
@@ -237,14 +238,15 @@ declare global {
      * Discriminated union of all item system schemas
      *  */
     export type System<T extends K4ItemType = K4ItemType> =
-      T extends K4ItemType.move ? SystemSchema.Move
-      : T extends K4ItemType.advantage ? SystemSchema.Advantage
-      : T extends K4ItemType.disadvantage ? SystemSchema.Disadvantage
-      : T extends K4ItemType.darksecret ? SystemSchema.DarkSecret
-      : T extends K4ItemType.relation ? SystemSchema.Relation
-      : T extends K4ItemType.weapon ? SystemSchema.Weapon
-      : T extends K4ItemType.gear ? SystemSchema.Gear
+      T extends K4ItemType.move ? InterfaceToObject<SystemSchema.Move>
+      : T extends K4ItemType.advantage ? InterfaceToObject<SystemSchema.Advantage>
+      : T extends K4ItemType.disadvantage ? InterfaceToObject<SystemSchema.Disadvantage>
+      : T extends K4ItemType.darksecret ? InterfaceToObject<SystemSchema.DarkSecret>
+      : T extends K4ItemType.relation ? InterfaceToObject<SystemSchema.Relation>
+      : T extends K4ItemType.weapon ? InterfaceToObject<SystemSchema.Weapon>
+      : T extends K4ItemType.gear ? InterfaceToObject<SystemSchema.Gear>
       : SystemSchema.Any;
+
     /**
      * The top-level schema for an Item
      */
@@ -302,7 +304,7 @@ interface K4Item<T extends K4ItemType = K4ItemType> {
   get name(): string;
   get type(): T;
   get sheet(): K4ItemSheet;
-  get effects(): Collection<K4ActiveEffect>;
+  // get effects(): Collection<K4ActiveEffect>;
   system: K4Item.System<T>;
   parent: ActorDoc | null;
 }
