@@ -797,7 +797,7 @@ const CUSTOM_FUNCTIONS = {
     }
 
     const user = filter === "gm"
-      ? getGame().users.find((user: User) => user.isGM)
+      ? getGame().users?.find((user: User) => user.isGM)
       : actor.user;
     if (!user) {
       throw new Error(`[Prompt for Data] Unable to resolve user from filter '${filter}'.`)
@@ -1832,7 +1832,7 @@ class K4ActiveEffect extends ActiveEffect {
   }
   isOwnedByActor<T extends K4ActorType = K4ActorType>(type?: T): this is {origin: string, parent: K4Actor<T>, actor: K4Actor<T>} {
     if (!this.isOwned()) { return false; }
-    if (type && (this.parent as K4Actor).type !== type) { return false; }
+    if (type && this.parent.type !== type) { return false; }
     return this.parent instanceof K4Actor;
   }
   isOwnedByItem<T extends K4ItemType = K4ItemType>(type?: T): this is {origin: string, owner: K4Item<T>, originItem: K4Item<T>} {
@@ -2014,6 +2014,7 @@ interface K4ActiveEffect extends ActiveEffect {
   icon: string,
   origin: string,
   changes: EffectChangeData[],
+  parent: K4Actor|K4Item|null,
   updateSource(updateData: {changes: EffectChangeData[]}): Promise<void>,
   // data: K4ActiveEffect.Data & ActiveEffectData;
   flags: {
