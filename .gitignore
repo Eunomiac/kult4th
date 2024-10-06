@@ -1,0 +1,48 @@
+# Unnecessary
+.EXAMPLES&REFERENCE/
+traceResolution.txt
+\!archive/
+packs/
+.gitattributes
+.stylelintignore
+.stylelintrc.js
+.cursorignore
+.git/
+.reports/
+release-tag.txt
+# jsconfig.json
+
+# IDE
+.idea/
+.vs/
+.vscode/
+*.cpuprofile
+*.log
+*.code-workspace
+*.tmp
+*.html
+tsdocs/
+*.temp
+*.js.map
+.yarn/
+# .gitignore
+.npmignore
+# tsconfig.json
+# *eslint*
+# *prettier*
+#stylelint.config.js
+# ist/
+# .live-css.config.js
+module_staging_1/
+.scannerwork/
+# .sonarlintignore
+.eslintcache
+*.ps1
+*ProcessID.txt
+**/tests.zip
+
+# Node Modules
+node_modules/
+npm-debug.log
+.dev-refs/kult4th_old/
+Kult4th.zip
