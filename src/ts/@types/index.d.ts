@@ -36,7 +36,13 @@ interface ClampResponse {
   original: string;
   clamped: string | undefined;
 }
-
+declare global {
+  interface DocumentClassConfig {
+      Actor: typeof K4Actor;
+      Item: typeof K4Item;
+      ActiveEffect: typeof K4ActiveEffect;
+  }
+}
 
 declare global {
   const socketlib: SocketLib;
