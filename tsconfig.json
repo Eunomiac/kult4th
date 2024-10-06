@@ -54,7 +54,6 @@
     ".dev/item-data-prev.ts"
   ],
   "exclude": [
-    "node_modules",
     "**/*.test.ts",
     "eslint.config.mjs"
   ]
