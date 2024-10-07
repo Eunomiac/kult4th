@@ -57,7 +57,7 @@ declare global {
   interface DocumentClassConfig {
       Actor: K4Actor;
       Item: K4Item;
-      // ActiveEffect: typeof K4ActiveEffect;
+      ActiveEffect: typeof K4ActiveEffect;
       ChatMessage: K4ChatMessage;
   }
 }

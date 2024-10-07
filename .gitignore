@@ -31,7 +31,7 @@ tsdocs/
 # *eslint*
 # *prettier*
 #stylelint.config.js
-# ist/
+dist/
 # .live-css.config.js
 module_staging_1/
 .scannerwork/
