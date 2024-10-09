@@ -4,7 +4,7 @@ import K4PCSheet from "./K4PCSheet.js";
 import K4NPCSheet from "./K4NPCSheet.js";
 import K4CharGen from "./K4CharGen.js";
 import K4ActiveEffect from "./K4ActiveEffect.js";
-import C, {Archetypes, K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType, K4ActorType, K4CharGenPhase} from "../scripts/constants.js";
+import C, {Archetypes, K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType, K4ActorType} from "../scripts/constants.js";
 import K4Socket, {UserTargetRef} from "./K4Socket.js";
 import U from "../scripts/utilities.js";
 import {InterfaceToObject} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
@@ -118,7 +118,6 @@ declare global {
     */
     export namespace SourceSchema {
       export interface PC {
-        charGenPhase: K4CharGenPhase,
         archetype: K4Archetype|"",
         description: string,
         occupation: string,
@@ -219,7 +218,7 @@ declare global {
     export type System<T extends K4ActorType = K4ActorType> =
       T extends K4ActorType.pc ? InterfaceToObject<SystemSchema.PC>
       : T extends K4ActorType.npc ? InterfaceToObject<SystemSchema.NPC>
-      : SystemSchema.Any;
+      : InterfaceToObject<SystemSchema.Any>;
 
     /**
      * The top-level schema for an Actor
@@ -266,7 +265,7 @@ declare global {
 }
 // #endregion
 // #region -- AUGMENTED INTERFACE ~
-interface K4Actor<Type extends K4ActorType = K4ActorType> {
+interface K4Actor<Type extends K4ActorType = K4ActorType> extends Actor {
   get id(): IDString;
   get uuid(): UUIDString;
   get img(): string;
@@ -274,9 +273,9 @@ interface K4Actor<Type extends K4ActorType = K4ActorType> {
   get type(): Type;
   get sheet(): Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet;
   // get ownership(): Record<IDString, number>;
-  get items(): EmbeddedCollection<K4Item, K4Actor>;
-  get effects(): EmbeddedCollection<K4ActiveEffect, K4Actor>;
-  system: K4Actor.System<Type>;
+  get items(): EmbeddedCollection<K4Item, K4Actor<Type>>;
+  get effects(): EmbeddedCollection<K4ActiveEffect, K4Actor<Type>>;
+  system: Type extends K4ActorType.pc ? K4Actor.System<K4ActorType.pc> : K4Actor.System<K4ActorType.npc>;
 }
 // #endregion
 // #endregion
@@ -327,7 +326,7 @@ class K4Actor extends Actor {
           tooltip: "<center><h2>Wounds</h2></center><p>Your wounds affect your ability to fight and survive, while suffering clouds your mind.</p><p>(<em><strong>Note:</strong> Suppress wounds individually to exclude them from applying to your next roll.)</em></p>"
         }),
         changeData: []
-      }, this))
+      }, this as K4Actor<K4ActorType.pc>))
 
     // Create the dynamic ActiveEffect for stability modifiers
     promises.push(K4ActiveEffect.CreateFromBuildData(
@@ -413,30 +412,11 @@ class K4Actor extends Actor {
     if (!ownerID) {return undefined;}
     return getGame().users.get(ownerID);
   }
-
-  get charGenPhase(): K4CharGenPhase {
-    if (!this.is(K4ActorType.pc)) {
-      throw new Error("Cannot get charGenPhase for NPCs");
-    }
-    return this.system.charGenPhase;
-  }
-  get nextCharGenPhase(): K4CharGenPhase {
-    if (!this.is(K4ActorType.pc)) {
-      throw new Error("Cannot get nextCharGenPhase for NPCs");
-    }
-    if (this.charGenPhase === K4CharGenPhase.finished) {
-      return K4CharGenPhase.finished;
-    }
-    const phases = Object.values(K4CharGenPhase);
-    const currentIndex = phases.indexOf(this.charGenPhase);
-    const nextIndex = currentIndex + 1;
-    return phases[nextIndex];
-  }
   get isFinishedCharGen(): boolean {
-    // return true;
+    if (this.is(K4ActorType.npc)) { return true; }
     return CONFIG.K4.debug.isDisablingCharGen
       ? true
-      : this.charGenPhase === K4CharGenPhase.finished;
+      : Boolean(!("charGen" in this.system) || this.system.charGen.isFinished);
   }
   get archetype(): Maybe<K4Archetype> {
     if (!this.is(K4ActorType.pc)) { return undefined; }
@@ -647,15 +627,15 @@ class K4Actor extends Actor {
     let tooltipLabel = "";
     let tooltipDesc = "";
     if (numBoth) {
-      woundModDefinitions = this.system.modifiers.wounds_seriouscritical[numBoth];
+      woundModDefinitions = this.system.modifiers.wounds_seriouscritical[numBoth] ?? {};
       tooltipLabel = "Grievously Wounded";
       tooltipDesc = "Your many grievous injuries threaten death if not treated, even as the pain brings you closer than ever before to piercing the Illusion.";
     } else if (numCritical) {
-      woundModDefinitions = this.system.modifiers.wounds_critical[numCritical];
+      woundModDefinitions = this.system.modifiers.wounds_critical[numCritical] ?? {};
       tooltipLabel = "Critically Wounded";
       tooltipDesc = "You are critically wounded, greatly limiting your ability to act. If you do not receive medical attention soon, death is assured.";
     } else if (numSerious) {
-      woundModDefinitions = this.system.modifiers.wounds_serious[numSerious];
+      woundModDefinitions = this.system.modifiers.wounds_serious[numSerious] ?? {};
       tooltipLabel = "Wounded";
       tooltipDesc = "Your untreated injuries hamper your ability to act."
     }
@@ -678,6 +658,7 @@ class K4Actor extends Actor {
   get stabilityModData(): K4Roll.ModData[] {
     if (!this.is(K4ActorType.pc)) {return [];}
     const stabilityModDefinitions = this.system.modifiers.stability[this.stability];
+    if (!stabilityModDefinitions) {return [];}
     let tooltipLabel = "";
     let tooltipDesc = "";
     switch (this.stabilityLevel) {
@@ -862,14 +843,14 @@ class K4Actor extends Actor {
       ...conditionStrips
     ].sort((a, b) => {
       const order = ["wound-critical", "wound-serious"];
-      if (a.icon.includes(order[0]) && b.icon.includes(order[0])
-        || a.icon.includes(order[1]) && b.icon.includes(order[1])) {
+      if (a.icon.includes(order[0]!) && b.icon.includes(order[0]!)
+        || a.icon.includes(order[1]!) && b.icon.includes(order[1]!)) {
         return 0;
       }
-      if (a.icon.includes(order[0])) { return -1; }
-      if (b.icon.includes(order[0])) { return 1; }
-      if (a.icon.includes(order[1])) { return -1; }
-      if (b.icon.includes(order[1])) { return 1; }
+      if (a.icon.includes(order[0]!)) { return -1; }
+      if (b.icon.includes(order[0]!)) { return 1; }
+      if (a.icon.includes(order[1]!)) { return -1; }
+      if (b.icon.includes(order[1]!)) { return 1; }
       return 0;
     })
   }
@@ -895,7 +876,7 @@ class K4Actor extends Actor {
       K4Stability.moderate,
       K4Stability.moderate,
       K4Stability.composed
-    ][this.stability];
+    ][this.stability] ?? K4Stability.composed;
   }
 
 

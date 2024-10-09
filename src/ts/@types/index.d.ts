@@ -2,7 +2,7 @@ import K4Config from "../scripts/config";
 // import K4Roll from "../documents/K4Roll.js";
 import {DebugReport} from "../scripts/logger.js";
 
-import K4ActiveEffect from "../documents/K4ActiveEffect.js";
+import type K4ActiveEffect from "../documents/K4ActiveEffect.js";
 import type K4Actor from "../documents/K4Actor.js";
 // import K4Alert from "../documents/K4Alert.js";
 // import K4CharGen from "../documents/K4CharGen.js";
@@ -57,7 +57,7 @@ declare global {
   interface DocumentClassConfig {
       Actor: K4Actor;
       Item: K4Item;
-      ActiveEffect: typeof K4ActiveEffect;
+      ActiveEffect: K4ActiveEffect;
       ChatMessage: K4ChatMessage;
   }
 }
@@ -66,11 +66,11 @@ declare global {
   const socketlib: SocketLib;
   const socket: Socket;
 
-  function fromUuidSync(uuid: string, options?: {
-    relative?: Document,
-    invalid?: boolean,
-    strict?: boolean
-  }): EntityDoc | null;
+  // function fromUuidSync(uuid: string, options?: {
+  //   relative?: Document,
+  //   invalid?: boolean,
+  //   strict?: boolean
+  // }): EntityDoc | null;
 
   function $clamp(element: HTMLElement, options?: ClampOptions): ClampResponse;
 

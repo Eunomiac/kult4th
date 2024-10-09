@@ -105,13 +105,6 @@ export enum K4GamePhase {
   session = "session",
   postSession = "postSession"
 }
-export enum K4CharGenPhase {
-  archetype = "archetype",
-  attributesAndTraits = "attributesAndTraits",
-  details = "details",
-  relations = "relations",
-  finished = "finished"
-}
 export const Archetypes = {
   [K4Archetype.sleeper]: {
     label: "Sleeper",

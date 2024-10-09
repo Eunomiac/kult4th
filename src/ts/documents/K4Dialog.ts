@@ -143,7 +143,7 @@ class K4Dialog extends Dialog {
       "GetUserInput",
       user.id as IDString,
       context, inputData
-    ))[0];
+    ))[0]!;
   }
 
   _openedItemSheets: Set<K4Item> = new Set<K4Item>();
@@ -189,7 +189,7 @@ class K4Dialog extends Dialog {
     }
     // Scan the <body> element for all `.k4-item-sheet` elements and derive the highest z-index
     const actorSheetElements: HTMLElement[] = Array.from($("body").find(".k4-actor-sheet"));
-    const bodyElements: HTMLElement[] = [...$("body").find(".k4-item-sheet"), this.element[0]];
+    const bodyElements: HTMLElement[] = [...$("body").find(".k4-item-sheet"), this.element[0]].filter(Boolean) as HTMLElement[];
     const highestZIndex = Math.max(101, ...bodyElements.map((sheet) =>
       U.pInt($(sheet).css("z-index"))
     ));

@@ -483,7 +483,7 @@ class K4GMTracker {
     return K4GMTracker._instance.sheet.rendered;
   }
 
-  get item(): K4Item<K4ItemType.gmtracker> & {system: K4GMTracker.System;} {
+  get item(): Item & K4Item<K4ItemType.gmtracker> & {system: K4GMTracker.System;} {
     return this._trackerItem;
   }
 
@@ -730,8 +730,8 @@ class K4GMTracker {
           }
 
           // If the clicked phase equals the current phase, move one phase left
-          if (clickedPhase === curPhase) {
-            const newPhase = Object.values(K4GamePhase)[curPhaseIndex - 1];
+          if (clickedPhase === curPhase && curPhaseIndex > 0) {
+            const newPhase = Object.values(K4GamePhase)[curPhaseIndex - 1]!;
             this.phase = newPhase;
             return;
           }

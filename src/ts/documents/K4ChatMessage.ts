@@ -362,7 +362,7 @@ const CHILD_TIMELINES = {
     });
     const [d10VideoA, d10VideoB] = d10Videos;
 
-    return U.gsap.timeline()
+    const tl = U.gsap.timeline()
       .fromTo(d10s$, {
         transformOrigin: "center center",
         scale: 1.5,
@@ -376,22 +376,29 @@ const CHILD_TIMELINES = {
         ease: "power2.out",
         duration: 0.5,
         stagger: 0.25
-      })
-      // Manually stagger the play calls for each video
-      .call(() => { d10VideoA.currentTime = 0; void d10VideoA.play() }, undefined, 0.25)
-      .call(() => { d10VideoB.currentTime = 0; void d10VideoB.play() }, undefined, 0.75)
-      // Call a delayed slow-shrink of the dice within a callback so that it doesn't change the timeline's duration
-      .call(() => {
-        U.gsap.fromTo(d10s$, {
-          scale: 1
-        }, {
-          y: -10,
-          scale: 0.8,
-          ease: "back.out",
-          delay: 3,
-          duration: 5
-        });
       });
+
+    // If video objects exist, add the video playback logic to the timeline
+    if (d10VideoA && d10VideoB) {
+      tl
+        // Manually stagger the play calls for each video
+        .call(() => { d10VideoA.currentTime = 0; void d10VideoA.play() }, undefined, 0.25)
+        .call(() => { d10VideoB.currentTime = 0; void d10VideoB.play() }, undefined, 0.75)
+    };
+
+    // Call a delayed slow-shrink of the dice within a callback so that it doesn't change the timeline's duration
+    tl.call(() => {
+      U.gsap.fromTo(d10s$, {
+        scale: 1
+      }, {
+        y: -10,
+        scale: 0.8,
+        ease: "back.out",
+        delay: 3,
+        duration: 5
+      });
+    });
+    return tl;
   },
   animateModifiers(message$: JQuery): gsap.core.Timeline {
     const modifiers$ = message$.find(".roll-modifiers .roll-mod");
@@ -537,8 +544,8 @@ const CHILD_TIMELINES = {
         onUpdate() {
           const newHeight = message$.height() ?? curHeight;
           if (newHeight !== curHeight) {
-            K4ChatMessage.ChatLog$[0].scrollTo({
-              top: K4ChatMessage.ChatLog$[0].scrollHeight + (newHeight - curHeight)
+            K4ChatMessage.ChatLog.scrollTo({
+              top: K4ChatMessage.ChatLog.scrollHeight + (newHeight - curHeight)
             });
             curHeight = newHeight;
           }
@@ -758,6 +765,14 @@ class K4ChatMessage extends ChatMessage {
     return $("#chat-log");
   }
 
+  static get ChatLog(): HTMLElement {
+    const chatLog = this.ChatLog$[0];
+    if (!chatLog) {
+      throw new Error("Chat log not found");
+    }
+    return chatLog;
+  }
+
   static GetMessage(ref: string|JQuery|HTMLElement): Maybe<K4ChatMessage> {
     if (typeof ref === "string") {
       return getGame().messages.get(ref) as Maybe<K4ChatMessage>;
@@ -865,7 +880,7 @@ class K4ChatMessage extends ChatMessage {
         // kLog.display("Timeline Promise Resolved!");
         const timeline = this.animationTimeline;
         if (!timeline) { return undefined; }
-        const labelTime = timeline.labels.revealed;
+        const labelTime = timeline.labels.revealed ?? timeline.duration();
         const watchLabel = () => {
           if (timeline.time() >= labelTime) {
             // kLog.display(`Message Animation Complete! (timeline.time = ${timeline.time()})`);

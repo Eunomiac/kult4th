@@ -20,6 +20,7 @@
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "noUncheckedIndexedAccess": true,
     "paths": {
       "*": [
         "*",
@@ -47,6 +48,7 @@
       "gsap",
       "@league-of-foundry-developers/foundry-vtt-types"
     ],
+    "useUnknownInCatchVariables": true
   },
   "include": [
     "./src/ts/**/*.ts",

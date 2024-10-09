@@ -1,6 +1,10 @@
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 
+/** === CONFIGURATION === */
+const IS_DEVELOPING = true;
+const IS_EXTREMELY_STRICT = false;
+
 const rules = {
   "@typescript-eslint/array-type": [
     "error",
@@ -62,9 +66,9 @@ const rules = {
   ]
 };
 
-/** === CONFIGURATION === */
-
-const isExtremelyStrict = false;
+if (IS_DEVELOPING) {
+  rules["@typescript-eslint/no-unused-vars"] = "off";
+}
 
 /** The various no-unsafe-* rules inevitably cause a proliferation of duplicate
  * alerts that ultimately reflect the same error -- as the erroring value propagates
@@ -75,7 +79,7 @@ const isExtremelyStrict = false;
  * During development, where temporary minor errors should not ignite the codebase
  * in a flurry of red errors, we turn this off. */
 
-if (isExtremelyStrict) {
+if (IS_EXTREMELY_STRICT) {
   rules["@typescript-eslint/no-explicit-any"] = "error";
   rules["@typescript-eslint/no-unsafe-argument"] = "error";
   rules["@typescript-eslint/no-unsafe-assignment"] = "error";

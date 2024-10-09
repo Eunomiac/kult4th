@@ -305,7 +305,7 @@ declare global {
 }
 // #ENDREGION
 // #region -- AUGMENTED INTERFACE ~
-interface K4Item<T extends K4ItemType = K4ItemType> {
+interface K4Item<T extends K4ItemType = K4ItemType> extends Item {
   get id(): IDString;
   get img(): string;
   get uuid(): UUIDString;
@@ -488,7 +488,7 @@ class K4Item extends Item {
         // If this is a Primary document (i.e. not owned), simply create a K4ActiveEffect for the change data that will transfer to any future actor owner, containing change data for all changes. We don't have to worry about whether an item has been created pre-embedded in an Actor (see below).
         kLog.display(`[Primary K4Item._onCreate] "${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}" PRIMARY: Embedding ActiveEffect on ITEM`, this);
         await Promise.all(this.system.rules.effects
-          .map((effectDataSet) => K4ActiveEffect.CreateFromBuildData(effectDataSet, this as K4ActiveEffect.Origin))
+          .map((effectDataSet) => K4ActiveEffect.CreateFromBuildData(effectDataSet, this))
         );
       } else if (this.effects.size === 0) {
         const {parent} = this;

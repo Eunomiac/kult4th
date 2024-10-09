@@ -261,13 +261,13 @@ namespace K4ActiveEffect {
   export type StatusBarCategory = keyof typeof DYNAMIC_CHANGES|K4ItemType;
 
   export type Origin =
-     K4Item<K4ItemType.move>
-    |K4Item<K4ItemType.advantage>
-    |K4Item<K4ItemType.disadvantage>
-    |K4Item<K4ItemType.gear>
-    |K4Item<K4ItemType.weapon>
-    |K4Item<K4ItemType.gmtracker>
-    |K4Actor<K4ActorType.pc>
+     (K4Item<K4ItemType.move> & {effects: EmbeddedCollection<K4ActiveEffect, K4Item<K4ItemType.move>>})
+    |(K4Item<K4ItemType.advantage> & {effects: EmbeddedCollection<K4ActiveEffect, K4Item<K4ItemType.advantage>>})
+    |(K4Item<K4ItemType.disadvantage> & {effects: EmbeddedCollection<K4ActiveEffect, K4Item<K4ItemType.disadvantage>>})
+    |(K4Item<K4ItemType.gear> & {effects: EmbeddedCollection<K4ActiveEffect, K4Item<K4ItemType.gear>>})
+    |(K4Item<K4ItemType.weapon> & {effects: EmbeddedCollection<K4ActiveEffect, K4Item<K4ItemType.weapon>>})
+    |(K4Item<K4ItemType.gmtracker> & {effects: EmbeddedCollection<K4ActiveEffect, K4Item<K4ItemType.gmtracker>>})
+    |(K4Actor<K4ActorType.pc> & {effects: EmbeddedCollection<K4ActiveEffect, K4Actor<K4ActorType.pc>>})
     |K4ChatMessage;
     // |K4Scene;
 
@@ -673,7 +673,7 @@ const CUSTOM_FUNCTIONS = {
               if (typeof targetString !== "string") {
                 throw new Error(`Invalid target for AppendText: '${target}'`);
               }
-              void applyUpdate(move as UpdateableDoc, target, [
+              void applyUpdate(move, target, [
                 targetString,
                 String(value),
                 this.parentEffect!.eData.fromText
@@ -1498,7 +1498,7 @@ class K4ActiveEffect extends ActiveEffect {
 
     // If the effect is unique, delete any existing effect with the same name
     if (effectExtendedData.isUnique) {
-      const existingEffect = effectHost.effects.contents
+      const existingEffect = (effectHost.effects.contents as K4ActiveEffect[])
         .find((effect) => effect.name === effectExtendedData.name);
       if (existingEffect) {
         await existingEffect.delete();
@@ -1591,7 +1591,7 @@ class K4ActiveEffect extends ActiveEffect {
     if (!this.inStatusBar()) { return undefined; }
     const valueChanges = this.getCustomChanges()
       .filter((change): change is K4Change & {finalValue: number} => typeof change.finalValue === "number");
-    if (valueChanges.length === 1) {
+    if (valueChanges[0]) {
       return valueChanges[0].finalValue;
     }
     return undefined;
@@ -2009,7 +2009,7 @@ class K4ActiveEffect extends ActiveEffect {
 }
 
 // #region -- INTERFACE AUGMENTATION ~
-interface K4ActiveEffect {
+interface K4ActiveEffect extends ActiveEffect {
   icon: string,
   origin: string,
   changes: EffectChangeData[],

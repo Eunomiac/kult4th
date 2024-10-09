@@ -383,6 +383,9 @@ class K4CharGen {
 
   getElementFromIndex(context$: JQuery, index: number) {
     const archetype = K4CharGen.ValidArchetypes[index];
+    if (!archetype) {
+      throw new Error(`Invalid archetype index ${index}: There are only ${K4CharGen.NumValidArchetypes} archetypes.`);
+    }
     return this.getElementFromArchetype(context$, archetype);
   }
 
@@ -1365,7 +1368,7 @@ class K4CharGen {
         const easeData = getEaseSVGData(easeCurve);
         const allValues = easeData.split(/[M,]/).filter(v => v.trim()).map(Number);
         for (let i = 0; i < allValues.length; i += 2) {
-          points.push([allValues[i], allValues[i + 1]]);
+          points.push([allValues[i]!, allValues[i + 1]!]);
         }
         return points;
       }
@@ -1421,7 +1424,7 @@ class K4CharGen {
 
       // The control ease determines the threshold for the final ease to be 0 or 1:
       const controlledWigglePoints: Array<Tuple<number>> = wigglePoints.map(([wX, wY], i) => {
-        const cY = controlPoints[i][1];
+        const cY = controlPoints[i]![1];
         if (cY >= wY) {return [wX, cY];}
         return [wX, 0];
       });
@@ -1822,7 +1825,7 @@ class K4CharGen {
   // async updateArchetypeItem(item$: JQuery, rotation: number, selIndex?: number) {
     const selArchetypeIndex = selIndex ?? this.getIndexFromYRot(rotation);
     const thisIndex = U.pInt(item$.attr("data-index"));
-    U.gsap.set(item$[0], {rotationY: -rotation});
+    U.gsap.set(item$, {rotationY: -rotation});
     if (thisIndex === selArchetypeIndex) {return;}
     // const {timeline: thisTimeline} = await this.#getTimeline_archetypeStyle(item$);
     const thisTimeline = this.#getTimeline_archetypeStyle(item$);
@@ -1845,7 +1848,7 @@ class K4CharGen {
     } else {
       tl = U.gsap.set(carousel$, {rotationY: rotation});
     }
-    U.gsap.set(dragger$[0], {x: wrappedX, duration: 0});
+    U.gsap.set(dragger$, {x: wrappedX, duration: 0});
     items$.each((_i, item) => {
       this.updateArchetypeItem($(item), rotation, isTweening ? thisIndex : undefined);
     });
@@ -1880,7 +1883,9 @@ class K4CharGen {
 
     const snapToNearestArchetype = async (x: number, isCompleting = false, isUpdating = true) => {
       const newIndex = this.getIndexFromXPos(this.wrapXPos(x));
-      this.actor.archetype = K4CharGen.ValidArchetypes[newIndex];
+      const newArchetype = K4CharGen.ValidArchetypes[newIndex];
+      if (!newArchetype) { return; }
+      this.actor.archetype = newArchetype;
       this.selArchetypeIndex = newIndex;
       if (isUpdating) {
         await this.#updateCarouselFromDragger(this.getXPosFromIndex(newIndex), isCompleting);
@@ -1950,7 +1955,7 @@ class K4CharGen {
 
       // Update debug info on each frame
       gsap.ticker.add(() => {
-        const x = gsap.getProperty(dragger$[0], "x") as number;
+        const x = gsap.getProperty(dragger$, "x") as number;
         // updateDebugInfo(carousel$, x);
         // K4DebugDisplay.updateDraggerInfo(Dragger.get(dragger$), this.actor, self);
       });

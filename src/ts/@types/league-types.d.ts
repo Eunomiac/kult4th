@@ -67,16 +67,16 @@ declare global {
     ParentDocumentData extends foundry.abstract.AnyDocumentData
   > extends _EmbeddedCollection<ContainedDocumentConstructor, ParentDocumentData> { }
 
-  export type FoundryDoc<
-    ConcreteDocumentData extends foundry.abstract.AnyDocumentData = foundry.abstract.AnyDocumentData,
-    Parent extends foundry.abstract.Document<unknown, unknown> | null = null,
-    ConcreteMetadata extends foundry.abstract.Metadata<unknown> = foundry.abstract.Metadata<unknown>
-  > = _Document<ConcreteDocumentData, Parent, ConcreteMetadata>;
-  export class FoundryDoc<
-    ConcreteDocumentData extends foundry.abstract.AnyDocumentData = foundry.abstract.AnyDocumentData,
-    Parent extends foundry.abstract.Document<unknown, unknown> | null = null,
-    ConcreteMetadata extends foundry.abstract.Metadata<unknown> = foundry.abstract.Metadata<unknown>
-  > extends _Document<ConcreteDocumentData, Parent, ConcreteMetadata> { }
+  // export type FoundryDoc<
+  //   ConcreteDocumentData extends foundry.abstract.AnyDocumentData = foundry.abstract.AnyDocumentData,
+  //   Parent extends foundry.abstract.Document<unknown, unknown> | null = null,
+  //   ConcreteMetadata extends foundry.abstract.Metadata<unknown> = foundry.abstract.Metadata<unknown>
+  // > = _Document<ConcreteDocumentData, Parent, ConcreteMetadata>;
+  // export class FoundryDoc<
+  //   ConcreteDocumentData extends foundry.abstract.AnyDocumentData = foundry.abstract.AnyDocumentData,
+  //   Parent extends foundry.abstract.Document<unknown, unknown> | null = null,
+  //   ConcreteMetadata extends foundry.abstract.Metadata<unknown> = foundry.abstract.Metadata<unknown>
+  // > extends _Document<ConcreteDocumentData, Parent, ConcreteMetadata> { }
 
   export type ItemDataBaseProperties = _ItemDataBaseProperties;
   export type ItemDataConstructorData = _ItemDataConstructorData;

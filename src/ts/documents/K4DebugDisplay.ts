@@ -77,7 +77,7 @@ class K4DebugDisplay {
     const xMax = 0.5 * PIXELS_PER_ROTATION;
 
     const xPos = U.pFloat(dragger.x, 2);
-    const yRot = U.pFloat(U.get(carousel$[0], "rotationY"), 0);
+    const yRot = U.pFloat(U.get(carousel$, "rotationY"), 0);
     const chosenArchetype = actor.archetype;
     const chosenArchetypeIndex = U.pInt(carousel$.find(`[data-archetype="${chosenArchetype}"]`).attr("data-index"));
     const usingArchetypeIndex = charGen.getIndexFromYRot(yRot);
