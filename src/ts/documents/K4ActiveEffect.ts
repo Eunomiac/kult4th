@@ -432,13 +432,13 @@ namespace K4ActiveEffect {
  * If the update is permanent, it will be saved to the document.
  * Otherwise, it will be temporarily set using setProperty.
  *
- * @param {UpdateableDoc} doc - The document to update.
+ * @param {Document.Any} doc - The document to update.
  * @param {Key} key - The key of the property to update.
  * @param {unknown} value - The value to set for the property.
  * @param {boolean} isPermanent - Whether the update is permanent.
  * @returns {Promise<void>} - A promise that resolves when the update is complete.
  */
-async function applyUpdate(doc: K4Item|K4Actor, key: Key, value: unknown, isPermanent: boolean): Promise<void> {
+async function applyUpdate(doc: Document.Any, key: Key, value: unknown, isPermanent: boolean): Promise<void> {
   // Log the update details for debugging purposes
   kLog.log(`Updating document with key: ${String(key)}, value: ${String(value)}, isPermanent: ${String(isPermanent)}`, { doc, key, value, isPermanent });
 

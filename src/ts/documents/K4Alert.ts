@@ -431,7 +431,7 @@ class K4Alert {
   }
   static readonly AlertQueue: OrderedSet<K4Alert> = new OrderedSet<K4Alert>();
 
-  static ParseData(data: K4Alert.Data, docs: Record<string, FoundryDoc> = {}): K4Alert.Data {
+  static ParseData(data: K4Alert.Data, docs: Record<string, Document.Any> = {}): K4Alert.Data {
     switch (data.type) {
       case AlertType.simple: {
         // Must parse header, body, and logoImg for "%insert.<doc>.<dotkey>%" values and resolve them.

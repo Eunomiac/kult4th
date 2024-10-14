@@ -54,6 +54,12 @@ declare global {
       Roll: typeof K4Roll;
       Scene: typeof K4Scene;
   }
+
+  namespace Document {
+    export type Any = foundry.abstract.Document.Any;
+  }
+
+  export import EmbeddedCollection = foundry.abstract.EmbeddedCollection;
 }
 
 declare global {
@@ -61,7 +67,7 @@ declare global {
   const socket: Socket;
 
   function fromUuidSync(uuid: string, options?: {
-    relative?: Document,
+    relative?: Document.Any,
     invalid?: boolean,
     strict?: boolean
   }): EntityDoc | null;

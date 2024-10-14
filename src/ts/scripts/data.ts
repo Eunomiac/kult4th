@@ -569,7 +569,7 @@ function getSubItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, o
  * @param {any[]} itemDataArray - The array of item data.
  * @returns {any[]} - The parsed item schemas.
  */
-function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.all): ITEM_DATA.Schema[] {
+function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.all) {
   const FOLDER_NAME_MAP = {
     [K4ItemType.advantage]: "Advantages",
     [K4ItemType.disadvantage]: "Disadvantages",
@@ -600,7 +600,7 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
  * @returns {Promise<void>}
  */
 async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
-  const itemSchemas = parseItemSchemasForCreation(PACKS.all);
+  const itemSchemas = parseItemSchemasForCreation(PACKS.all) satisfies ItemDataConstructorData;
   function clearActorItems(actor: K4Actor): Promise<unknown> {
     // Filter actor's items to exclude K4SubItems, as their removal is taken care of by their parent item
     const mainItems = actor.items.contents.filter((i) => !i.isSubItem());
@@ -617,8 +617,9 @@ async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
   }
 
   function clearAllActors(): Promise<unknown> {
-    return Promise.all((getGame().actors as Collection<K4Actor>).map((actor) => clearActor(actor)));
-  }
+    const myActors = (game as ReadyGame).actors; // <-- Resolves to 'any'
+    return Promise.all(myActors.map((actor) => clearActor(actor)));
+  }                                         /* ^-- Parameter 'actor' implicitly has an 'any' type. */
 
   // Await a Promise.all that deletes all the existing items
   await Promise.all([
@@ -627,7 +628,7 @@ async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
   ]);
 
   // Create all the new items
-  await Item.create(itemSchemas as unknown as ItemDataConstructorData);
+  await K4Item.create(itemSchemas);
 
   // Initialize each actor with a new set of basic moves
   await Promise.all((getGame().actors as Collection<K4Actor>).map((actor) => actor.initMovesAndEffects()));

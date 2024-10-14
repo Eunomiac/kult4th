@@ -29,9 +29,9 @@ namespace K4ChatMessage {
     }
   }
 
-  export interface ConstructorData extends Omit<ChatMessageDataConstructorData, "flags"> {
-    flags: FlagData & Record<string, unknown>;
-  }
+  // export interface ConstructorData extends Omit<ChatMessageDataConstructorData, "flags"> {
+  //   flags: FlagData & Record<string, unknown>;
+  // }
 
 }
 // #endregion
