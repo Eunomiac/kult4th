@@ -7,6 +7,7 @@ import C from "../scripts/constants";
 import K4Actor, {K4ActorType} from "../documents/K4Actor";
 import K4Item from "../documents/K4Item";
 import ITEM_DATA from "./item-data";
+import {ConstructorDataType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
 // import PREV_DATA from "../../../.dev/item-data-prev";
 
 enum K4Attribute {
@@ -569,7 +570,7 @@ function getSubItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, o
  * @param {any[]} itemDataArray - The array of item data.
  * @returns {any[]} - The parsed item schemas.
  */
-function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.all) {
+function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.all): ConstructorDataType<typeof K4Item> {
   const FOLDER_NAME_MAP = {
     [K4ItemType.advantage]: "Advantages",
     [K4ItemType.disadvantage]: "Disadvantages",
@@ -600,7 +601,8 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
  * @returns {Promise<void>}
  */
 async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
-  const itemSchemas = parseItemSchemasForCreation(PACKS.all) satisfies ItemDataConstructorData;
+  const itemSchemas = parseItemSchemasForCreation(PACKS.all) satisfies ConstructorDataType<typeof Item>;
+
   function clearActorItems(actor: K4Actor): Promise<unknown> {
     // Filter actor's items to exclude K4SubItems, as their removal is taken care of by their parent item
     const mainItems = actor.items.contents.filter((i) => !i.isSubItem());
