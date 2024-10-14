@@ -1,12 +1,9 @@
 // #region IMPORTS ~
-import C from "../scripts/constants.js";
-import U from "../scripts/utilities.js";
-import K4Actor, {K4ActorType} from "./K4Actor.js";
-import K4Item, {K4ItemType} from "./K4Item.js";
-import K4Socket from "./K4Socket.js";
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-enable @typescript-eslint/no-unused-vars */
+import C from "../scripts/constants";
+import U from "../scripts/utilities";
+import K4Actor, {K4ActorType} from "./K4Actor";
+import K4Item, {K4ItemType} from "./K4Item";
+import K4Socket from "./K4Socket";
 // #endregion
 // #region -- TYPES & ENUMS --
 // #region ENUMS ~

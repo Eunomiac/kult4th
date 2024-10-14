@@ -2317,11 +2317,11 @@ const loc = (locRef: string, formatDict: Record<string, string> = {}) => {
   if (/[a-z]/.test(locRef)) { // Reference contains lower-case characters: add system ID namespacing to dot notation
     locRef = locRef.replace(new RegExp(`^(${String(getGame().system.id)}.)*`), `${String(getGame().system.id)}.`);
   }
-  if (typeof getI18n().localize(locRef) === "string") {
+  if (typeof getLocalizer().localize(locRef) === "string") {
     for (const [key, val] of Object.entries(formatDict)) {
       formatDict[key] = loc(val);
     }
-    return getI18n().format(locRef, formatDict) || getI18n().localize(locRef) || locRef;
+    return getLocalizer().format(locRef, formatDict) || getLocalizer().localize(locRef) || locRef;
   }
   return locRef;
 };

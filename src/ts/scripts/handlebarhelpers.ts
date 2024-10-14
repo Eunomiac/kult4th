@@ -1,10 +1,10 @@
 // #region IMPORTS ~
-import C from "./constants.js";
-import U from "./utilities.js";
-import SVGDATA, {SVGKEYMAP} from "./svgdata.js";
-import K4Actor from "../documents/K4Actor.js";
-import K4Item from "../documents/K4Item.js";
-import { formatForKult } from "./helpers.js";
+import C from "./constants";
+import U from "./utilities";
+import SVGDATA, {SVGKEYMAP} from "./svgdata";
+import K4Actor from "../documents/K4Actor";
+import K4Item from "../documents/K4Item";
+import { formatForKult } from "./helpers";
 // #endregion
 
 

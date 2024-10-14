@@ -1,8 +1,8 @@
 // #region IMPORTS ~
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import C from "./constants.js";
-import U from "./utilities.js";
-/* eslint-enable @typescript-eslint/no-unused-vars */
+
+import C from "./constants";
+import U from "./utilities";
+
 // #endregion
 
 export default function registerSettings() {

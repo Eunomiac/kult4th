@@ -1,16 +1,16 @@
 // #region IMPORTS ~
-import K4Item, {K4ItemType} from "./K4Item.js";
-import K4PCSheet from "./K4PCSheet.js";
-import K4NPCSheet from "./K4NPCSheet.js";
-import K4CharGen from "./K4CharGen.js";
-import K4ActiveEffect from "./K4ActiveEffect.js";
-import C, {Archetypes, K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType, K4ActorType, K4CharGenPhase} from "../scripts/constants.js";
-import K4Socket, {UserTargetRef} from "./K4Socket.js";
-import U from "../scripts/utilities.js";
+import K4Item, {K4ItemType} from "./K4Item";
+import K4PCSheet from "./K4PCSheet";
+import K4NPCSheet from "./K4NPCSheet";
+import K4CharGen from "./K4CharGen";
+import K4ActiveEffect from "./K4ActiveEffect";
+import C, {Archetypes, K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType, K4ActorType, K4CharGenPhase} from "../scripts/constants";
+import K4Socket, {UserTargetRef} from "./K4Socket";
+import U from "../scripts/utilities";
 import {InterfaceToObject} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
 // #endregion
 
-/** ==== REPLACE TEMPLATE.JSON WITH DATA MODELS ====
+/** ==== REPLACE TEMPLATE .JSON WITH DATA MODELS ====
  * https://www.foundryvtt.wiki/en/development/api/DataModel
  *
  * Example of minimal template.json:
@@ -173,6 +173,7 @@ declare global {
         description: string,
         notes: string
       }
+      export type Any = PC | NPC;
     }
 
     /**
@@ -212,10 +213,10 @@ declare global {
     /**
      * Discriminated union of all actor system schemas
      *  */
-    // export type System<T extends K4ActorType = K4ActorType> =
-    //   T extends K4ActorType.pc ? SystemSchema.PC
-    //   : T extends K4ActorType.npc ? SystemSchema.NPC
-    //   : SystemSchema.Any;
+    export type Source<T extends K4ActorType = K4ActorType> =
+      T extends K4ActorType.pc ? InterfaceToObject<SourceSchema.PC>
+      : T extends K4ActorType.npc ? InterfaceToObject<SourceSchema.NPC>
+      : SourceSchema.Any;
     export type System<T extends K4ActorType = K4ActorType> =
       T extends K4ActorType.pc ? InterfaceToObject<SystemSchema.PC>
       : T extends K4ActorType.npc ? InterfaceToObject<SystemSchema.NPC>
@@ -1186,19 +1187,19 @@ class K4Actor extends Actor {
       if (woundData.isCritical) {
         if (this.wounds_critical.length) {
           if (isWoundUpgrading) {
-            ui.notifications.error(`${this.name} has already suffered ${U.verbalizeNum(this.wounds_serious.length)} serious wounds and a critical wound: They can withstand no further injury.`);
+            getNotifier().error(`${this.name} has already suffered ${U.verbalizeNum(this.wounds_serious.length)} serious wounds and a critical wound: They can withstand no further injury.`);
           } else {
-            ui.notifications.error(`${this.name} has already suffered a critical wound and cannot withstand another.`);
+            getNotifier().error(`${this.name} has already suffered a critical wound and cannot withstand another.`);
           }
           return;
         }
         if (isWoundUpgrading) {
-          ui.notifications.warn(`${this.name} already has ${U.verbalizeNum(this.wounds_serious.length)} serious wounds, and suffers a CRITICAL WOUND instead!`);
+          getNotifier().warn(`${this.name} already has ${U.verbalizeNum(this.wounds_serious.length)} serious wounds, and suffers a CRITICAL WOUND instead!`);
         } else {
-          ui.notifications.warn(`${this.name} suffers a CRITICAL WOUND!`);
+          getNotifier().warn(`${this.name} suffers a CRITICAL WOUND!`);
         }
       } else {
-        ui.notifications.warn(`${this.name} suffers a Serious Wound!`);
+        getNotifier().warn(`${this.name} suffers a Serious Wound!`);
       }
       kLog.log("Starting Wounds", U.objClone(this.system.wounds));
       await this.update({[`system.wounds.${woundData.id}`]: woundData});
@@ -1733,7 +1734,7 @@ class K4Actor extends Actor {
    * will be rerendered once the animation completes.
    *  - as options.updateAnim   *
    **/
-  override async update(data: Record<string, unknown>, options: DocumentModificationContext & {updateAnim?: GsapAnimation;} = {}): Promise<Maybe<this>> {
+  override async update(data: Record<string, unknown>, options: Record<string, unknown> & {updateAnim?: GsapAnimation;} = {}): Promise<Maybe<this>> {
 
     const {updateAnim, ...updateOptions} = options;
     if (updateAnim && this.sheet.rendered) {

@@ -1,10 +1,10 @@
 // #region IMPORTS ~
-import C from "../scripts/constants.js";
-import U from "../scripts/utilities.js";
-import K4Actor, {K4ActorType} from "./K4Actor.js";
-import K4Item, {K4ItemType} from "./K4Item.js";
-import {K4RollResult} from "./K4Roll.js";
-import K4ActiveEffect, {UserRef} from "./K4ActiveEffect.js";
+import C from "../scripts/constants";
+import U from "../scripts/utilities";
+import K4Actor, {K4ActorType} from "./K4Actor";
+import K4Item, {K4ItemType} from "./K4Item";
+import {K4RollResult} from "./K4Roll";
+import K4ActiveEffect, {UserRef} from "./K4ActiveEffect";
 // #endregion
 
 // #region TYPES ~
@@ -731,19 +731,19 @@ class K4ChatMessage extends ChatMessage {
     // Add click event listener for the In-Character button
     buttonHtml.find("#ic").on("click", (event: ClickEvent) => {
       event.preventDefault(); // Prevent the default form submission
-      ui.notifications.info("Message is In-Character"); // Notify the user
+      getNotifier().info("Message is In-Character"); // Notify the user
       chatForm.attr("data-type", "ic"); // Set the data-type attribute to "ic"
     });
     // Add click event listener for the Out-of-Character button
     buttonHtml.find("#ooc").on("click", (event: ClickEvent) => {
       event.preventDefault(); // Prevent the default form submission
-      ui.notifications.info("Message is Out-of-Character"); // Notify the user
+      getNotifier().info("Message is Out-of-Character"); // Notify the user
       chatForm.attr("data-type", "ooc"); // Set the data-type attribute to "ooc"
     });
     // Add click event listener for the GM Whisper button
     buttonHtml.find("#gm").on("click", (event: ClickEvent) => {
       event.preventDefault(); // Prevent the default form submission
-      ui.notifications.info("Message will be Whispered to the GM"); // Notify the user
+      getNotifier().info("Message will be Whispered to the GM"); // Notify the user
       chatForm.attr("data-type", "gm"); // Set the data-type attribute to "gm"
     });
   }

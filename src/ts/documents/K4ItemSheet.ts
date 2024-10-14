@@ -1,12 +1,12 @@
 // #region IMPORTS ~
-import K4Item from "./K4Item.js";
-import C from "../scripts/constants.js";
-import U from "../scripts/utilities.js";
-import K4Actor, {K4ActorType} from "./K4Actor.js";
+import K4Item from "./K4Item";
+import C from "../scripts/constants";
+import U from "../scripts/utilities";
+import K4Actor, {K4ActorType} from "./K4Actor";
 import {K4ItemType} from "./K4Item";
-import K4ActiveEffect from "./K4ActiveEffect.js";
-import K4GMTracker from "./K4GMTracker.js";
-import {Dragger} from "../libraries.js";
+import K4ActiveEffect from "./K4ActiveEffect";
+import K4GMTracker from "./K4GMTracker";
+import {Dragger} from "../libraries";
 // #endregion
 
 type K4ItemSheetOptions = DocumentSheetOptions & {
@@ -279,7 +279,7 @@ export default class K4ItemSheet extends ItemSheet {
       // Quick active effects control for dev purposes
       html.find(".effect-control").on("click", (ev) => {
         if ( self.item.isOwned ) {
-          ui.notifications.warn(getI18n().localize("BITD.EffectWarning"));
+          getNotifier().warn(getLocalizer().localize("BITD.EffectWarning"));
           return undefined;
         }
         void K4ActiveEffect.onManageActiveEffect(ev, self.item);

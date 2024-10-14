@@ -26,15 +26,15 @@ Object.entries(PACKS)
   )
  */
 
-import {K4Attribute, K4ConditionType} from "./constants.js";
-import K4ActiveEffect, {UserRef, EffectDuration, EffectResetOn, K4Change, PromptInputType} from "../documents/K4ActiveEffect.js";
+import {K4Attribute, K4ConditionType} from "./constants";
+import K4ActiveEffect, {UserRef, EffectDuration, EffectResetOn, K4Change, PromptInputType} from "../documents/K4ActiveEffect";
 import {
   K4ItemType,
   K4ItemSubType,
   K4ItemRange
-} from "../documents/K4Item.js";
-import {AlertType} from "../documents/K4Alert.js";
-import {UserTargetRef} from "../documents/K4Socket.js";
+} from "../documents/K4Item";
+import {AlertType} from "../documents/K4Alert";
+import {UserTargetRef} from "../documents/K4Socket";
 
 console.log("Loading item-data.ts");
 console.log("K4ItemType in item-data.ts:", K4ItemType);

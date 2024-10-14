@@ -64,7 +64,8 @@ const rules = {
 
 /** === CONFIGURATION === */
 
-const isExtremelyStrict = false;
+const IS_STRICT = false;
+const IS_DEVELOPING = true;
 
 /** The various no-unsafe-* rules inevitably cause a proliferation of duplicate
  * alerts that ultimately reflect the same error -- as the erroring value propagates
@@ -75,7 +76,7 @@ const isExtremelyStrict = false;
  * During development, where temporary minor errors should not ignite the codebase
  * in a flurry of red errors, we turn this off. */
 
-if (isExtremelyStrict) {
+if (IS_STRICT) {
   rules["@typescript-eslint/no-explicit-any"] = "error";
   rules["@typescript-eslint/no-unsafe-argument"] = "error";
   rules["@typescript-eslint/no-unsafe-assignment"] = "error";
@@ -85,6 +86,10 @@ if (isExtremelyStrict) {
   rules["@typescript-eslint/no-unsafe-return"] = "error";
 
   rules["@typescript-eslint/no-unused-vars"] = "error";
+}
+
+if (IS_DEVELOPING) {
+  rules["@typescript-eslint/no-unused-vars"] = "off";
 }
 
 

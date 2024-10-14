@@ -1,7 +1,7 @@
-import U from "../scripts/utilities.js"
-import K4Actor from "./K4Actor.js";
-import K4Item from "./K4Item.js";
-import K4ChatMessage from "./K4ChatMessage.js";
+import U from "../scripts/utilities"
+import K4Actor from "./K4Actor";
+import K4Item from "./K4Item";
+import K4ChatMessage from "./K4ChatMessage";
 
 
 function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.SystemSchema.Any|K4Actor.SystemSchema.Any}) {

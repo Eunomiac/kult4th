@@ -53,7 +53,13 @@ declare global {
    * @returns The current I18n instance.
    * @throws Error if the I18n is not ready.
    */
-  function getI18n(): I18n;
+  function getLocalizer(): I18n;
+  /**
+   * Retrieves the current Notifications instance.
+   * @returns The current Notifications instance.
+   * @throws Error if the Notifications are not ready.
+   */
+  function getNotifier(): Notifications;
 
 
 

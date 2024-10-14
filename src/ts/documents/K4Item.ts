@@ -1,11 +1,11 @@
 // #region IMPORTS ~
-import U from "../scripts/utilities.js";
-import K4ItemSheet from "./K4ItemSheet.js";
-import K4ChatMessage from "./K4ChatMessage.js";
-import C, {K4Attribute} from "../scripts/constants.js";
-import K4Actor, {K4ActorType} from "./K4Actor.js";
-import K4Roll, {K4RollResult} from "./K4Roll.js";
-import K4ActiveEffect from "./K4ActiveEffect.js";
+import U from "../scripts/utilities";
+import K4ItemSheet from "./K4ItemSheet";
+import K4ChatMessage from "./K4ChatMessage";
+import C, {K4Attribute} from "../scripts/constants";
+import K4Actor, {K4ActorType} from "./K4Actor";
+import K4Roll, {K4RollResult} from "./K4Roll";
+import K4ActiveEffect from "./K4ActiveEffect";
 import {InterfaceToObject, ConstructorDataType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
 // #endregion
 
@@ -348,7 +348,7 @@ class K4Item extends Item {
       const existingItem: Maybe<K4Item> = actor.items
         .find((i: K4Item): boolean => i.name === item.name && i.type === item.type && i.id !== item.id);
       if (existingItem) {
-        ui.notifications.warn(`The item "${item.name}" already exists on this actor.`);
+        getNotifier().warn(`The item "${item.name}" already exists on this actor.`);
         await item.delete();
         return false; // Returning false prevents the item from being created
       }

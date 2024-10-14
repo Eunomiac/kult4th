@@ -1,23 +1,14 @@
 import K4Config from "../scripts/config";
-// import K4Roll from "../documents/K4Roll.js";
-import {DebugReport} from "../scripts/logger.js";
+import {DebugReport} from "../scripts/logger";
 
-import K4ActiveEffect from "../documents/K4ActiveEffect.js";
-import type K4Actor from "../documents/K4Actor.js";
-// import K4Alert from "../documents/K4Alert.js";
-// import K4CharGen from "../documents/K4CharGen.js";
-import type K4ChatMessage from "../documents/K4ChatMessage.js";
-// import K4Dialog from "../documents/K4Dialog.js";
-// import K4GMTracker from "../documents/K4GMTracker.js";
-import type K4Item from "../documents/K4Item.js";
-// import K4ItemSheet from "../documents/K4ItemSheet.js";
-// import K4NPCSheet from "../documents/K4NPCSheet.js";
-// import K4PCSheet from "../documents/K4PCSheet.js";
-import type K4Roll from "../documents/K4Roll.js";
-// import K4Scene from "../documents/K4Scene.js";
-// import K4Socket from "../documents/K4Socket.js";
-// import K4Sound from "../documents/K4Sound.js";
-// import K4TextEnricher from "../documents/K4TextEnricher.js";
+import K4ActiveEffect from "../documents/K4ActiveEffect";
+import K4Actor from "../documents/K4Actor";
+import K4ChatMessage from "../documents/K4ChatMessage";
+import K4Dialog from "../documents/K4Dialog";
+import K4Item from "../documents/K4Item";
+import K4Roll from "../documents/K4Roll";
+import K4Scene from "../documents/K4Scene";
+
 
 import "./general-types";
 import "./system-types";
@@ -55,10 +46,13 @@ interface ClampResponse {
 }
 declare global {
   interface DocumentClassConfig {
-      Actor: K4Actor;
-      Item: K4Item;
+      Actor: typeof K4Actor;
+      Item: typeof K4Item;
       ActiveEffect: typeof K4ActiveEffect;
-      ChatMessage: K4ChatMessage;
+      ChatMessage: typeof K4ChatMessage;
+      Dialog: typeof K4Dialog;
+      Roll: typeof K4Roll;
+      Scene: typeof K4Scene;
   }
 }
 
@@ -113,8 +107,16 @@ declare global {
   };
 
   interface SourceConfig {
-    Actor: K4ActorSourceData.any,
-    Item: K4ItemSourceData.any
+    Actor: K4Actor.Source,
+    Item: K4Item.Source
+  }
+
+  interface FlagConfig {
+    ActiveEffect: {
+      kult4th: {
+        data: K4ActiveEffect.ExtendedData
+      };
+    };
   }
 
   // interface ActiveEffect {

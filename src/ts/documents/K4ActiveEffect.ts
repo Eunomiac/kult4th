@@ -1,20 +1,19 @@
-// import {ReadyGame} from "@foundryvtt/foundry/types/types/ready-game.js";
 // #region IMPORTS ~
-import C, {K4Attribute, K4ConditionType, K4WoundType} from "../scripts/constants.js";
-import U from "../scripts/utilities.js";
-import {formatForKult} from "../scripts/helpers.js";
-import type K4Actor from "./K4Actor.js";
-import {K4ActorType} from "./K4Actor.js";
-import K4Item, {K4ItemType, K4ItemRange} from "./K4Item.js";
-import K4Roll, {K4RollResult} from "./K4Roll.js";
-import K4Scene from "./K4Scene.js";
-import K4ChatMessage from "./K4ChatMessage.js";
-import K4Dialog, {PromptInputType} from "./K4Dialog.js";
-import K4Alert, {AlertType} from "./K4Alert.js";
-import {UserTargetRef} from "./K4Socket.js";
+import C, {K4Attribute, K4ConditionType, K4WoundType} from "../scripts/constants";
+import U from "../scripts/utilities";
+import {formatForKult} from "../scripts/helpers";
+import type K4Actor from "./K4Actor";
+import {K4ActorType} from "./K4Actor";
+import K4Item, {K4ItemType, K4ItemRange} from "./K4Item";
+import K4Roll, {K4RollResult} from "./K4Roll";
+import K4Scene from "./K4Scene";
+import K4ChatMessage from "./K4ChatMessage";
+import K4Dialog, {PromptInputType} from "./K4Dialog";
+import K4Alert, {AlertType} from "./K4Alert";
+import {UserTargetRef} from "./K4Socket";
 // #endregion
 
-// #region -- TYPES & ENUMS -- ~
+// #region -- TYPES, ENUMS & FLAG CONFIGURATION -- ~
 // #region ENUMS ~
 
 /** == EFFECT SOURCE ==
@@ -439,7 +438,7 @@ namespace K4ActiveEffect {
  * @param {boolean} isPermanent - Whether the update is permanent.
  * @returns {Promise<void>} - A promise that resolves when the update is complete.
  */
-async function applyUpdate(doc: UpdateableDoc, key: Key, value: unknown, isPermanent: boolean): Promise<void> {
+async function applyUpdate(doc: K4Item|K4Actor, key: Key, value: unknown, isPermanent: boolean): Promise<void> {
   // Log the update details for debugging purposes
   kLog.log(`Updating document with key: ${String(key)}, value: ${String(value)}, isPermanent: ${String(isPermanent)}`, { doc, key, value, isPermanent });
 
@@ -673,7 +672,7 @@ const CUSTOM_FUNCTIONS = {
               if (typeof targetString !== "string") {
                 throw new Error(`Invalid target for AppendText: '${target}'`);
               }
-              void applyUpdate(move as UpdateableDoc, target, [
+              void applyUpdate(move, target, [
                 targetString,
                 String(value),
                 this.parentEffect!.eData.fromText
@@ -742,7 +741,7 @@ const CUSTOM_FUNCTIONS = {
           throw new Error(`Target of 'PushElement' operation must be an array, but '${target}' is a '${typeof curVal}'.`)
         }
       }
-      await applyUpdate(actor as UpdateableDoc, target, value, permanent ?? false);
+      await applyUpdate(actor, target, value, permanent ?? false);
       return true;
     }
     if (filter === "gmtracker") {
@@ -1460,8 +1459,6 @@ class K4ActiveEffect extends ActiveEffect {
    *
    * Each BuildData object is parsed via K4ActiveEffect.#parseEffectData(data: BuildData, origin: Origin)
    *
-   *
-   * Creates an array of K4ActiveEffect instances from the provided effectDataSet, origin, and target.
    * If the effectDataSet is an array, it will create an array of K4ActiveEffect instances.
    * If the effectDataSet is a single object, it will create a single K4ActiveEffect instance.
    * If the origin is a K4ChatMessage, it will create the effect for the actor of the chat message.
@@ -1749,7 +1746,7 @@ class K4ActiveEffect extends ActiveEffect {
     }
   }
 
-  override async delete(options?: DocumentModificationContext) {
+  override async delete(options?: Record<string, unknown>) {
     if (this.isOwnedByActor() && this.id) {
       await this.actor.deleteEmbeddedDocuments("ActiveEffect", [this.id]);
       /**
@@ -2015,7 +2012,6 @@ interface K4ActiveEffect {
   changes: EffectChangeData[],
   parent: K4Actor|K4Item|null,
   updateSource(updateData: {changes: EffectChangeData[]}): Promise<void>,
-  // data: K4ActiveEffect.Data & ActiveEffectData;
   flags: {
     kult4th: {
       data: K4ActiveEffect.ExtendedData

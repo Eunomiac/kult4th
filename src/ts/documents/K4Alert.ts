@@ -1,13 +1,13 @@
 // #region IMPORTS ~
-import C, {K4Influence} from "../scripts/constants.js";
-import U from "../scripts/utilities.js";
-import {AlertPaths, InfluenceKeys, SVGPathData} from "../scripts/svgdata.js";
-import K4Actor from "./K4Actor.js";
-import {K4RollResult} from "./K4Roll.js";
-// import K4ActiveEffect from "./K4ActiveEffect.js";
-import K4Sound from "./K4Sound.js"
-import {formatForKult} from "../scripts/helpers.js";
-import K4Socket, {UserTargetRef} from "./K4Socket.js";
+import C, {K4Influence} from "../scripts/constants";
+import U from "../scripts/utilities";
+import {AlertPaths, InfluenceKeys, SVGPathData} from "../scripts/svgdata";
+import K4Actor from "./K4Actor";
+import {K4RollResult} from "./K4Roll";
+// import K4ActiveEffect from "./K4ActiveEffect";
+import K4Sound from "./K4Sound"
+import {formatForKult} from "../scripts/helpers";
+import K4Socket, {UserTargetRef} from "./K4Socket";
 // #endregion
 
 // #region === TYPES, ENUMS, INTERFACE AUGMENTATION === ~

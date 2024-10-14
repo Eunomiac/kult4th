@@ -1,4 +1,4 @@
-import U from "./utilities.js";
+import U from "./utilities";
 
 // Define custom effect types
 interface TooltipEffectConfig {

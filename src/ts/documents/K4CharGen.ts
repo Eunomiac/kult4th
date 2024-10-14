@@ -1,20 +1,17 @@
-/* eslint-disable @typescript-eslint/no-extraneous-class */
 // #region IMPORTS ~
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import C, {K4Attribute, StabilityConditions, K4ConditionType, K4Stability, K4Archetype, ArchetypeTier, Archetypes, K4GamePhase} from "../scripts/constants.js";
-import U from "../scripts/utilities.js";
-import {Dragger, InertiaPlugin, CustomEase, CustomWiggle} from "../libraries.js";
-import K4Actor, {K4ActorType, K4AttributeData} from "./K4Actor.js";
-import K4Item, {K4ItemType} from "./K4Item.js";
-import K4Dialog, {PromptInputType} from "./K4Dialog.js";
-import K4ActiveEffect from "./K4ActiveEffect.js";
-import K4Roll from "./K4Roll.js";
-import {gsap} from "../libraries.js";
-import K4GMTracker from "./K4GMTracker.js";
-import K4Alert, {AlertType} from "./K4Alert.js";
-import K4DebugDisplay from "./K4DebugDisplay.js";
-import K4Socket, {UserTargetRef} from "./K4Socket.js";
-/* eslint-enable @typescript-eslint/no-unused-vars */
+import C, {K4Attribute, StabilityConditions, K4ConditionType, K4Stability, K4Archetype, ArchetypeTier, Archetypes, K4GamePhase} from "../scripts/constants";
+import U from "../scripts/utilities";
+import {Dragger, InertiaPlugin, CustomEase, CustomWiggle} from "../libraries";
+import K4Actor, {K4ActorType, K4AttributeData} from "./K4Actor";
+import K4Item, {K4ItemType} from "./K4Item";
+import K4Dialog, {PromptInputType} from "./K4Dialog";
+import K4ActiveEffect from "./K4ActiveEffect";
+import K4Roll from "./K4Roll";
+import {gsap} from "../libraries";
+import K4GMTracker from "./K4GMTracker";
+import K4Alert, {AlertType} from "./K4Alert";
+import K4DebugDisplay from "./K4DebugDisplay";
+import K4Socket, {UserTargetRef} from "./K4Socket";
 // #endregion
 
 // #region CONFIGURATION ~

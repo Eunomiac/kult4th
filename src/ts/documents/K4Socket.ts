@@ -1,4 +1,4 @@
-import U from "../scripts/utilities.js";
+import U from "../scripts/utilities";
 
 enum UserTargetRef {
   gm = "gm", // The alert is shown to the GM.

@@ -4,7 +4,7 @@
 // import K4Item, {K4ItemType, K4ItemSubType} from "./K4Item.js";
 // import K4Actor, {K4ActorType} from "./K4Actor.js";
 // import K4ChatMessage from "./K4ChatMessage.js";
-import K4ActiveEffect from "./K4ActiveEffect.js";
+import K4ActiveEffect from "./K4ActiveEffect";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
