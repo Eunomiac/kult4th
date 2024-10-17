@@ -65,7 +65,7 @@ declare global {
   // Represents a value or a Promise resolving to a value
   type ValueOrPromise<V = unknown> = V | Promise<V>;
   // Represents a function with an unknown number of parameters, returning a value of type R
-  type Func<R = unknown, T extends unknown[] = unknown[]> = (...args: T) => R; // a function with a known return type and a tuple of parameter types
+  type Func<R = unknown, T = unknown> = (...args: T[]) => R; // a function with a known return type and a tuple of parameter types
   // Represents either an element or a jQuery object wrapping that element
   type ElemOrJQuery<T extends HTMLElement = HTMLElement> = T | JQuery<T>;
 
@@ -159,7 +159,7 @@ declare global {
   // #endregion
 
   // #region BRANDED TYPES ~
-  declare const brand: unique symbol;
+  const brand: unique symbol;
   type Brand<T, BrandName extends string> = T & { [brand]: BrandName };
 
   // number === Float type guard
@@ -254,10 +254,6 @@ declare global {
   // Utility Types for Variable Template Values
   interface ValueMax {min: number, max: number, value: number}
   type NamedValueMax = ValueMax & {name: string};
-
-  interface Scenes {
-    current: SceneDoc;
-  }
 
   // #region TinyMCE ~
   interface TinyMCEConfig {

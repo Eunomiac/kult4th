@@ -244,9 +244,11 @@ class K4CharGen {
 
     const gmTracker = await K4GMTracker.Get();
     const user = getUser();
-    const userPC = getActor();
+    let userPC: K4Actor<K4ActorType.pc>;
 
-    if (!userPC) {
+    try {
+      userPC = getActor();
+    } catch (error) {
       void K4Alert.Alert({
         type: AlertType.simple,
         target: UserTargetRef.gm,
@@ -261,7 +263,7 @@ class K4CharGen {
       return;
     }
 
-    await userPC.preInitializeCharGen();
+    userPC.preInitializeCharGen();
   }
 
   // archetypeData: Map<K4Archetype, Archetype.Data> = new Map<K4Archetype, Archetype.Data>();
@@ -783,7 +785,7 @@ class K4CharGen {
     const [
       _gmUsers,
       otherPlayerUsers
-    ] = U.partition<User>(otherUsers, (user) => (user as User).isGM);
+    ] = U.partition<User>(otherUsers, (user: User) => user.isGM);
 
     const otherPlayerData = Object.fromEntries(otherPlayerUsers
       .map((user) => {
@@ -1446,6 +1448,8 @@ class K4CharGen {
 
       const actor = this.actor;
       const trait = traitContainer$.attr("data-trait")!;
+
+      const test = getGame().i18n;
 
       tl = U.gsap.timeline({
         paused: true,

@@ -39,7 +39,10 @@ class K4GMTracker {
       return true;
     },
     "AnnouncePreloadStart": async (userID: IDString, phase: K4GamePhase) => {
-      const user = getGame().users.get(userID);
+        const user = getGame().users.get(userID);
+        if (!user) {
+          throw new Error(`User ${userID} not found`);
+        }
       kLog.log(`{{AnnouncePreloadStart}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Start for '${U.uCase(phase)}' Phase`);
       const tracker = await K4GMTracker.Get();
       tracker.setUserLoadStatus(userID, phase, K4LoadStatus.loading);
@@ -47,6 +50,9 @@ class K4GMTracker {
     },
     "AnnouncePreloadComplete": async (userID: IDString, phase: K4GamePhase, isAlreadyLoaded = false) => {
       const user = getGame().users.get(userID);
+      if (!user) {
+        throw new Error(`User ${userID} not found`);
+      }
       kLog.log(`{{AnnouncePreloadComplete}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Complete for '${U.uCase(phase)}' Phase`);
       const tracker = await K4GMTracker.Get();
       tracker.setUserLoadStatus(userID, phase, K4LoadStatus.loaded);
@@ -54,6 +60,9 @@ class K4GMTracker {
     },
     "AnnouncePreloadError": async (userID: IDString, phase: K4GamePhase, error: string) => {
       const user = getGame().users.get(userID);
+      if (!user) {
+        throw new Error(`User ${userID} not found`);
+      }
       kLog.log(`{{AnnouncePreloadError}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Error for '${U.uCase(phase)}' Phase: ${error}`);
       const tracker = await K4GMTracker.Get();
       tracker.setUserLoadStatus(userID, phase, K4LoadStatus.error);
@@ -79,6 +88,12 @@ class K4GMTracker {
     ) => {
       const user = getGame().users.get(userID);
       const actor = getGame().actors.get(actorID);
+      if (!user) {
+        throw new Error(`User ${userID} not found`);
+      }
+      if (!actor) {
+        throw new Error(`Actor ${actorID} not found`);
+      }
       kLog.log(`{{CharChange_Name}} User ${user.name} changed the name of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
       void tracker.updateSummaryOf(actorID);
@@ -92,6 +107,12 @@ class K4GMTracker {
     ) => {
       const user = getGame().users.get(userID);
       const actor = getGame().actors.get(actorID);
+      if (!user) {
+        throw new Error(`User ${userID} not found`);
+      }
+      if (!actor) {
+        throw new Error(`Actor ${actorID} not found`);
+      }
       kLog.log(`{{CharChange_Archetype}} User ${user.name} changed the archetype of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
       void tracker.updateSummaryOf(actorID);
@@ -105,7 +126,13 @@ class K4GMTracker {
       value: string
     ) => {
       const user = getGame().users.get(userID);
-      const actor = getGame().actors.get(actorID) as K4Actor<K4ActorType.pc>;
+      const actor = getGame().actors.get(actorID);
+      if (!user) {
+        throw new Error(`User ${userID} not found`);
+      }
+      if (!actor) {
+        throw new Error(`Actor ${actorID} not found`);
+      }
       kLog.log(`{{CharChange_Attributes}} User ${user.name} changed the value of attribute '${attribute}' of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
       void tracker.updateSummaryOf(actorID);
@@ -122,6 +149,12 @@ class K4GMTracker {
     ) => {
       const user = getGame().users.get(userID);
       const actor = getGame().actors.get(actorID);
+      if (!user) {
+        throw new Error(`User ${userID} not found`);
+      }
+      if (!actor) {
+        throw new Error(`Actor ${actorID} not found`);
+      }
       if (isAdding) {
         kLog.log(`{{CharChange_Advantage}} User ${user.name} added the ${traitType} '${value}' ${
           isArchetype ? `to archetype ${actor.archetype}` : "to extra traits"
@@ -142,6 +175,12 @@ class K4GMTracker {
     ) => {
       const user = getGame().users.get(userID);
       const actor = getGame().actors.get(actorID);
+      if (!user) {
+        throw new Error(`User ${userID} not found`);
+      }
+      if (!actor) {
+        throw new Error(`Actor ${actorID} not found`);
+      }
       kLog.log(`{{CharChange_Text}} User ${user.name} changed '${textBlock}' of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
       void tracker.updateSummaryOf(actorID);

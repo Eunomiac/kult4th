@@ -1159,7 +1159,7 @@ export const Colors = {
   // COLOR DEFINITION DATA
   get Defs() {
     return {
-      linearGradients: Object.values(U.objMap(
+      linearGradients: Object.values(U.objMap<Record<string, GradientDef>, Record<string, { fill: Partial<SVGGradientDef>, stroke: Partial<SVGGradientDef> }>>(
         {
           bgold: {
             fill: {
@@ -1274,51 +1274,40 @@ export const Colors = {
             }
           }
         },
-        (({fill, stroke}: GradientDef, iType: K4ItemType) => {
+        ((def: GradientDef, iType: string) => {
+          const { fill, stroke } = def;
           return {
-            fill: {
-              id: `fill-${iType}`,
-              x: [0, 1],
-              y: [0, 1],
-              ...fill,
-              stops: (fill.stops ?? []).map((stop, i, stops) => {
-                return ({
+            [iType]: {  // Wrap the result in an object with the iType as the key
+              fill: {
+                id: `fill-${iType}`,
+                x: [0, 1],
+                y: [0, 1],
+                ...fill,
+                stops: (fill.stops ?? []).map((stop, i, stops) => ({
                   offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
                   color: typeof stop === "string" ? stop : stop.color,
                   opacity: 1,
                   ...(typeof stop === "string" ? {} : stop)
-                });
-              }),
-              ...(typeof fill.stops === "string"
-                ? {}
-                : fill.stops)
-            },
-            stroke: {
-              id: `stroke-${iType}`,
-              x: [0, 1],
-              y: [0, 1],
-              ...stroke,
-              stops: (stroke.stops ?? []).map((stop, i, stops) => {
-                return {
+                })),
+                ...(typeof fill.stops === "string" ? {} : fill.stops)
+              },
+              stroke: {
+                id: `stroke-${iType}`,
+                x: [0, 1],
+                y: [0, 1],
+                ...stroke,
+                stops: (stroke.stops ?? []).map((stop, i, stops) => ({
                   offset: U.pInt(100 * (i / (Math.max(stops.length - 1, 0)))),
                   color: typeof stop === "string" ? stop : stop.color,
                   opacity: 1,
                   ...(typeof stop === "string" ? {} : stop)
-                };
-              }),
-              ...(typeof stroke.stops === "string"
-                ? {}
-                : stroke.stops)
+                })),
+                ...(typeof stroke.stops === "string" ? {} : stroke.stops)
+              }
             }
           };
-        }) as mapFunc<valFunc<unknown, GradientDef>, unknown, GradientDef>
-      ) as Record<
-        K4ItemType,
-        {
-          fill: Partial<SVGGradientDef>,
-          stroke: Partial<SVGGradientDef>;
-        }
-      >).map((defs) => Object.values(defs)).flat()
+        }) as mapFunc<GradientDef, Record<string, { fill: Partial<SVGGradientDef>, stroke: Partial<SVGGradientDef> }>>
+      )).map((defs) => Object.values(defs)).flat()
     }
   },
 

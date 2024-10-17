@@ -314,7 +314,7 @@ interface K4Item<T extends K4ItemType = K4ItemType> {
   get sheet(): K4ItemSheet;
   // get effects(): Collection<K4ActiveEffect>;
   system: K4Item.System<T>;
-  parent: ActorDoc | null;
+  parent: K4Actor | null;
 }
 // #endregion
 // #endregion

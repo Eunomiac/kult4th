@@ -171,7 +171,7 @@ const isJQuery = <T>(ref: T): ref is T & JQuery => ref instanceof jQuery;
 const isHexColor = <T>(ref: T): ref is T & HexColor => typeof ref === "string" && /^#(([0-9a-fA-F]{2}){3,4}|[0-9a-fA-F]{3,4})$/.test(ref);
 const isRGBColor = <T>(ref: T): ref is T & RGBColor => typeof ref === "string" && /^rgba?\((\d{1,3},\s*){1,2}?\d{1,3},\s*\d{1,3}(\.\d+)?\)$/.test(ref);
 
-const isFunc = <T>(ref: T): ref is T & ((...args: unknown[]) => unknown) => typeof ref === "function";
+const isFunc = <T>(ref: unknown): ref is T & ((...args: unknown[]) => unknown) => typeof ref === "function";
 const isUndefined = (ref: unknown): ref is undefined => ref === undefined;
 const isNullOrUndefined = <T>(ref: T): ref is T & (null | undefined) => ref === null || ref === undefined;
 const isDefined = <T>(ref: T): ref is T & (null | NonNullable<T>) => !isUndefined(ref);
@@ -1008,7 +1008,7 @@ const toArray = gsap.utils.toArray;
 // #region ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████ ~
 
 const checkVal = ({k, v}: {k?: unknown, v?: unknown}, checkTest: checkTest) => {
-  if (isFunc(checkTest)) {
+  if (isFunc<testFunc>(checkTest)) {
     if (isDefined(v)) {return checkTest(v, k);}
     return checkTest(k);
   }
@@ -1106,7 +1106,7 @@ const objClean = <T>(data: T, remVals: UncleanValues[] = [undefined, null, "", {
 // Given an object and a predicate function, returns array of two objects:
 //   one with entries that pass, one with entries that fail.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const partition = <Type>(obj: Type[], predicate: testFunc<valFunc<any>> = () => true): [Type[], Type[]] => [
+const partition = <Type>(obj: Type[], predicate: testFunc<Type> = () => true): [Type[], Type[]] => [
   objFilter(obj, predicate),
   objFilter(obj, (v: unknown, k: Key | undefined) => !predicate(v, k))
 ];
@@ -1145,48 +1145,49 @@ const zip = <T extends Key, U>(keys: T[], values: U[]): Record<T, U> => {
  *  An object-equivalent Array.map() function, which accepts mapping functions to transform both keys and values.
  *  If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
  * @param {Index} obj
- * @param {mapFunc<keyFunc|valFunc>|false} keyFunc
- * @param {mapFunc<valFunc>} [valFunc]
+ * @param {mapFunc<unknown, unknown>|false} keyFunc
+ * @param {mapFunc<unknown, unknown>} [valFunc]
  */
-function objMap<T extends Record<PropertyKey, unknown>|unknown[]>(
-  obj: Index,
-  valFunc: mapFunc<valFunc>
-): T extends Record<PropertyKey, unknown> ? Record<PropertyKey, unknown> : unknown[]
-function objMap<T extends Record<PropertyKey, unknown>|unknown[]>(
-  obj: Index,
-  valFunc: false,
-  keyFunc: mapFunc<keyFunc>
-): T extends Record<PropertyKey, unknown> ? Record<PropertyKey, unknown> : unknown[]
-function objMap<T extends Record<PropertyKey, unknown>|unknown[]>(
-  obj: Index,
-  keyFunc: mapFunc<keyFunc>,
-  valFunc: mapFunc<valFunc>
-): T extends Record<PropertyKey, unknown> ? Record<PropertyKey, unknown> : unknown[]
-function objMap<T extends Record<PropertyKey, unknown> | unknown[]>(
+function objMap<T extends Record<PropertyKey, unknown>|unknown[], R = unknown>(
   obj: T,
-  keyFunc: mapFunc<keyFunc> | mapFunc<valFunc> | false,
-  valFunc?: mapFunc<valFunc> | mapFunc<keyFunc>
-): T {
-  let valFuncTyped = valFunc as mapFunc<valFunc> | undefined;
-  let keyFuncTyped = keyFunc as mapFunc<keyFunc> | false;
+  valFunc: mapFunc<ValOf<T>, R>
+): T extends Record<PropertyKey, unknown> ? Record<PropertyKey, R> : R[]
+function objMap<T extends Record<PropertyKey, unknown>|unknown[], K = unknown, R = unknown>(
+  obj: T,
+  valFunc: false,
+  keyFunc: mapFunc<Key, K>
+): T extends Record<PropertyKey, unknown> ? Record<K, ValOf<T>> : T
+function objMap<T extends Record<PropertyKey, unknown>|unknown[], K = unknown, R = unknown>(
+  obj: T,
+  keyFunc: mapFunc<Key, K>,
+  valFunc: mapFunc<ValOf<T>, R>
+): T extends Record<PropertyKey, unknown> ? Record<K, R> : R[]
+function objMap<T extends Record<PropertyKey, unknown> | unknown[], K = unknown, R = unknown>(
+  obj: T,
+  keyOrValFunc: mapFunc<Key, K> | mapFunc<ValOf<T>, R> | false,
+  valFuncOrUndefined?: mapFunc<ValOf<T>, R>
+): T extends Record<PropertyKey, unknown> ? Record<K | PropertyKey, R | ValOf<T>> : R[] | T {
+  let valFunc: mapFunc<ValOf<T>, R>;
+  let keyFunc: mapFunc<Key, K | PropertyKey>;
 
-  if (!valFuncTyped) {
-    valFuncTyped = keyFunc as mapFunc<valFunc>;
-    keyFuncTyped = false;
-  }
-  if (!keyFuncTyped) {
-    keyFuncTyped = ((k: unknown) => k) as mapFunc<keyFunc>;
+  if (valFuncOrUndefined === undefined) {
+    valFunc = keyOrValFunc as mapFunc<ValOf<T>, R>;
+    keyFunc = (k: Key) => k;
+  } else {
+    keyFunc = keyOrValFunc === false ? (k: Key) => k : keyOrValFunc as mapFunc<Key, K>;
+    valFunc = valFuncOrUndefined;
   }
 
   if (Array.isArray(obj)) {
-    return obj.map(valFuncTyped) as T;
+    return obj.map((v, i) => valFunc(v, String(i) as Key)) as R[];
   }
 
-  return Object.fromEntries(Object.entries(obj).map(([key, val]) => {
-    assertNonNullType<mapFunc<valFunc>>(valFuncTyped, "function");
-    assertNonNullType<mapFunc<keyFunc>>(keyFuncTyped, "function");
-    return [keyFuncTyped(key, val), valFuncTyped(val, key)];
-  })) as T;
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, val]) => [
+      keyFunc(key as Key, val as ValOf<T>),
+      valFunc(val as ValOf<T>, key as Key)
+    ])
+  ) as Record<K | PropertyKey, R | ValOf<T>>;
 }
 /**
  * This function returns the 'size' of any reference passed into it, following these rules:

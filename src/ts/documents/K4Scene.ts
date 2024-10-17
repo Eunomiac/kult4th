@@ -39,8 +39,8 @@ class K4Scene extends Scene {
   // #region Type Guards ~ #endregion
 
   // #region GETTERS & SETTERS ~
-  // get effects(): EmbeddedCollection<K4ActiveEffect, K4Scene> {
-  //   return new EmbeddedCollection<K4ActiveEffect, K4Scene>(this, "effects");
+  // get effects(): foundry.abstract.EmbeddedCollection<K4ActiveEffect, K4Scene> {
+  //   return new foundry.abstract.EmbeddedCollection<K4ActiveEffect, K4Scene>(this, "effects");
   // }
 
   // #endregion

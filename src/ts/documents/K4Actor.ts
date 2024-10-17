@@ -275,8 +275,8 @@ interface K4Actor<Type extends K4ActorType = K4ActorType> {
   get type(): Type;
   get sheet(): Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet;
   // get ownership(): Record<IDString, number>;
-  get items(): EmbeddedCollection<K4Item, K4Actor>;
-  get effects(): EmbeddedCollection<K4ActiveEffect, K4Actor>;
+  get items(): foundry.abstract.EmbeddedCollection<K4Item, K4Actor>;
+  get effects(): foundry.abstract.EmbeddedCollection<K4ActiveEffect, K4Actor>;
   system: K4Actor.System<Type>;
 }
 // #endregion

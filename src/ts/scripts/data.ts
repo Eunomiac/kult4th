@@ -570,7 +570,7 @@ function getSubItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, o
  * @param {any[]} itemDataArray - The array of item data.
  * @returns {any[]} - The parsed item schemas.
  */
-function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.all): ConstructorDataType<typeof K4Item> {
+function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.all): foundry.abstract.Document.ConstructorDataFor<typeof K4Item> {
   const FOLDER_NAME_MAP = {
     [K4ItemType.advantage]: "Advantages",
     [K4ItemType.disadvantage]: "Disadvantages",
