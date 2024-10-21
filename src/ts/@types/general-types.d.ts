@@ -1,57 +1,163 @@
 // #region IMPORTS ~
+import K4Actor, {K4ActorType} from "../documents/K4Actor";
+import K4Item from "../documents/K4Item";
+import K4PCSheet from "../documents/K4PCSheet";
+import K4NPCSheet from "../documents/K4NPCSheet";
+import K4ItemSheet from "../documents/K4ItemSheet";
+import K4ActiveEffect from "../documents/K4ActiveEffect";
+import K4ChatMessage from "../documents/K4ChatMessage";
+import K4Dialog from "../documents/K4Dialog";
+import K4Roll from "../documents/K4Roll";
+import K4Scene from "../documents/K4Scene";
 
-import C from "../scripts/constants";
-import K4Config from "../scripts/config";
-import type K4Actor from "../documents/K4Actor";
-import type K4Item from "../documents/K4Item";
-import type K4PCSheet from "../documents/K4PCSheet";
-import type K4NPCSheet from "../documents/K4NPCSheet";
-import type K4ItemSheet from "../documents/K4ItemSheet";
-import type K4ActiveEffect from "../documents/K4ActiveEffect";
-import type K4ChatMessage from "../documents/K4ChatMessage";
-import type K4Dialog from "../documents/K4Dialog";
-import type K4Roll from "../documents/K4Roll";
-import type K4Scene from "../documents/K4Scene";
+import {Socket, SocketLib} from "./socketlib";
+// #endregion
 
-import {gsap} from "gsap";
+// #region CONFIGURATION OF SYSTEM CLASSES
+type ActorDoc = K4Actor; // Actor;
+type ItemDoc = K4Item; // Item;
+type ActorSheetDoc = K4PCSheet | K4NPCSheet; // ActorSheet;
+type ItemSheetDoc = K4ItemSheet; // ItemSheet;
 
+type ActiveEffectDoc = K4ActiveEffect; // ActiveEffect;
+type ChatMessageDoc = K4ChatMessage; // ChatMessage;
+type DialogDoc = K4Dialog; // Dialog;
+type RollDoc = K4Roll; // Roll;
+type SceneDoc = K4Scene; // Scene;
+type UserDoc = User; // User;
+// #endregion
+
+// #region Internal Convenience Types ~
+type HexDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "A" | "B" | "C" | "D" | "E" | "F";
+type MaybeSpace = " " | "";
+type FlexComma = `,${MaybeSpace}`;
+
+// #region Internal Clamp Types ~
+interface ClampOptions {
+  clamp?: number | string;
+  useNativeClamp?: boolean;
+  splitOnChars?: string[];
+  animate?: boolean | number;
+  truncationChar?: string;
+  truncationHTML?: string;
+}
+
+interface ClampResponse {
+  original: string;
+  clamped: string | undefined;
+}
+// #endregion
 // #endregion
 
 declare global {
 
-  // #region CONFIGURATION OF SYSTEM CLASSES
-  type ActorDoc = K4Actor; // Actor;
-  type ItemDoc = K4Item; // Item;
-  type ActorSheetDoc = K4PCSheet | K4NPCSheet; // ActorSheet;
-  type ItemSheetDoc = K4ItemSheet; // ItemSheet;
-
-  type ActiveEffectDoc = K4ActiveEffect; // ActiveEffect;
-  type ChatMessageDoc = K4ChatMessage; // ChatMessage;
-  type DialogDoc = K4Dialog; // Dialog;
-  type RollDoc = K4Roll; // Roll;
-  type SceneDoc = K4Scene; // Scene;
-  type UserDoc = User; // User;
-  // #endregion
-
-  // #region UTILITY TYPES
-  type HexDigit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "A" | "B" | "C" | "D" | "E" | "F";
-  type MaybeSpace = " " | "";
-  type FlexComma = `,${MaybeSpace}`;
-  // #endregion
-  // Type definitions for Clamp.js
-}
-
-declare global {
+  // #region CORE JAVASCRIPT AUGMENTATIONS ~
+  /**
+   * Extends the Array interface to provide a more precise type for the `includes` method.
+   * This allows for better type inference when checking if an array includes a specific item.
+   *
+   * @template T - The type of elements in the array.
+   * @template IncludesType - The type of the item being checked for inclusion.
+   *
+   * @param item - The item to search for in the array. The type is conditionally determined:
+   *               If T & IncludesType is never, it falls back to T; otherwise, it uses IncludesType.
+   * @param fromIndex - Optional. The position in the array at which to begin searching for item.
+   *
+   * @returns A boolean indicating whether the item is found in the array.
+   */
   interface Array<T> {
     includes<IncludesType>(
       item: [T & IncludesType] extends [never] ? T : IncludesType,
       fromIndex?: number
     ): boolean;
   }
+  // #endregion
+
+  // #region FUNCTIONS IN THE GLOBAL SCOPE ~
+
+  /**
+   * Retrieves the current Game instance.
+   * @returns The current Game instance.
+   * @throws Error if the Game is not ready.
+   */
+  function getGame(): ReadyGame;
+
+  /**
+   * Retrieves the current User instance.
+   * @returns The current User instance.
+   * @throws Error if the User is not ready.
+   */
+  function getUser(): User;
+
+  /**
+   * Retrieves the collection of all K4Actor instances in the game.
+   * @returns A Collection of K4Actor instances.
+   * @throws Error if the Actors collection is not ready.
+   */
+  function getActors(): Collection<K4Actor>;
+
+  /**
+   * Retrieves the collection of all K4Item instances in the game.
+   * @returns A Collection of K4Item instances.
+   * @throws Error if the Items collection is not ready.
+   */
+  function getItems(): Collection<K4Item>;
+
+  /**
+   * Retrieves the collection of all K4ChatMessage instances in the game.
+   * @returns A Collection of K4ChatMessage instances.
+   * @throws Error if the Messages collection is not ready.
+   */
+  function getMessages(): Collection<K4ChatMessage>;
+
+  /**
+   * Retrieves the collection of all User instances in the game.
+   * @returns A Collection of User instances.
+   * @throws Error if the Users collection is not ready.
+   */
+  function getUsers(): Collection<User>;
+
+  /**
+   * Retrieves the PC actor owned by the current user.
+   * @returns The current Actor instance.
+   * @throws Error if the Actor is not ready.
+   */
+  function getActor(): K4Actor<K4ActorType.pc>;
+
+  /**
+   * Retrieves the current I18n instance.
+   * @returns The current I18n instance.
+   * @throws Error if the I18n is not ready.
+   */
+  function getLocalizer(): Localization;
+
+  /**
+   * Retrieves the current Notifications instance.
+   * @returns The current Notifications instance.
+   * @throws Error if the Notifications are not ready.
+   */
+  function getNotifier(): Notifications;
+
+  /**
+   * The kLog object provides a set of functions for logging messages to the console, displaying them in the chat,
+   * and opening and closing reports.
+   */
+  const kLog: {
+    display: (...content: [string, ...unknown[]]) => void,
+    log: (...content: [string, ...unknown[]]) => void,
+    error: (...content: [string, ...unknown[]]) => void,
+    hbsLog: (...content: [string, ...unknown[]]) => void,
+    openReport: (name: string, title?: string, dbLevel?: number) => void,
+    report: (name: string, ...content: [string, ...unknown[]]) => void,
+    closeReport: (name: string) => void,
+  };
+
+  // #endregion
+
   // #region MISCELLANEOUS TYPE ALIASES (nonfunctional; for clarity) ~
 
   // Represents a Record of typed values and ambiguous keys
-  type List<V = unknown, K extends Key = Key> = Record<K, V>
+  type List<V = unknown, K extends Key = Key> = Record<K, V>;
 
   // Represents either an array or a list of values (i.e. where the keys do not matter)
   type Index<V = unknown> = List<V> | V[];
@@ -140,7 +246,7 @@ declare global {
    * @template R - The return type of the function being tested.
    * @template Type - The type of the function being tested, constrained to either `keyFunc` or `valFunc`.
    */
-  type testFunc<Type extends keyFunc<T, R> | valFunc<T, R> = keyFunc<T, R> | valFunc<T, R>, T = unknown, R = unknown> = (...args: Parameters<Type>) => boolean;
+  type testFunc<T = unknown, R = unknown, Type extends keyFunc<T, R> | valFunc<T, R> = keyFunc<T, R> | valFunc<T, R>> = (...args: Parameters<Type>) => boolean;
 
   /**
    * Represents a map function that takes the same parameters as either `keyFunc` or `valFunc` and returns the return type of the function being mapped.
@@ -149,18 +255,25 @@ declare global {
    * @template R - The return type of the function being mapped.
    * @template Type - The type of the function being mapped, constrained to either `keyFunc` or `valFunc`.
    */
-  type mapFunc<Type extends keyFunc<T, R> | valFunc<T, R> = keyFunc<T, R> | valFunc<T, R>, T = unknown, R = unknown> = (...args: Parameters<Type>) => ReturnType<Type>;
+  type mapFunc<T = unknown, R = unknown, Type extends keyFunc<T, R> | valFunc<T, R> = keyFunc<T, R> | valFunc<T, R>> = (...args: Parameters<Type>) => ReturnType<Type>;
 
   /**
    * Represents a type that can be used to check values. It can be a function that takes any number of unknown parameters and returns unknown,
    * a `testFunc` for either `keyFunc` or `valFunc`, a regular expression, a number, or a string.
    */
   type checkTest = ((...args: unknown[]) => unknown) | testFunc<unknown, unknown, keyFunc> | testFunc<unknown, unknown, valFunc> | RegExp | number | string;
+
+  type ObjectKey = string | number | symbol;
+  type ObjectValue = unknown;
+  type ObjectEntry = [ObjectKey, ObjectValue];
+
+  type MapFunction = (value: ObjectValue, key: ObjectKey) => any;
+  type TestFunction = (value: ObjectValue, key: ObjectKey) => boolean;
   // #endregion
 
   // #region BRANDED TYPES ~
-  declare const brand: unique symbol;
-  type Brand<T, BrandName extends string> = T & { [brand]: BrandName };
+  const brand: unique symbol;
+  type Brand<T, BrandName extends string> = T & {[brand]: BrandName;};
 
   // number === Float type guard
   type Float = Brand<number, "Float">;
@@ -185,16 +298,15 @@ declare global {
   type TargetFlagKey = Brand<string & DotKey, "TargetFlagKey">;
   // #endregion
 
+  // #region UTILITY TYPES ~
+
   // Represents an object describing dimensions of an HTML element, of form {x: number, y: number, width: number, height: number}
-  interface ElemPosData {x: number, y: number, width: number, height: number}
+  interface ElemPosData {x: number, y: number, width: number, height: number;}
 
   // Represents an object describing dimensions of an HTML element, in the form of a DOMRect object with mutable properties.
   type MutableRect = Omit<Mutable<DOMRect>, "toJSON">;
 
-  /**
-   * Represents a type that may be either of type T or undefined.
-   * @template T - The type that may be present or may be undefined.
-   */
+  // Represents a type that may be either of type T or undefined.
   type Maybe<T> = T | undefined;
 
   // Represents a tuple of two elements
@@ -221,26 +333,36 @@ declare global {
     -readonly [P in keyof T]: T[P];
   };
 
-  // Represents an Actor or Item document
+  // Represents a value with a minimum, maximum, and current value
+  interface ValueMax {min: number, max: number, value: number;}
+
+  // Represents a value with a minimum, maximum, and current value, and a name
+  type NamedValueMax = ValueMax & {name: string;};
+  // #endregion
+
+  // #region ENTITY-DOCUMENT TYPES ~
+  /**
+   * An "entity Document" represents a system Actor or Item document.
+   */
   type EntityDoc = ActorDoc | ItemDoc;
 
-  // Represents any entity document sheet
+  // Represents the DocumentSheet for any system entity Document.
   type EntitySheet = ActorSheetDoc | ItemSheetDoc;
 
-  // Represents any entity document or entity document sheet
+  // Represents any entity Document or entity DocumentSheet
   type AnyEntity = EntityDoc | EntitySheet;
 
-  // Represents the constructor (i.e. class) of an object
-  type ConstructorOf<T> = new (...args: unknown[]) => T;
+  // // Represents the constructor (i.e. class) of an object
+  // type ConstructorOf<T> = new (...args: unknown[]) => T;
 
   // Represents a constructor for an entity document
-  type EntityConstructor = ConstructorOf<EntityDoc>;
+  // type EntityConstructor = foundry.abstract.Document.Internal.Constructor;
 
   // Represents a constructor for any entity
-  type AnyEntityConstructor = ConstructorOf<AnyEntity>;
+  // type AnyEntityConstructor = ConstructorOf<AnyEntity>;
+  // #endregion
 
-  // Represents any document that can be the target of a BladesTargetLink subclass.
-  type TargetLinkDoc = EntityDoc | ChatMessageDoc | UserDoc;
+  // #region DOCUMENT REFERENCE TYPES ~
 
   // Represents a reference to a Blades document
   type DocRef = string | EntityDoc;
@@ -251,20 +373,26 @@ declare global {
   // Represents a reference to a Blades item
   type ItemRef = string | ItemDoc;
 
-  // Utility Types for Variable Template Values
-  interface ValueMax {min: number, max: number, value: number}
-  type NamedValueMax = ValueMax & {name: string};
+  // #endregion
 
-  interface Scenes {
-    current: SceneDoc;
-  }
+  // #region TARGET-LINK DOCUMENT TYPES ~
+
+  /**
+   * A "target-link Document" is any Document that can be the target of a TargetLink subclass, i.e.
+   * a Document that can store data for a linked object.
+   */
+  type TargetLinkDoc = EntityDoc | ChatMessageDoc | UserDoc;
+
+  // #endregion
+
+  // #region THIRD-PARTY TYPES ~
 
   // #region TinyMCE ~
   interface TinyMCEConfig {
-    skin: string|boolean;
+    skin: string | boolean;
     skin_url?: string;
-    content_css: string|string[];
-    font_css: string|string[];
+    content_css: string | string[];
+    font_css: string | string[];
     max_height: number;
     min_height: number;
     autoresize_overflow_padding: number;
@@ -316,6 +444,11 @@ declare global {
   }
   // #endregion
 
+  // #region SocketLib ~
+  const socketlib: SocketLib;
+  const socket: Socket;
+  // #endregion
+
   // #region GreenSock ~
   // Represents a gsap animation
   type GsapAnimation = gsap.core.Tween | gsap.core.Timeline;
@@ -326,12 +459,12 @@ declare global {
   type GSAPEffectFunction<Schema extends gsap.TweenVars = gsap.TweenVars> = (targets: TweenTarget, config?: Partial<Schema>) => GSAPAnimation;
   type GSAPEffectFunctionWithDefaults<Schema extends gsap.TweenVars = gsap.TweenVars> = (targets: TweenTarget, config: Schema) => GSAPAnimation;
 
-interface GSAPEffectDefinition<Schema extends gsap.TweenVars = gsap.TweenVars> {
-  name: string,
-  effect: GSAPEffectFunctionWithDefaults<Schema>,
-  defaults: Schema,
-  extendTimeline: boolean
-}
+  interface GSAPEffectDefinition<Schema extends gsap.TweenVars = gsap.TweenVars> {
+    name: string,
+    effect: GSAPEffectFunctionWithDefaults<Schema>,
+    defaults: Schema,
+    extendTimeline: boolean;
+  }
 
 
   // type GsapEffectConfig = typeof gsapEffects[keyof typeof gsapEffects]["defaults"];
@@ -362,9 +495,25 @@ interface GSAPEffectDefinition<Schema extends gsap.TweenVars = gsap.TweenVars> {
   type BlurEvent = JQuery.BlurEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type DropEvent = JQuery.DropEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type OnSubmitEvent = Event & ClickEvent & {
-    result: Promise<Record<string, SystemScalar>>
-  }
+    result: Promise<Record<string, SystemScalar>>;
+  };
   type ChangeEvent = JQuery.ChangeEvent<HTMLElement, undefined, HTMLElement, HTMLElement>;
   type SelectChangeEvent = JQuery.ChangeEvent<HTMLSelectElement, undefined, HTMLSelectElement, HTMLSelectElement>;
   // #endregion
+
+  // #region Clamp ~
+  function $clamp(element: HTMLElement, options?: ClampOptions): ClampResponse;
+  // #endregion
+
+  // #region CQ API ~
+  const cqApi: {
+    reprocess: () => void,
+    reparse: () => void,
+    reevaluate: () => void,
+    config: Record<string, unknown>;
+  };
+  // #endregion
+
+  // #endregion
+
 }

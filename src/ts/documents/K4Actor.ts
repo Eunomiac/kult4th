@@ -75,7 +75,7 @@ import {InterfaceToObject} from "@league-of-foundry-developers/foundry-vtt-types
 
 
 
-// #region === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
+// #region === TYPES, ENUMS === ~
 // #region -- ENUMS ~
 
 // #endregion
@@ -266,23 +266,17 @@ declare global {
   }
 }
 // #endregion
-// #region -- AUGMENTED INTERFACE ~
+// #endregion
+// #region === K4ACTOR CLASS ===
 interface K4Actor<Type extends K4ActorType = K4ActorType> {
   get id(): IDString;
   get uuid(): UUIDString;
-  get img(): string;
-  get name(): string;
-  get type(): Type;
-  get sheet(): Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet;
-  // get ownership(): Record<IDString, number>;
-  get items(): EmbeddedCollection<K4Item, K4Actor>;
-  get effects(): EmbeddedCollection<K4ActiveEffect, K4Actor>;
-  system: K4Actor.System<Type>;
+
+  get effects(): foundry.abstract.EmbeddedCollection<K4ActiveEffect & foundry.abstract.Document.Any, K4Actor<Type> & foundry.abstract.Document.Any>;
 }
-// #endregion
-// #endregion
-// #region === K4ACTOR CLASS ===
-class K4Actor extends Actor {
+class K4Actor<Type extends K4ActorType = K4ActorType> extends Actor {
+  declare type: Type;
+  declare system: K4Actor.System<Type>;
   // #region INITIALIZATION ~
   /**
    * Pre-Initialization of the K4Actor class. This method should be run during the "init" hook.
@@ -388,7 +382,7 @@ class K4Actor extends Actor {
     if (!user.id) {
       throw new Error("Unable to determine ID of user.");
     }
-    const playerCharacters = getGame().actors.filter((actor: K4Actor): actor is K4Actor<K4ActorType.pc> => actor.type === K4ActorType.pc);
+    const playerCharacters = getActors().filter((actor): actor is K4Actor<K4ActorType.pc> => actor.type === K4ActorType.pc);
     const ownedPlayerCharacter = playerCharacters.find((actor: K4Actor<K4ActorType.pc>) => actor.ownership[user.id as IDString] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER);
     return ownedPlayerCharacter;
   }
@@ -400,7 +394,6 @@ class K4Actor extends Actor {
    * @returns {boolean} True if the actor is of the specified type.
    */
   is<T extends K4ActorType = K4ActorType>(type: T): this is K4Actor<T> {
-    // @ts-expect-error -- Unable to resolve 'this.type' and 'type' to the same type.
     return this.type === type;
   }
   // #endregion
@@ -590,7 +583,7 @@ class K4Actor extends Actor {
   get weapons() {return this.getItemsOfType(K4ItemType.weapon);}
   get gear() {return this.getItemsOfType(K4ItemType.gear);}
   get relations() {return this.getItemsOfType(K4ItemType.relation);}
-  get derivedItems() {return [...this.items].filter((item: K4Item): item is K4Item & K4SubItem => item.isSubItem());}
+  get derivedItems() {return this.items.filter((item: K4Item): item is K4Item & K4SubItem => item.isSubItem());}
   get wounds(): Partial<Record<IDString, K4Actor.Components.Wound>> {
     if (!this.is(K4ActorType.pc)) {return {};}
     return this.system.wounds;
@@ -966,19 +959,19 @@ class K4Actor extends Actor {
 
     const allAdvantages = selAdvantages
       .map((adv) => adv.replace(/^!?/, ""))
-      .map((adv) => (getGame().items as Collection<K4Item<K4ItemType.advantage>>).getName(adv)!);
+      .map((adv) => getItems().getName(adv)!);
     const allDisadvantages = U.unique([
       ...selDisadvantages,
       ...extraDisadvantages
     ])
       .map((dis) => dis.replace(/^!?/, ""))
-      .map((dis) => (getGame().items as Collection<K4Item<K4ItemType.disadvantage>>).getName(dis)!);
+      .map((dis) => getItems().getName(dis)!);
     const allDarkSecrets = U.unique([
       ...selDarkSecrets,
       ...extraDarkSecrets
     ])
       .map((ds) => ds.replace(/^!?/, ""))
-      .map((ds) => (getGame().items as Collection<K4Item<K4ItemType.darksecret>>).getName(ds)!);
+      .map((ds) => getItems().getName(ds)!);
 
     return {
       advantages: allAdvantages,
@@ -1290,8 +1283,8 @@ class K4Actor extends Actor {
   async updateEdges(edges: number, source?: K4Item) {
     if (!this.is(K4ActorType.pc)) {return;}
     const sourceName = source ? source.parentName : this.system.edges.sourceName;
-    if (this.sheet.rendered) {
-      const html = this.sheet.element;
+    if (this.sheet?.rendered) {
+      const html = $(this.sheet.element);
       await new Promise((resolve) => {
         gsap.to(
           html.find(".edges-blade-container svg"),
@@ -1737,7 +1730,7 @@ class K4Actor extends Actor {
   override async update(data: Record<string, unknown>, options: Record<string, unknown> & {updateAnim?: GsapAnimation;} = {}): Promise<Maybe<this>> {
 
     const {updateAnim, ...updateOptions} = options;
-    if (updateAnim && this.sheet.rendered) {
+    if (updateAnim && this.sheet?.rendered) {
       const updatePromise = super.update(data, {
         ...updateOptions,
         render: false

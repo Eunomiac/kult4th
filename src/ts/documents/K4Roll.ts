@@ -223,14 +223,14 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
       }
     }
 
-    if (rollData.source instanceof K4Item && rollData.source.isActiveItem()) {
+    if (rollData.source instanceof K4Item && rollData.source.isActiveItem() && "attribute" in rollData.source.system) {
       const {attribute} = rollData.source.system;
       if (attribute === K4Attribute.ask) {
         throw new Error("Need to implement ask-for-attribute prompt in K4Actor, where it can be awaited. Both for generic asks and item.system.attribute = 'ask' cases.")
       }
       return {
         type: K4RollType.move,
-        img: rollData.source.img,
+        img: rollData.source.img ?? CONST.DEFAULT_TOKEN,
         attribute,
         attrVal: attribute === K4Attribute.zero ? 0 : actor.attributes[attribute],
         source: rollData.source

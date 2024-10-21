@@ -6,7 +6,7 @@ import U from "./utilities";
 // #endregion
 
 export default function registerSettings() {
-  getGame().settings.register<string, string, number>("kult4th", "debug", {
+  getGame().settings.register("kult4th", "debug", {
     "name": U.loc("system.settings.debugModeTitle"),
     "hint": U.loc("system.settings.debugModeHint"),
     "scope": "client",

@@ -192,6 +192,12 @@ const ANIMATIONS = {
     return tl;
   }
 };
+
+interface K4NPCSheet extends ActorSheet {
+  object: K4Actor<K4ActorType.npc>;
+  get actor(): K4Actor<K4ActorType.npc>;
+}
+
 class K4NPCSheet extends ActorSheet {
   static PreInitialize() {
     Actors.registerSheet("kult4th", K4NPCSheet, {makeDefault: true, types: [K4ActorType.npc]});
@@ -319,9 +325,9 @@ class K4NPCSheet extends ActorSheet {
   }
 }
 
-interface K4NPCSheet {
-  object: K4Actor<K4ActorType.npc>,
-  _actor: K4Actor<K4ActorType.npc>
-}
+// interface K4NPCSheet {
+//   object: K4Actor<K4ActorType.npc>,
+//   _actor: K4Actor<K4ActorType.npc>
+// }
 
 export default K4NPCSheet;

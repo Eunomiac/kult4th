@@ -2,7 +2,7 @@
 import C, {K4Attribute, K4ConditionType, K4WoundType} from "../scripts/constants";
 import U from "../scripts/utilities";
 import {formatForKult} from "../scripts/helpers";
-import type K4Actor from "./K4Actor";
+import K4Actor from "./K4Actor";
 import {K4ActorType} from "./K4Actor";
 import K4Item, {K4ItemType, K4ItemRange} from "./K4Item";
 import K4Roll, {K4RollResult} from "./K4Roll";
@@ -266,7 +266,7 @@ namespace K4ActiveEffect {
     |K4Item<K4ItemType.gear>
     |K4Item<K4ItemType.weapon>
     |K4Item<K4ItemType.gmtracker>
-    |K4Actor<K4ActorType.pc>
+    |K4Actor
     |K4ChatMessage;
     // |K4Scene;
 
@@ -397,15 +397,15 @@ namespace K4ActiveEffect {
     }
   }
 
-  export type ExtendedData = Components.Effect.CanToggle|Components.Effect.CannotToggle|Components.Effect.NoStatusBar;
+  export type FlagData = Components.Effect.CanToggle|Components.Effect.CannotToggle|Components.Effect.NoStatusBar;
 
-  export type Data = ActiveEffectData & {
-    flags: {
-      kult4th: {
-        data: ExtendedData
-      }
-    }
-  }
+  // export type Data = ActiveEffectData & {
+  //   flags: {
+  //     kult4th: {
+  //       data: FlagData
+  //     }
+  //   }
+  // }
 
   namespace StatusContext {
     interface Base extends Components.Effect.StatusBarData {
@@ -432,13 +432,13 @@ namespace K4ActiveEffect {
  * If the update is permanent, it will be saved to the document.
  * Otherwise, it will be temporarily set using setProperty.
  *
- * @param {Document.Any} doc - The document to update.
+ * @param {foundry.abstract.Document.Any} doc - The document to update.
  * @param {Key} key - The key of the property to update.
  * @param {unknown} value - The value to set for the property.
  * @param {boolean} isPermanent - Whether the update is permanent.
  * @returns {Promise<void>} - A promise that resolves when the update is complete.
  */
-async function applyUpdate(doc: Document.Any, key: Key, value: unknown, isPermanent: boolean): Promise<void> {
+async function applyUpdate(doc: K4Actor|K4Item, key: Key, value: unknown, isPermanent: boolean): Promise<void> {
   // Log the update details for debugging purposes
   kLog.log(`Updating document with key: ${String(key)}, value: ${String(value)}, isPermanent: ${String(isPermanent)}`, { doc, key, value, isPermanent });
 
@@ -533,7 +533,7 @@ const CUSTOM_FUNCTIONS = {
     }
 
     // Log the id of the item to FLAGS.itemToRemove, so it can be deleted later
-    await this.parentEffect?.setFlag<IDString>("itemToRemove", newItem.id);
+    await this.parentEffect?.flagSet<IDString>("itemToRemove", newItem.id);
 
     return true;
   },
@@ -798,7 +798,7 @@ const CUSTOM_FUNCTIONS = {
     }
 
     const user = filter === "gm"
-      ? getGame().users?.find((user: User) => user.isGM)
+      ? getUsers().find((user: User) => user.isGM)
       : actor.user;
     if (!user) {
       throw new Error(`[Prompt for Data] Unable to resolve user from filter '${filter}'.`)
@@ -822,7 +822,7 @@ const CUSTOM_FUNCTIONS = {
     if (userInput === false) { return false; }
     if (target.startsWith("FLAGS")) {
       const flagKey = target.split(".").slice(2).join(".");
-      await this.parentEffect!.setFlag(flagKey, userInput);
+      await this.parentEffect!.flagSet(flagKey, userInput);
       return true;
     }
     throw new Error(`Unrecognized key for PromptForData: ${target}`);
@@ -959,6 +959,7 @@ type DynamicChangeGenerator = (effect: K4ActiveEffect) => K4Change[];
 const DYNAMIC_CHANGES = {
   armor: (effect: K4ActiveEffect) => {
     if (!effect.isOwnedByActor(K4ActorType.pc)) { return []; }
+    // if (!effect.actor) { return []; }
     if (effect.actor.system.armor === 0) { return []; }
     return [
       new K4Change(
@@ -1238,7 +1239,7 @@ class K4Change implements EffectChangeData {
  */
 class K4ActiveEffect extends ActiveEffect {
 
-  static ResolveEffectSource(origin: K4ActiveEffect.Origin, chatSelectIndex?: number): K4ActiveEffect.ExtendedData["effectSource"] {
+  static ResolveEffectSource(origin: K4ActiveEffect.Origin, chatSelectIndex?: number): K4ActiveEffect.FlagData["effectSource"] {
 
     /** K4ActiveEffect.Origin:
      *
@@ -1371,9 +1372,9 @@ class K4ActiveEffect extends ActiveEffect {
    *
    * @param {K4ActiveEffect.BuildData["parentData"]} parentData - The parent data of the ActiveEffect.
    * @param {K4ActiveEffect.Origin} origin - The origin of the ActiveEffect.
-   * @returns {K4ActiveEffect.ExtendedData} The extended data of the ActiveEffect.
+   * @returns {K4ActiveEffect.FlagData} The extended data of the ActiveEffect.
    */
-  static ParseParentData(parentData: K4ActiveEffect.BuildData["parentData"], origin: K4ActiveEffect.Origin): K4ActiveEffect.ExtendedData {
+  static ParseParentData(parentData: K4ActiveEffect.BuildData["parentData"], origin: K4ActiveEffect.Origin): K4ActiveEffect.FlagData {
     const {uses: usageMax, from, dynamic, onChatSelection, ...baseExtData} = parentData;
     const effectSource = this.ResolveEffectSource(origin, onChatSelection?.listIndex);
     const name = this.ResolveEffectLabel(parentData, origin);
@@ -1495,7 +1496,7 @@ class K4ActiveEffect extends ActiveEffect {
 
     // If the effect is unique, delete any existing effect with the same name
     if (effectExtendedData.isUnique) {
-      const existingEffect = effectHost.effects.contents
+      const existingEffect = effectHost.effects
         .find((effect) => effect.name === effectExtendedData.name);
       if (existingEffect) {
         await existingEffect.delete();
@@ -1535,16 +1536,16 @@ class K4ActiveEffect extends ActiveEffect {
    * Type guard to check if the effect can be toggled.
    * @returns {boolean} - True if the effect can be toggled, false otherwise.
    */
-  canToggle(): this is this & { eData: {canToggle: true} } {
-    return this.flags.kult4th.data.canToggle;
+  canToggle(): this is { eData: {canToggle: true} } {
+    return this.eData.canToggle;
   }
-  inStatusBar(): this is this & { eData: {inStatusBar: true} } {
-    return this.flags.kult4th.data.inStatusBar;
+  inStatusBar(): this is { eData: {inStatusBar: true} } {
+    return this.eData.inStatusBar;
   }
 
   get defaultState(): boolean { return this.canToggle() ? this.eData.defaultState : true; }
   get isLocked(): boolean { return this.canToggle() ? this.eData.isLocked : false; }
-  set isLocked(value: boolean) { void this.setFlag<boolean>("data.isLocked", value);}
+  set isLocked(value: boolean) { void this.flagSet<boolean>("data.isLocked", value);}
   get isEnabled(): boolean { return this.canToggle() ? this.eData.isEnabled : true; }
   get isNonZero(): boolean {
     return this.getCustomChanges()
@@ -1706,7 +1707,7 @@ class K4ActiveEffect extends ActiveEffect {
 
       /* === PROCESS CUSTOM CHANGES: STEP 3 - Permanent Effects Check === */
       // If any changes are permanent, apply them now and remove them from the effects array.
-      ([onceChanges, k4Changes] = U.partition<K4Change>(k4Changes, (change: K4Change) => change.isPermanentChange && !effect.eData.onChatSelection))
+      ([onceChanges, k4Changes] = U.partition<K4Change>(k4Changes, (change: K4Change) => change.isPermanentChange && !effect.eData.onChatSelection));
       kLog.log("Changes Step 3 (PermanentChanges)", {k4Changes: [...k4Changes], onceChanges: [...onceChanges]});
       await Promise.all(onceChanges
         .map((change) => change.apply(effect.actor)));
@@ -1761,7 +1762,7 @@ class K4ActiveEffect extends ActiveEffect {
     if (!this.canToggle()) { return undefined; }
     if (this.isLocked && !isForcing) { return undefined; }
     const promises: Array<Promise<unknown>> = [
-      this.setFlag<boolean>("data.isEnabled", value)
+      this.flagSet<boolean>("data.isEnabled", value)
     ];
     if (this.isLocked && isForcing) {
       promises.push(this.toggleLock(false));
@@ -1770,7 +1771,7 @@ class K4ActiveEffect extends ActiveEffect {
   }
   async toggleLock(value = !this.isLocked) {
     if (!this.canToggle()) { return undefined; }
-    return this.setFlag<boolean>("data.isLocked", value);
+    return this.flagSet<boolean>("data.isLocked", value);
   }
   override async reset(resetTo = this.resetTo, isForcing = false) {
     if (this.isLocked && !isForcing) { return undefined; }
@@ -1798,7 +1799,7 @@ class K4ActiveEffect extends ActiveEffect {
           promises.push(this.delete());
         }
       } else {
-        promises.push(this.setFlag<number>("data.uses.value", this.uses.value + 1));
+        promises.push(this.flagSet<number>("data.uses.value", this.uses.value + 1));
       }
     }
 
@@ -1852,8 +1853,8 @@ class K4ActiveEffect extends ActiveEffect {
     // const [_, actorId] = this.origin.split(".");
     // return getGame().actors.get(actorId);
   }
-  get eData(): K4ActiveEffect.ExtendedData {
-    const eData = this.getFlag<K4ActiveEffect.ExtendedData>("data");
+  get eData(): K4ActiveEffect.FlagData {
+    const eData = this.flagGet<K4ActiveEffect.FlagData>("data");
     if (!eData) {
       throw new Error(`ActiveEffect ${this.id} has no extended data.`);
     }
@@ -1900,22 +1901,19 @@ class K4ActiveEffect extends ActiveEffect {
   // #endregion
 
   // #REGION === PUBLIC METHODS ===
-  override getFlag<T>(namespace: string, key: string): Maybe<T>
-  override getFlag<T>(key: string): Maybe<T>
-  override getFlag<T>(...args: [string, string] | [string]): Maybe<T> {
-    const [namespace, key] = args.length === 1 ? ["kult4th", args[0]] : args;
-    return super.getFlag(namespace, key) as Maybe<T>;
+  flagGet<T>(key: string): Maybe<T> {
+    return this.flags.kult4th[key] as Maybe<T>;
   }
-  override async setFlag<T>(namespace: string, key: string, val: T): Promise<this>
-  override async setFlag<T>(key: string, val: T): Promise<this>
-  override async setFlag<T>(...args: [string, string, T] | [string, T]): Promise<this> {
-    const [namespace, key, val] = args.length === 2 ? ["kult4th", args[0], args[1]] : args;
+  // override async setFlag<T>(namespace: string, key: string, val: T): Promise<this>
+  async flagSet<T>(key: string, val: T): Promise<this> {
+  // override async setFlag<T>(...args: [string, string, T] | [string, T]): Promise<this> {
+
     if (!this.owner) {
       throw new Error(`Cannot get flag '${key}' from ActiveEffect with no owner.`);
     }
     await this.owner.updateEmbeddedDocuments("ActiveEffect", [{
       _id:                           this.id,
-      [`flags.${namespace}.${key}`]: val
+      [`flags.kult4th.${key}`]: val
     }]);
     return this;
   }
@@ -2006,18 +2004,18 @@ class K4ActiveEffect extends ActiveEffect {
 }
 
 // #region -- INTERFACE AUGMENTATION ~
-interface K4ActiveEffect {
-  icon: string,
-  origin: string,
-  changes: EffectChangeData[],
-  parent: K4Actor|K4Item|null,
-  updateSource(updateData: {changes: EffectChangeData[]}): Promise<void>,
-  flags: {
-    kult4th: {
-      data: K4ActiveEffect.ExtendedData
-    }
-  }
-}
+// interface K4ActiveEffect {
+//   icon: string,
+//   origin: string,
+//   changes: EffectChangeData[],
+//   parent: K4Actor|K4Item|null,
+//   updateSource(updateData: {changes: EffectChangeData[]}): Promise<void>,
+//   flags: {
+//     kult4th: {
+//       data: K4ActiveEffect.FlagData
+//     }
+//   }
+// }
 // #endregion
 // #region EXPORTS ~
 export default K4ActiveEffect;

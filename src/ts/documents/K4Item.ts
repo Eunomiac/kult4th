@@ -9,7 +9,7 @@ import K4ActiveEffect from "./K4ActiveEffect";
 import {InterfaceToObject, ConstructorDataType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
 // #endregion
 
-// #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
+// #REGION === TYPES, ENUMS === ~
 // #region -- ENUMS ~
 console.log("Loading K4Item.ts");
 
@@ -269,57 +269,47 @@ declare global {
      * Discriminated unions of item types by subType or other criteria
      */
     export type Parent<T extends Types.Parent = Types.Parent> = K4Item<T> & {
-      system: K4Item.System<T> & {
-        subItems: K4SubItem.Schema[];
-      };
+      system: K4Item.System<T>;
     };
     export type Static<T extends Types.Static = Types.Static> = K4Item<T> & {
-      system: System<T> & {
-        subType: K4ItemSubType.activeStatic;
-      };
+      type: T;
+      system: System<T>
     };
     export type Passive<T extends Types.Passive = Types.Passive> = K4Item<T> & {
-      system: System<T> & {
-        subType: K4ItemSubType.passive;
-      };
+      type: T;
+      system: System<T>
     };
     export type Active<T extends Types.Active = Types.Active> = K4Item<T> & {
-      system: System<T> & {
-        attribute: K4Attribute,
-        subType: K4ItemSubType.activeRolled;
-        results: Record<K4RollResult, K4Item.Components.ResultData>;
-      };
+      type: T;
+      system: System<T>
     };
     export type HaveRules<T extends Types.HaveRules = Types.HaveRules> = K4Item<T> & {
-      system: System<T> & {
-        rules: K4Item<T>["system"]["rules"]
-      }
+      type: T;
+      system: System<T>
     };
-    export type HaveResults<T extends Types.HaveResults = Types.HaveResults> = K4Item<T>;
+    export type HaveResults<T extends Types.HaveResults = Types.HaveResults> = K4Item<T> & {
+      type: T;
+      system: System<T>
+    };
     export type HaveMainEffects<T extends Types.HaveMainEffects = Types.HaveMainEffects> = K4Item<T> & {
-      system: System<T> & {
-        rules: K4Item<T>["system"]["rules"] & {effects: K4ActiveEffect.BuildData[]};
-      };
+      type: T;
+      system: System<T>;
     };
   }
 }
 // #ENDREGION
-// #region -- AUGMENTED INTERFACE ~
-interface K4Item<T extends K4ItemType = K4ItemType> {
-  get id(): IDString;
-  get img(): string;
-  get uuid(): UUIDString;
-  get name(): string;
-  get type(): T;
-  get sheet(): K4ItemSheet;
-  // get effects(): Collection<K4ActiveEffect>;
-  system: K4Item.System<T>;
-  parent: ActorDoc | null;
-}
-// #endregion
 // #endregion
 // #REGION === K4ITEM CLASS ===
-class K4Item extends Item {
+interface K4Item<Type extends K4ItemType = K4ItemType> {
+  get id(): IDString;
+  get uuid(): UUIDString;
+
+  get effects(): foundry.abstract.EmbeddedCollection<K4ActiveEffect & foundry.abstract.Document.Any, K4Item<Type> & foundry.abstract.Document.Any>;
+}
+class K4Item<Type extends K4ItemType = K4ItemType> extends Item {
+  declare type: Type;
+  declare system: K4Item.System<Type>;
+
   // #region INITIALIZATION ~
   /**
    * Pre-Initialization of the K4Item class. This method should be run during the "init" hook.
@@ -342,6 +332,7 @@ class K4Item extends Item {
     Hooks.on("createItem", async (item: K4Item): Promise<boolean> => {
       // Ensure the item is being created for an actor
       if (!item.parent) { return true; }
+      if (!(item.parent instanceof K4Actor)) { return true; }
       const actor: K4Actor = item.parent;
 
       // If an item with the same name and type already exists, other than the one being created, prevent the creation
@@ -390,7 +381,7 @@ class K4Item extends Item {
   hasRollEffects(): this is K4Item.HaveResults {return this.hasResults() && Object.values(this.system.results).some((result) => result.effects?.length);}
   // #endregion
 
-  // #region GETTERS & SETTERS ~  get itemSheet(): typeof this._sheet & K4ItemSheet | null {return this._sheet as typeof this._sheet & K4ItemSheet ?? null;}
+  // #region GETTERS & SETTERS ~
 
   get parentID(): IDString | undefined {return this.isSubItem() ? this.parentItem?.id : undefined;}
   get parentType(): K4ItemType {return this.isSubItem() ? this.system.parentItem.type : this.type;}
@@ -428,6 +419,15 @@ class K4Item extends Item {
   }
   get shortDesc(): string {
     return this.system.shortDesc ?? "";
+  }
+  get attribute(): K4Attribute {
+    if (!this.isActiveItem()) { return K4Attribute.zero; }
+    if ("attribute" in this.system) { return this.system.attribute; }
+    if (this.subItems.length) {
+      const firstSubItem = this.subItems.find((subItem): subItem is K4Item & K4SubItem => "attribute" in subItem.system);
+      return firstSubItem?.attribute ?? K4Attribute.zero;
+    }
+    return K4Attribute.zero;
   }
   // get customChangeData(): K4Change.Source[] {
   //   if (!this.hasMainEffects()) { return []; }
@@ -487,7 +487,7 @@ class K4Item extends Item {
       if (!this.parent) {
         // If this is a Primary document (i.e. not owned), simply create a K4ActiveEffect for the change data that will transfer to any future actor owner, containing change data for all changes. We don't have to worry about whether an item has been created pre-embedded in an Actor (see below).
         kLog.display(`[Primary K4Item._onCreate] "${C.Abbreviations.ItemType[this.type]}.${U.uCase(this.name)}" PRIMARY: Embedding ActiveEffect on ITEM`, this);
-        await Promise.all(this.system.rules.effects
+        await Promise.all((this.system.rules.effects ?? [])
           .map((effectDataSet) => K4ActiveEffect.CreateFromBuildData(effectDataSet, this as K4ActiveEffect.Origin))
         );
       } else if (this.effects.size === 0) {
@@ -500,7 +500,7 @@ class K4Item extends Item {
           ITEM: this,
           actor: this.parent
         });
-        await Promise.all(this.system.rules.effects
+        await Promise.all((this.system.rules.effects ?? [])
           .map((effectDataSet) => K4ActiveEffect.CreateFromBuildData(
             effectDataSet,
             this as K4ActiveEffect.Origin,
@@ -541,9 +541,8 @@ class K4Item extends Item {
     if (this.isParentItem() && this.isActiveItem()) {
       const firstSubItem = this.system.subItems
         .find((subItem): subItem is K4SubItem.Schema => subItem.system.subType === K4ItemSubType.activeRolled);
-      if (firstSubItem && firstSubItem.system.subType === K4ItemSubType.activeRolled) {
-        this.system.attribute = firstSubItem.system.attribute;
-        this.system.results = (firstSubItem as K4Item.Active).system.results;
+      if (firstSubItem && firstSubItem.system.subType === K4ItemSubType.activeRolled && "attribute" in firstSubItem.system) {
+        this.system.results = firstSubItem.system.results as Record<K4RollResult, K4Item.Components.ResultData>;
       }
     }
 
@@ -596,7 +595,7 @@ class K4Item extends Item {
     const stripData: HoverStripData = {
       id: this.id,
       type: stripType,
-      icon: this.img,
+      icon: this.img ?? CONST.DEFAULT_TOKEN,
       display: this.name,
       ...this.isSubItem()
         ? {

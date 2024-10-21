@@ -4,7 +4,7 @@ import K4Item from "./K4Item";
 import K4ChatMessage from "./K4ChatMessage";
 
 
-function formatForKult(str: string, iData: Document.Any|{system: K4Item.SystemSchema.Any|K4Actor.SystemSchema.Any}) {
+function formatForKult(str: string, iData: foundry.abstract.Document.Any|{system: K4Item.SystemSchema.Any|K4Actor.SystemSchema.Any}) {
 
 
   // Step One: Replace any data object references.
@@ -86,7 +86,7 @@ function formatForKult(str: string, iData: Document.Any|{system: K4Item.SystemSc
                 throw new Error(`No such effect: ${effectID}`);
               }
 
-              return effect.getFlag(flagKey)!;
+              return effect.flagGet(flagKey)!;
             }
             return `<span style='color: red;'>No Such Prompt: ${dataKey}</span>`;
           }

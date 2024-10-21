@@ -61,6 +61,77 @@ Object.assign(globalThis, {
   }
     return game;
   },
+
+  /**
+   * Retrieves the collection of all K4Actor instances in the game.
+   * @returns A Collection of K4Actor instances.
+   * @throws Error if the Actors collection is not ready.
+   */
+  getActors: function getActors(): Actors {
+    const actors = getGame().actors as Maybe<Actors>;
+    if (!actors) {
+      throw new Error("Actors collection is not ready");
+    }
+    return actors;
+  },
+
+  /**
+   * Retrieves the collection of all K4Item instances in the game.
+   * @returns A Collection of K4Item instances.
+   * @throws Error if the Items collection is not ready.
+   */
+  getItems: function getItems(): Items {
+    const items = getGame().items as Maybe<Items>;
+    if (!items) {
+      throw new Error("Items collection is not ready");
+    }
+    return items;
+  },
+
+  /**
+   * Retrieves the collection of all K4ChatMessage instances in the game.
+   * @returns A Collection of K4ChatMessage instances.
+   * @throws Error if the Messages collection is not ready.
+   */
+  getMessages: function getMessages(): Messages {
+    const messages = getGame().messages as Maybe<Messages>;
+    if (!messages) {
+      throw new Error("Messages collection is not ready");
+    }
+    return messages;
+  },
+
+  /**
+   * Retrieves the collection of all User instances in the game.
+   * @returns A Collection of User instances.
+   * @throws Error if the Users collection is not ready.
+   */
+  getUsers: function getUsers(): Users {
+    const users = getGame().users as Maybe<Users>;
+    if (!users) {
+      throw new Error("Users collection is not ready");
+    }
+    return users;
+  },
+
+  /**
+   * Retrieves the client settings for the game.
+   * @returns The client settings.
+   * @throws Error if the settings are not ready.
+   */
+  getSettings: function getSettings(): ClientSettings {
+    const settings = getGame().settings as Maybe<ClientSettings>;
+    if (!settings) {
+      throw new Error("Settings are not ready");
+    }
+    return settings;
+  },
+
+  /**
+   * Retrieves the user for the game.
+   * @returns The user.
+   * @throws Error if the user is not ready.
+   */
   getUser: function getUser(): User {
     const user = getGame().user;
     if (!user) {
@@ -68,15 +139,27 @@ Object.assign(globalThis, {
     }
     return user;
   },
+
+  /**
+   * Retrieves the user's PC for the game.
+   * @returns The user's PC.
+   * @throws Error if the user's PC is not ready.
+   */
   getActor: function getActor(): K4Actor<K4ActorType.pc> {
     const userID: IDString = getUser().id as IDString;
-    const pcs: Array<K4Actor<K4ActorType.pc>> = getGame().actors.filter((actor: K4Actor): actor is K4Actor<K4ActorType.pc> => actor.is(K4ActorType.pc));
-    const userPC = pcs.find((pc: K4Actor<K4ActorType.pc>) => pc.ownership[userID] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER);
+    const pcs = getActors().filter((actor: K4Actor): actor is K4Actor<K4ActorType.pc> => actor.is(K4ActorType.pc));
+    const userPC = pcs.find((pc) => pc.ownership[userID] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER);
     if (!userPC) {
       throw new Error(`User ${getUser().name} has no PC associated with them.`);
     }
     return userPC;
   },
+
+  /**
+   * Retrieves the localizer for the game.
+   * @returns The localizer.
+   * @throws Error if the localizer is not ready.
+   */
   getLocalizer: function getLocalizer(): Localization {
     const loc = getGame().i18n as Maybe<Localization>;
     if (!loc) {
@@ -84,6 +167,12 @@ Object.assign(globalThis, {
     }
     return loc;
   },
+
+  /**
+   * Retrieves the notifier for the game.
+   * @returns The notifier.
+   * @throws Error if the notifier is not ready.
+   */
   getNotifier: function getNotifier(): Notifications {
     const notif = ui.notifications;
     if (!notif) {

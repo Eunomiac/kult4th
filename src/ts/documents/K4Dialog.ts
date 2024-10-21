@@ -190,11 +190,12 @@ class K4Dialog extends Dialog {
     const highestZIndex = Math.max(101, ...bodyElements.map((sheet) =>
       U.pInt($(sheet).css("z-index"))
     ));
+    if (!item.sheet) { return; }
     if (!item.sheet.rendered) {
       item.sheet.render(true);
       await U.sleep(150);
     }
-    item.sheet.element.css("z-index", highestZIndex + 1);
+    $(item.sheet.element).css("z-index", highestZIndex + 1);
     $(actorSheetElements).css("z-index", 99);
     this.element.css("z-index", 100);
   }

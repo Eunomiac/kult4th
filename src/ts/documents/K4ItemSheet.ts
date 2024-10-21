@@ -290,11 +290,11 @@ export default class K4ItemSheet extends ItemSheet {
       function createOpenLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
           if (itemDoc.isOwnedItem()) {
-            $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet.render(true));
+            $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet?.render(true));
           } else {
-            $(elem).on("click", () => (Array.from(getGame().items as Collection<K4Item>))
+            $(elem).on("click", () => getItems()
               .find((item) => item.type === K4ItemType.move && item.name === iName)
-              ?.sheet.render(true));
+              ?.sheet?.render(true));
           }
         }
       }
@@ -302,11 +302,11 @@ export default class K4ItemSheet extends ItemSheet {
       function createTriggerLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
           if (itemDoc.isOwnedItem()) {
-            $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet.render(true));
+            $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet?.render(true));
           } else {
-            $(elem).on("click", () => (Array.from(getGame().items as Collection<K4Item>))
+            $(elem).on("click", () => getItems()
               .find((item) => item.type === K4ItemType.move && item.name === iName)
-              ?.sheet.render(true));
+              ?.sheet?.render(true));
           }
         }
       }

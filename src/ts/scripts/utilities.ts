@@ -1103,13 +1103,26 @@ const objClean = <T>(data: T, remVals: UncleanValues[] = [undefined, null, "", {
   return data;
 };
 
-// Given an object and a predicate function, returns array of two objects:
-//   one with entries that pass, one with entries that fail.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const partition = <Type>(obj: Type[], predicate: testFunc<valFunc<any>> = () => true): [Type[], Type[]] => [
-  objFilter(obj, predicate),
-  objFilter(obj, (v: unknown, k: Key | undefined) => !predicate(v, k))
-];
+/**
+ * Partitions an array into two arrays based on a predicate function.
+ *
+ * @template T - The type of elements in the input array
+ * @param {T[]} arr - The array to be partitioned
+ * @param {(value: T, index: number) => boolean} [predicate=(v) => true] - The function used to test each element
+ * @returns {[T[], T[]]} - An array containing two arrays:
+ *                         the first with elements that pass the predicate,
+ *                         the second with elements that fail the predicate
+ */
+function partition<T>(arr: T[], predicate: (value: T, index: number) => boolean = () => true): [T[], T[]] {
+  const pass: T[] = [];
+  const fail: T[] = [];
+
+  arr.forEach((value, index) => {
+    (predicate(value, index) ? pass : fail).push(value);
+  });
+
+  return [pass, fail];
+}
 
 /**
  * Zips two arrays into an object.
@@ -1142,52 +1155,69 @@ const zip = <T extends Key, U>(keys: T[], values: U[]): Record<T, U> => {
 };
 
 /**
- *  An object-equivalent Array.map() function, which accepts mapping functions to transform both keys and values.
- *  If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
- * @param {Index} obj
- * @param {mapFunc<keyFunc|valFunc>|false} keyFunc
- * @param {mapFunc<valFunc>} [valFunc]
+ * An object-equivalent Array.map() function that transforms values of an object or array.
+ * For objects, it applies the mapping function to each value while preserving the keys.
+ * For arrays, it behaves like the standard Array.map() method.
+ *
+ * @template T - The type of the input object or array
+ * @param {T} obj - The object or array to be mapped
+ * @param {MapFunction} mapFunc - The function to apply to each value. It receives the value and key/index as arguments.
+ * @returns {T} - A new object or array of the same type as the input, with transformed values
  */
-function objMap<T extends Record<PropertyKey, unknown>|unknown[]>(
-  obj: Index,
-  valFunc: mapFunc<valFunc>
-): T extends Record<PropertyKey, unknown> ? Record<PropertyKey, unknown> : unknown[]
-function objMap<T extends Record<PropertyKey, unknown>|unknown[]>(
-  obj: Index,
-  valFunc: false,
-  keyFunc: mapFunc<keyFunc>
-): T extends Record<PropertyKey, unknown> ? Record<PropertyKey, unknown> : unknown[]
-function objMap<T extends Record<PropertyKey, unknown>|unknown[]>(
-  obj: Index,
-  keyFunc: mapFunc<keyFunc>,
-  valFunc: mapFunc<valFunc>
-): T extends Record<PropertyKey, unknown> ? Record<PropertyKey, unknown> : unknown[]
-function objMap<T extends Record<PropertyKey, unknown> | unknown[]>(
+function objMap<T extends Record<ObjectKey, ObjectValue> | unknown[]>(
   obj: T,
-  keyFunc: mapFunc<keyFunc> | mapFunc<valFunc> | false,
-  valFunc?: mapFunc<valFunc> | mapFunc<keyFunc>
+  mapFunc: MapFunction
 ): T {
-  let valFuncTyped = valFunc as mapFunc<valFunc> | undefined;
-  let keyFuncTyped = keyFunc as mapFunc<keyFunc> | false;
-
-  if (!valFuncTyped) {
-    valFuncTyped = keyFunc as mapFunc<valFunc>;
-    keyFuncTyped = false;
-  }
-  if (!keyFuncTyped) {
-    keyFuncTyped = ((k: unknown) => k) as mapFunc<keyFunc>;
-  }
-
   if (Array.isArray(obj)) {
-    return obj.map(valFuncTyped) as T;
+    return obj.map((v, i) => mapFunc(v, i)) as T;
   }
 
-  return Object.fromEntries(Object.entries(obj).map(([key, val]) => {
-    assertNonNullType<mapFunc<valFunc>>(valFuncTyped, "function");
-    assertNonNullType<mapFunc<keyFunc>>(keyFuncTyped, "function");
-    return [keyFuncTyped(key, val), valFuncTyped(val, key)];
-  })) as T;
+  return Object.fromEntries(
+    Object.entries(obj).map(([k, v]) => [k, mapFunc(v, k)])
+  ) as T;
 }
+
+
+// function oldObjMap<T extends Record<PropertyKey, unknown>|unknown[]>(
+//   obj: Index,
+//   valFunc: mapFunc<valFunc>
+// ): T extends Record<PropertyKey, unknown> ? Record<PropertyKey, unknown> : unknown[]
+// function oldObjMap<T extends Record<PropertyKey, unknown>|unknown[]>(
+//   obj: Index,
+//   valFunc: false,
+//   keyFunc: mapFunc<keyFunc>
+// ): T extends Record<PropertyKey, unknown> ? Record<PropertyKey, unknown> : unknown[]
+// function oldObjMap<T extends Record<PropertyKey, unknown>|unknown[]>(
+//   obj: Index,
+//   keyFunc: mapFunc<keyFunc>,
+//   valFunc: mapFunc<valFunc>
+// ): T extends Record<PropertyKey, unknown> ? Record<PropertyKey, unknown> : unknown[]
+// function oldObjMap<T extends Record<PropertyKey, unknown> | unknown[]>(
+//   obj: T,
+//   keyFunc: mapFunc<keyFunc> | mapFunc<valFunc> | false,
+//   valFunc?: mapFunc<valFunc> | mapFunc<keyFunc>
+// ): T {
+//   let valFuncTyped = valFunc as mapFunc<valFunc> | undefined;
+//   let keyFuncTyped = keyFunc as mapFunc<keyFunc> | false;
+
+//   if (!valFuncTyped) {
+//     valFuncTyped = keyFunc as mapFunc<valFunc>;
+//     keyFuncTyped = false;
+//   }
+//   if (!keyFuncTyped) {
+//     keyFuncTyped = ((k: unknown) => k) as mapFunc<keyFunc>;
+//   }
+
+//   if (Array.isArray(obj)) {
+//     return obj.map(valFuncTyped) as T;
+//   }
+
+//   return Object.fromEntries(Object.entries(obj).map(([key, val]) => {
+//     assertNonNullType<mapFunc<valFunc>>(valFuncTyped, "function");
+//     assertNonNullType<mapFunc<keyFunc>>(keyFuncTyped, "function");
+//     return [keyFuncTyped(key, val), valFuncTyped(val, key)];
+//   })) as T;
+// }
 /**
  * This function returns the 'size' of any reference passed into it, following these rules:
  * - object: the number of enumerable keys
@@ -1223,94 +1253,178 @@ const getKeyValFunc = (
   ];
 }
 
+// /**
+//  * This function is an object-equivalent of Array.findIndex() function.
+//  * It accepts check functions for both keys and/or values.
+//  * If only one function is provided, it's assumed to be searching via values and will receive (v, k) args.
+//  *
+//  * @param {Type} obj The object to be searched.
+//  * @param {testFunc<keyFunc> | testFunc<valFunc> | false} keyFunc The testing function for keys.
+//  * @param {testFunc<valFunc>} valFunc The testing function for values.
+//  * @returns {KeyOf<Type> | false} The key of the first entry that passes the test.
+//  *                                If no entries pass the test, return false.
+//  */
+// function objFindKey<Type extends Index>(
+//   obj: Type,
+//   keyFunc: testFunc<keyFunc> | testFunc<valFunc> | false,
+//   valFunc?: testFunc<valFunc>
+// ): KeyOf<Type> | false {
+
+//   const [kFunc, vFunc] = getKeyValFunc(keyFunc, valFunc);
+
+//   // If obj is an array, find the index of the first element that passes the test
+//   if (isArray(obj)) {return obj.findIndex(vFunc);}
+
+//   // Find the first entry that passes the test
+//   const validEntry = Object.entries(obj)
+//     .find(([k, v]) => kFunc(k, v) && vFunc(v, k));
+//   // If an entry passes the test, return its key
+//   if (validEntry) {
+//     return validEntry[0] as KeyOf<Type>;
+//   }
+//   // If no entries pass the test, return false
+//   return false;
+// }
+
+// /**
+//  * An object-equivalent Array.filter() function, which accepts filter functions for both keys and/or values.
+//  * If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
+//  *
+//  * @param {Type} obj The object to be searched.
+//  * @param {testFunc<keyFunc> | testFunc<valFunc> | false} keyFunc The testing function for keys.
+//  * @param {testFunc<valFunc>} [valFunc] The testing function for values.
+//  * @returns {Type} The filtered object.
+//  */
+// const objFilter = <Type extends Index>(
+//   obj: Type,
+//   keyFunc: testFunc<keyFunc> | testFunc<valFunc> | false,
+//   valFunc?: testFunc<valFunc>,
+//   isMutating = false
+// ): Type => {
+
+//   const [kFunc, vFunc] = getKeyValFunc(keyFunc, valFunc);
+
+//   if (isArray(obj)) {
+//     const keptValues = obj.filter(vFunc);
+//     if (isMutating) {
+//       obj.splice(0, obj.length, ...keptValues);
+//       return obj;
+//     }
+//     return keptValues as Type;
+//   }
+
+//   if (isMutating) {
+//     const entriesToRemove = Object.entries(obj)
+//       .filter(([key, val]: [string, unknown]) => !(kFunc(key, val) && vFunc(val, key)));
+//     for (const [key] of entriesToRemove) {
+//       // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+//       delete obj[key as KeyOf<Type>];
+//     }
+//     return obj;
+//   }
+//   return Object.fromEntries(
+//     Object.entries(obj)
+//       .filter(([key, val]: [string, unknown]) => kFunc(key, val) && vFunc(val, key))
+//   ) as Type;
+// };
+// const objForEach = (obj: Index, func: valFunc): void => {
+//   // An object-equivalent Array.forEach() function, which accepts one function(val, key) to perform for each member.
+//   if (isArray(obj)) {
+//     obj.forEach(func);
+//   } else {
+//     Object.entries(obj).forEach(([key, val]) => func(val, key));
+//   }
+// };
+
 /**
- * This function is an object-equivalent of Array.findIndex() function.
- * It accepts check functions for both keys and/or values.
- * If only one function is provided, it's assumed to be searching via values and will receive (v, k) args.
+ * Finds the key of the first entry in an object or index of an array element that passes the test function.
  *
- * @param {Type} obj The object to be searched.
- * @param {testFunc<keyFunc> | testFunc<valFunc> | false} keyFunc The testing function for keys.
- * @param {testFunc<valFunc>} valFunc The testing function for values.
- * @returns {KeyOf<Type> | false} The key of the first entry that passes the test.
- *                                If no entries pass the test, return false.
+ * @template T - The type of the object or array being searched
+ * @param {T} obj - The object or array to search
+ * @param {TestFunction} testFunc - The function used to test each entry or element
+ * @returns {keyof T | false} - The key of the first passing entry, the index of the first passing element, or false if none pass
  */
-function objFindKey<Type extends Index>(
-  obj: Type,
-  keyFunc: testFunc<keyFunc> | testFunc<valFunc> | false,
-  valFunc?: testFunc<valFunc>
-): KeyOf<Type> | false {
-
-  const [kFunc, vFunc] = getKeyValFunc(keyFunc, valFunc);
-
-  // If obj is an array, find the index of the first element that passes the test
-  if (isArray(obj)) {return obj.findIndex(vFunc);}
-
-  // Find the first entry that passes the test
-  const validEntry = Object.entries(obj)
-    .find(([k, v]) => kFunc(k, v) && vFunc(v, k));
-  // If an entry passes the test, return its key
-  if (validEntry) {
-    return validEntry[0] as KeyOf<Type>;
+function objFindKey<T extends Record<ObjectKey, ObjectValue> | unknown[]>(
+  obj: T,
+  testFunc: TestFunction
+): keyof T | false {
+  if (Array.isArray(obj)) {
+    const index = obj.findIndex((v, i) => testFunc(v, i));
+    return index !== -1 ? index as keyof T : false;
   }
-  // If no entries pass the test, return false
+
+  for (const [key, value] of Object.entries(obj)) {
+    if (testFunc(value, key)) {
+      return key as keyof T;
+    }
+  }
+
   return false;
 }
 
 /**
- * An object-equivalent Array.filter() function, which accepts filter functions for both keys and/or values.
- * If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
+ * Filters an object or array based on a test function.
  *
- * @param {Type} obj The object to be searched.
- * @param {testFunc<keyFunc> | testFunc<valFunc> | false} keyFunc The testing function for keys.
- * @param {testFunc<valFunc>} [valFunc] The testing function for values.
- * @returns {Type} The filtered object.
+ * @template T - The type of the object or array being filtered
+ * @param {T} obj - The object or array to filter
+ * @param {TestFunction} testFunc - The function used to test each entry or element
+ * @param {boolean} [isMutating=false] - If true, modifies the original object or array instead of creating a new one
+ * @returns {T} - The filtered object or array
  */
-const objFilter = <Type extends Index>(
-  obj: Type,
-  keyFunc: testFunc<keyFunc> | testFunc<valFunc> | false,
-  valFunc?: testFunc<valFunc>,
+function objFilter<T extends Record<ObjectKey, ObjectValue> | unknown[]>(
+  obj: T,
+  testFunc: TestFunction,
   isMutating = false
-): Type => {
-
-  const [kFunc, vFunc] = getKeyValFunc(keyFunc, valFunc);
-
-  if (isArray(obj)) {
-    const keptValues = obj.filter(vFunc);
+): T {
+  if (Array.isArray(obj)) {
+    const filteredArray = obj.filter((v, i) => testFunc(v, i));
     if (isMutating) {
-      obj.splice(0, obj.length, ...keptValues);
+      obj.length = 0;
+      obj.push(...filteredArray);
       return obj;
     }
-    return keptValues as Type;
+    return filteredArray as T;
   }
 
   if (isMutating) {
-    const entriesToRemove = Object.entries(obj)
-      .filter(([key, val]: [string, unknown]) => !(kFunc(key, val) && vFunc(val, key)));
-    for (const [key] of entriesToRemove) {
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      delete obj[key as KeyOf<Type>];
+    for (const [key, value] of Object.entries(obj)) {
+      if (!testFunc(value, key)) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete obj[key as keyof T];
+      }
     }
     return obj;
   }
+
   return Object.fromEntries(
-    Object.entries(obj)
-      .filter(([key, val]: [string, unknown]) => kFunc(key, val) && vFunc(val, key))
-  ) as Type;
-};
-const objForEach = (obj: Index, func: valFunc): void => {
-  // An object-equivalent Array.forEach() function, which accepts one function(val, key) to perform for each member.
-  if (isArray(obj)) {
-    obj.forEach(func);
+    Object.entries(obj).filter(([key, value]) => testFunc(value, key))
+  ) as T;
+}
+
+/**
+ * Executes a provided function once for each array element or object entry.
+ *
+ * @template T - The type of the object or array being iterated
+ * @param {T} obj - The object or array to iterate over
+ * @param {(value: ObjectValue, key: ObjectKey) => void} func - The function to execute for each entry or element
+ */
+function objForEach<T extends Record<ObjectKey, ObjectValue> | unknown[]>(
+  obj: T,
+  func: (value: ObjectValue, key: ObjectKey) => void
+): void {
+  if (Array.isArray(obj)) {
+    obj.forEach((value, index) => { func(value, index) });
   } else {
-    Object.entries(obj).forEach(([key, val]) => func(val, key));
+    Object.entries(obj).forEach(([key, value]) => { func(value, key) });
   }
-};
+}
+
 // Prunes an object of given set of values, [undefined, null] default
 const objCompact = <Type extends (Index)>(
   obj: Type,
   removeWhiteList: unknown[] = [undefined, null],
   isMutating = false
-): Type => objFilter(obj, (val: unknown) => !removeWhiteList.includes(val), undefined, isMutating);
+): Type => objFilter(obj, (val: unknown) => !removeWhiteList.includes(val), isMutating);
 
 const objClone = <T>(obj: T, isStrictlySafe = false): T => {
   const cloneArray = <aT extends unknown[]>(arr: aT): aT => [...arr] as aT;
@@ -2221,45 +2335,45 @@ function getTimeStamp() {
 
 // #endregion ▄▄▄▄▄ ASYNC ▄▄▄▄▄
 
-const EventHandlers = {
-  onSelectChange: async (inst: EntitySheet, event: SelectChangeEvent) => {
-    const elem = event.currentTarget;
-    const {action, dtype, target, flagTarget} = elem.dataset;
+// const EventHandlers = {
+//   onSelectChange: async (inst: EntitySheet, event: SelectChangeEvent) => {
+//     const elem = event.currentTarget;
+//     const {action, dtype, target, flagTarget} = elem.dataset;
 
-    if (!action) {
-      throw new Error("Select elements require a data-action attribute.");
-    }
-    if (!target && !flagTarget) {
-      throw new Error("Select elements require a 'data-target' or 'data-flag-target' attribute.");
-    }
-    const dataType = lCase(dtype);
-    let value;
-    switch (dataType) {
-      case "number": value = pFloat(elem.value); break;
-      case "boolean": value = lCase(elem.value) === "true"; break;
-      case "string": value = elem.value; break;
-      default: {
-        if (isNumString(value)) {
-          throw new Error("You must set 'data-dtype=\"Number\"' for <select> elements with number values.");
-        }
-        if (isBooleanString(value)) {
-          throw new Error("You must set 'data-dtype=\"Boolean\"' for <select> elements with boolean values.");
-        }
-        value = elem.value;
-        break;
-      }
-    }
-    if (target) {
-      await inst.document.update({[target]: value});
-    } else if (flagTarget) {
-      if (elem.value === "") {
-        await inst.document.unsetFlag(getGame().system.id, flagTarget);
-      } else {
-        await (inst.document as Item).setFlag(getGame().system.id, flagTarget, value);
-      }
-    }
-  }
-};
+//     if (!action) {
+//       throw new Error("Select elements require a data-action attribute.");
+//     }
+//     if (!target && !flagTarget) {
+//       throw new Error("Select elements require a 'data-target' or 'data-flag-target' attribute.");
+//     }
+//     const dataType = lCase(dtype);
+//     let value;
+//     switch (dataType) {
+//       case "number": value = pFloat(elem.value); break;
+//       case "boolean": value = lCase(elem.value) === "true"; break;
+//       case "string": value = elem.value; break;
+//       default: {
+//         if (isNumString(value)) {
+//           throw new Error("You must set 'data-dtype=\"Number\"' for <select> elements with number values.");
+//         }
+//         if (isBooleanString(value)) {
+//           throw new Error("You must set 'data-dtype=\"Boolean\"' for <select> elements with boolean values.");
+//         }
+//         value = elem.value;
+//         break;
+//       }
+//     }
+//     if (target) {
+//       await inst.document.update({[target]: value});
+//     } else if (flagTarget) {
+//       if (elem.value === "") {
+//         await inst.document.unsetFlag(getGame().system.id, flagTarget);
+//       } else {
+//         await (inst.document as K4Item).setFlag(getGame().system.id, flagTarget, value);
+//       }
+//     }
+//   }
+// };
 
 // #region ████████ FOUNDRY: Requires Configuration of System ID in constants.ts ████████ ~
 
@@ -2476,7 +2590,7 @@ export default {
   sleep, waitFor, yieldToMain, getTimeStamp,
 
   // EVENT HANDLERS
-  EventHandlers,
+  // EventHandlers,
 
   // ■■■■■■■ SYSTEM: System-Specific Functions (Requires Configuration of System ID in constants.js) ■■■■■■■
   isDocID, isDocUUID, isDotKey, isTargetKey, isTargetFlagKey,

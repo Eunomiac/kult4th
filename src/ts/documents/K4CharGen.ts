@@ -244,9 +244,13 @@ class K4CharGen {
 
     const gmTracker = await K4GMTracker.Get();
     const user = getUser();
-    const userPC = getActor();
-
-    if (!userPC) {
+    try {
+      const userPC = getActor();
+      if (gmTracker.isCharGenFinishedFor(userPC)) {
+        return;
+      }
+      userPC.preInitializeCharGen();
+    } catch (error) {
       void K4Alert.Alert({
         type: AlertType.simple,
         target: UserTargetRef.gm,
@@ -256,12 +260,6 @@ class K4CharGen {
       });
       return;
     }
-
-    if (gmTracker.isCharGenFinishedFor(userPC)) {
-      return;
-    }
-
-    await userPC.preInitializeCharGen();
   }
 
   // archetypeData: Map<K4Archetype, Archetype.Data> = new Map<K4Archetype, Archetype.Data>();
@@ -388,7 +386,7 @@ class K4CharGen {
     // Strip "!" prefix (marking mandatory trait) so traitName can retrieve item
     // const {actor} = this;
     traitName = traitName.replace(/^!/g, "");
-    const traitItem = getGame().items.getName(traitName);
+    const traitItem = getItems().getName(traitName);
     if (!traitItem) {
       throw new Error(`Trait item "${traitName}" not found`);
     }
@@ -535,16 +533,12 @@ class K4CharGen {
   }
 
   getTraitAttribute(traitName: string): K4Attribute {
-    const traitItem = getGame().items.getName(traitName);
+    const traitItem = getItems().getName(traitName);
     if (!traitItem) {
       throw new Error(`Trait item "${traitName}" not found`);
     }
-    if ("attribute" in traitItem.system) {
-      return traitItem.system.attribute;
-    }
-    return K4Attribute.zero;
+    return traitItem.attribute || K4Attribute.zero;
   }
-
 
   // Precompute archetype data for all valid archetypes
   archetypeDataMap: Map<K4Archetype, Partial<ValOf<typeof Archetypes[keyof typeof Archetypes]>>> = new Map<K4Archetype, Partial<ValOf<typeof Archetypes[keyof typeof Archetypes]>>>();
@@ -778,12 +772,12 @@ class K4CharGen {
 
     /** == COMPILE DATA FROM OTHER PLAYERS == **/
     const thisUser = getUser();
-    const otherUsers = Array.from(getGame().users as Collection<User>)
+    const otherUsers = getUsers()
       .filter((user) => user.id !== thisUser.id);
     const [
       _gmUsers,
       otherPlayerUsers
-    ] = U.partition<User>(otherUsers, (user) => (user as User).isGM);
+    ] = U.partition<User>(otherUsers, (user) => user.isGM);
 
     const otherPlayerData = Object.fromEntries(otherPlayerUsers
       .map((user) => {
@@ -825,7 +819,7 @@ class K4CharGen {
 
     return {
         name: this.actor.name,
-        img: this.actor.img,
+        img: this.actor.img ?? CONST.DEFAULT_TOKEN,
         userName: this.actor.user?.name ?? "",
         userColor: this.actor.user?.color ?? "",
         archetype: this.actor.archetype ?? "",
@@ -1491,6 +1485,9 @@ class K4CharGen {
 
   #attachListeners_trait(traitContainer$: JQuery) {
     const trait = traitContainer$.attr("data-trait");
+    if (!trait) {
+      throw new Error("[K4CharGen] #attachListeners_trait: Trait is undefined");
+    }
     let clickTimer: NodeJS.Timeout | null = null;
     let longPressTriggered = false;
     const glowColors: Partial<Record<K4TraitType, string>> = {
@@ -1549,11 +1546,12 @@ class K4CharGen {
           U.pInt($(sheet).css("z-index"))
         ).toArray());
         this.element.css("z-index", 100);
+        if (!traitItem.sheet) {return;}
         if (!traitItem.sheet.rendered) {
           traitItem.sheet.render(true);
           await U.sleep(150);
         }
-        traitItem.sheet.element.css("z-index", highestZIndex + 1);
+        $(traitItem.sheet.element).css("z-index", highestZIndex + 1);
         this.element.css("z-index", 100);
       }
     });

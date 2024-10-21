@@ -5,6 +5,7 @@ import K4Actor, {K4ActorType} from "./K4Actor";
 import K4Item, {K4ItemType} from "./K4Item";
 import {K4RollResult} from "./K4Roll";
 import K4ActiveEffect, {UserRef} from "./K4ActiveEffect";
+import K4GMTracker from "../documents/K4GMTracker";
 // #endregion
 
 // #region TYPES ~
@@ -818,7 +819,7 @@ class K4ChatMessage extends ChatMessage {
       // If this is the last chat message, animate it and freeze any animations of currently-animating messages
       if (message.isLastMessage) {
         message.animate();
-        (getGame().messages as Collection<K4ChatMessage>)
+        getMessages()
           .filter((msg) => msg.isAnimated && msg.id !== message.id)
           .forEach((msg) => { msg.freeze(); });
       } else {
@@ -880,11 +881,11 @@ class K4ChatMessage extends ChatMessage {
     });
   }
   get cssClasses(): string[] {
-    return (this.getFlag("kult4th", "cssClasses") ?? []) as string[];
+    return this.getFlag("kult4th", "cssClasses");
   }
 
   get isAnimated(): boolean {
-    return !((this.getFlag("kult4th", "cssClasses") ?? []) as string[]).includes("not-animating");
+    return !this.getFlag("kult4th", "cssClasses").includes("not-animating");
   }
   set isAnimated(value: boolean) {
     if (value) {
@@ -962,12 +963,15 @@ class K4ChatMessage extends ChatMessage {
 
   async #resolveUserTargets(ref: UserRef): Promise<Array<K4Actor<K4ActorType.pc>|K4Item<K4ItemType.gmtracker>>> {
     const users = await this.#resolveUserSelectors(ref);
-    return users.map((user) => {
+    return Promise.all(users.map(async (user) => {
       if (user.isGM) {
-        kLog.error(`This should return a reference to the singleton GMTracker K4Item, currently unimplemented. Returning default Actor instead: ${ACTOR.name}`);
+        return (await K4GMTracker.Get()).item;
       }
-      return user.character as K4Actor<K4ActorType.pc>;
-    });
+      if (!user.character) {
+        throw new Error(`User '${user.id}' has no character.`);
+      }
+      return user.character;
+    }));
   }
   // #endregion
 
@@ -985,13 +989,13 @@ class K4ChatMessage extends ChatMessage {
     return K4ChatMessage.GetMessage(prevMessage);
   }
   get isLastMessage(): boolean {
-    return this.id === U.getLast(Array.from(getGame().messages as Collection<K4ChatMessage>)).id;
+    return this.id === U.getLast(Array.from(getMessages())).id;
   }
   isChatRoll(): this is typeof this & {outcome: K4RollResult} {
-    return (this.getFlag("kult4th", "isRoll") ?? false) as boolean;
+    return this.getFlag("kult4th", "isRoll");
   }
   get isChatTrigger(): boolean {
-    return (this.getFlag("kult4th", "isTrigger") ?? false) as boolean;
+    return this.getFlag("kult4th", "isTrigger");
   }
   get isResult(): boolean {
     return Boolean(this.isChatRoll() || this.isChatTrigger);
@@ -1011,7 +1015,7 @@ class K4ChatMessage extends ChatMessage {
   }
   get actor(): Maybe<K4Actor> {
     if (!this.actorID) { return undefined; }
-    return getGame().actors.get(this.actorID);
+    return getActors().get(this.actorID);
   }
   get sourceItemID(): Maybe<string> {
     return this.getFlag("kult4th", "rollData.source") as Maybe<string>;
@@ -1099,6 +1103,7 @@ class K4ChatMessage extends ChatMessage {
   get onSelectEffectData(): K4ActiveEffect.BuildData[] {
     if (!this.outcome) { return []; }
     if (!this.sourceItem?.hasResults()) { return []; }
+    if (!("results" in this.sourceItem.system)) { return []; }
     const theseResults = this.sourceItem.system.results[this.outcome];
     if (!theseResults || !("effects" in theseResults)) { return []; }
     const {effects} = theseResults;

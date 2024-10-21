@@ -5,46 +5,9 @@
 import U from "../scripts/utilities";
 import C from "../scripts/constants";
 import K4Actor, {K4ActorType} from "../documents/K4Actor";
-import K4Item from "../documents/K4Item";
+import K4Item, {K4ItemType, K4ItemSubType, K4ItemRange} from "../documents/K4Item";
 import ITEM_DATA from "./item-data";
-import {ConstructorDataType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
 // import PREV_DATA from "../../../.dev/item-data-prev";
-
-enum K4Attribute {
-  ask = "ask",
-  zero = "zero",
-  fortitude = "fortitude",
-  reflexes = "reflexes",
-  willpower = "willpower",
-  reason = "reason",
-  intuition = "intuition",
-  perception = "perception",
-  coolness = "coolness",
-  violence = "violence",
-  charisma = "charisma",
-  soul = "soul"
-}
-enum K4ItemType {
-  advantage = "advantage",
-  disadvantage = "disadvantage",
-  move = "move",
-  darksecret = "darksecret",
-  relation = "relation",
-  gear = "gear",
-  weapon = "weapon",
-  gmtracker = "gmtracker"
-}
-enum K4ItemSubType {
-  activeRolled = "active-rolled",
-  activeStatic = "active-static",
-  passive = "passive"
-}
-enum K4ItemRange {
-  arm = "arm",
-  room = "room",
-  field = "field",
-  horizon = "horizon"
-}
 
 // #region TYPES & ENUMS ~
 /** Namespace for PACK types */
@@ -60,7 +23,7 @@ namespace PACKS {
   }
   export interface SubItems {
     subItems: K4SubItem.Schema[];
-    subMoves: Array<K4SubItem.Schema<K4ItemType.move>>;
+    subMoves: K4SubItem.Schema[];
   }
   export interface ParentItems {
     parentItems: Array<ITEM_DATA.Schema<K4Item.Types.Parent>>;
@@ -140,7 +103,7 @@ const PACKS: PACKS = {
       ...this[K4ItemType.gear]
     ]);
   },
-  get subMoves(): Array<K4SubItem.Schema<K4ItemType.move>> {
+  get subMoves(): K4SubItem.Schema[] {
     return extractSubItemSchemas([
       ...this[K4ItemType.advantage],
       ...this[K4ItemType.disadvantage],
@@ -160,15 +123,15 @@ const PACKS: PACKS = {
   },
   get [K4ItemSubType.activeRolled](): K4SubItem.Schema[] {
     return this.subItems
-      .filter((move) => (move.system.subType as K4ItemSubType) === K4ItemSubType.activeRolled);
+      .filter((move) => move.system.subType === K4ItemSubType.activeRolled);
   },
   get [K4ItemSubType.activeStatic](): K4SubItem.Schema[] {
     return this.subMoves
-      .filter((move) => (move.system.subType as K4ItemSubType) === K4ItemSubType.activeStatic);
+      .filter((move) => move.system.subType === K4ItemSubType.activeStatic);
   },
   get [K4ItemSubType.passive](): ITEM_DATA.Schema[] {
     return this.all
-      .filter((move) => (move.system.subType as K4ItemSubType) === K4ItemSubType.passive);
+      .filter((move) => move.system.subType === K4ItemSubType.passive);
   }
 };
 // #endregion
@@ -362,15 +325,15 @@ function getItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, opti
       mapFunction = <V = Partial<Record<K4ItemSubType, REPORTS.CountReport>>>([key]: Tuple<string, unknown>) => {
         const returnData = {
           [K4ItemSubType.activeRolled]: countSchemasWithSystemKey(
-            itemDataArray.filter((is) => (is.system.subType as K4ItemSubType) === K4ItemSubType.activeRolled),
+            itemDataArray.filter((is) => is.system.subType === K4ItemSubType.activeRolled),
             key
           ),
           [K4ItemSubType.activeStatic]: countSchemasWithSystemKey(
-            itemDataArray.filter((is) => (is.system.subType as K4ItemSubType) === K4ItemSubType.activeStatic),
+            itemDataArray.filter((is) => is.system.subType === K4ItemSubType.activeStatic),
             key
           ),
           [K4ItemSubType.passive]: countSchemasWithSystemKey(
-            itemDataArray.filter((is) => (is.system.subType as K4ItemSubType) === K4ItemSubType.passive),
+            itemDataArray.filter((is) => is.system.subType === K4ItemSubType.passive),
             key
           )
         };
@@ -402,7 +365,7 @@ function getItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, opti
  * @param {K4SubItem.Types[]} [subTypes=[K4ItemType.move]] - The sub-item types to extract.
  * @returns {Array<K4SubItem.Schema>} - The extracted sub-item schemas.
  */
-function extractSubItemSchemas(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, subTypes: K4SubItem.Types[] = [K4ItemType.move]): Array<K4SubItem.Schema<K4ItemType.move>> {
+function extractSubItemSchemas(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, subTypes: K4SubItem.Types[] = [K4ItemType.move]): K4SubItem.Schema[] {
   return itemDataArray
     .filter((item): item is ITEM_DATA.Schema<K4Item.Types.Parent> =>
       [K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.weapon, K4ItemType.gear]
@@ -570,7 +533,7 @@ function getSubItemSystemReport(itemDataArray: ITEM_DATA.Schema[] = PACKS.all, o
  * @param {any[]} itemDataArray - The array of item data.
  * @returns {any[]} - The parsed item schemas.
  */
-function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.all): ConstructorDataType<typeof K4Item> {
+function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.all): Array<foundry.abstract.Document.ConstructorDataFor<typeof K4Item>> {
   const FOLDER_NAME_MAP = {
     [K4ItemType.advantage]: "Advantages",
     [K4ItemType.disadvantage]: "Disadvantages",
@@ -589,10 +552,10 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
           // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
           delete newItemData[key as keyof typeof newItemData]
       });
-      if (FOLDER_NAME_MAP[itemData.type as K4ItemType]) {
-        newItemData.folder = getGame().folders?.getName(FOLDER_NAME_MAP[itemData.type as K4ItemType]!)?.id ?? null;
+      if (FOLDER_NAME_MAP[itemData.type]) {
+        newItemData.folder = getGame().folders.getName(FOLDER_NAME_MAP[itemData.type]!)?.id ?? null;
       }
-      return newItemData;
+      return newItemData as foundry.abstract.Document.ConstructorDataFor<typeof K4Item>;
     });
 }
 
@@ -601,11 +564,11 @@ function parseItemSchemasForCreation(itemDataArray: ITEM_DATA.Schema[] = PACKS.a
  * @returns {Promise<void>}
  */
 async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
-  const itemSchemas = parseItemSchemasForCreation(PACKS.all) satisfies ConstructorDataType<typeof Item>;
+  const itemSchemas = parseItemSchemasForCreation(PACKS.all);
 
   function clearActorItems(actor: K4Actor): Promise<unknown> {
     // Filter actor's items to exclude K4SubItems, as their removal is taken care of by their parent item
-    const mainItems = actor.items.contents.filter((i) => !i.isSubItem());
+    const mainItems: K4Item[] = actor.items.filter((i: K4Item) => !i.isSubItem());
     // Delete all the remaining items
     return Promise.all(mainItems.map((item) => item.delete()));
   }
@@ -619,21 +582,21 @@ async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
   }
 
   function clearAllActors(): Promise<unknown> {
-    const myActors = (game as ReadyGame).actors; // <-- Resolves to 'any'
+    const myActors = getActors(); // <-- Resolves to 'any'
     return Promise.all(myActors.map((actor) => clearActor(actor)));
-  }                                         /* ^-- Parameter 'actor' implicitly has an 'any' type. */
+  }
 
   // Await a Promise.all that deletes all the existing items
   await Promise.all([
     clearAllActors(),
-    Promise.all((getGame().items as Collection<K4Item>).map((item) => item.delete()))
+    Promise.all(getItems().map((item) => item.delete()))
   ]);
 
   // Create all the new items
-  await K4Item.create(itemSchemas);
+  await K4Item.create(itemSchemas)
 
   // Initialize each actor with a new set of basic moves
-  await Promise.all((getGame().actors as Collection<K4Actor>).map((actor) => actor.initMovesAndEffects()));
+  await Promise.all(getActors().map((actor) => actor.initMovesAndEffects()));
 }
 
 //#endregion

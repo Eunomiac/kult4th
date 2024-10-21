@@ -602,6 +602,10 @@ const ANIMATIONS = {
   }
 };
 
+interface K4PCSheet extends ActorSheet{
+  object: K4Actor<K4ActorType.pc>,
+  get actor(): K4Actor<K4ActorType.pc>
+}
 class K4PCSheet extends ActorSheet {
   static PreInitialize() {
 
@@ -831,8 +835,8 @@ class K4PCSheet extends ActorSheet {
       weapons:         this.actor.weapons,
       gear:            this.actor.gear,
       attributes:      this.actor.attributeData,
-      curTab:          this.actor.getFlag("kult4th", "sheetTab") as string,
-      statusBarStrips:        this.actor.statusBarStrips
+      curTab:          this.actor.getFlag("kult4th", "sheetTab"),
+      statusBarStrips: this.actor.statusBarStrips
     };
     /*DEVCODE*/
     kLog.log("Final Actor Data", context);
@@ -1134,7 +1138,7 @@ class K4PCSheet extends ActorSheet {
     .each(function() {
       const itemName = $(this).attr("data-item-name");
       if (itemName) {
-        $(this).on("click", () => self.actor.getItemByName(itemName)?.sheet.render(true));
+        $(this).on("click", () => self.actor.getItemByName(itemName)?.sheet?.render(true));
       }
     });
 
@@ -1248,7 +1252,7 @@ class K4PCSheet extends ActorSheet {
     requestAnimationFrame(() => { this.resizeModifierReport(html); });
   }
   setActiveTab(html: JQuery) {
-    const curTab = this.actor.getFlag("kult4th", "sheetTab") as string;
+    const curTab = this.actor.getFlag("kult4th", "sheetTab");
     html.find(".tab.active").each(function() {
       if (this.getAttribute("data-tab") !== curTab) {
         this.classList.remove("active");
@@ -1465,7 +1469,7 @@ class K4PCSheet extends ActorSheet {
     html.find(".header-button.close")
       .each(function() {
         $(this).on({
-          click: () => { void self.actor.sheet.close(); }
+          click: () => { void self.actor.sheet?.close(); }
         });
       });
 
@@ -1784,7 +1788,7 @@ class K4PCSheet extends ActorSheet {
 
   override activateTab(tabName: string | null) {
     tabName ??= "front";
-    const curTab = (this.actor.getFlag("kult4th", "sheetTab") ?? "front") as string;
+    const curTab = this.actor.getFlag("kult4th", "sheetTab");
     if (tabName && tabName !== curTab) {
       this.actor.setFlag("kult4th", "sheetTab", tabName).catch((err: unknown) => { kLog.error(String(err)); });
     }
@@ -1792,9 +1796,5 @@ class K4PCSheet extends ActorSheet {
 }
 
 
-interface K4PCSheet {
-  object: K4Actor<K4ActorType.pc>,
-  _actor: K4Actor<K4ActorType.pc>
-}
 
 export default K4PCSheet;

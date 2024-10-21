@@ -20,7 +20,7 @@ type ContextType = K4Item | {
   };
 };
 
-export function formatForKult(str: string, iData: Document.Any|{system: K4Item.SystemSchema.Any|K4Actor.SystemSchema.Any}) {
+export function formatForKult(str: string, iData: foundry.abstract.Document.Any|{system: K4Item.SystemSchema.Any|K4Actor.SystemSchema.Any}) {
 
   // Step One: Replace any data object references.
   str = str.replace(
@@ -101,7 +101,7 @@ export function formatForKult(str: string, iData: Document.Any|{system: K4Item.S
                 throw new Error(`No such effect: ${effectID}`);
               }
 
-              return effect.getFlag(flagKey)!;
+              return effect.flagGet(flagKey)!;
             }
             return `<span style='color: red;'>No Such Prompt: ${dataKey}</span>`;
           }
