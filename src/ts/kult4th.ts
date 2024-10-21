@@ -61,6 +61,34 @@ Object.assign(globalThis, {
   }
     return game;
   },
+  getActors: function getActors() {
+    const actors = getGame().actors as Maybe<Collection<K4Actor>>;
+    if (!actors) {
+      throw new Error("Actors are not ready");
+    }
+    return actors;
+  },
+  getItems: function getItems() {
+    const items = getGame().items as Maybe<Collection<K4Item>>;
+    if (!items) {
+      throw new Error("Items are not ready");
+    }
+    return items;
+  },
+  getUsers: function getUsers() {
+    const users = getGame().users as Maybe<Collection<User>>;
+    if (!users) {
+      throw new Error("Users are not ready");
+    }
+    return users;
+  },
+  getMessages: function getMessages() {
+    const messages = getGame().messages as Maybe<Collection<K4ChatMessage>>;
+    if (!messages) {
+      throw new Error("Messages are not ready");
+    }
+    return messages;
+  },
   getUser: function getUser(): User {
     const user = getGame().user;
     if (!user) {
@@ -70,7 +98,7 @@ Object.assign(globalThis, {
   },
   getActor: function getActor(): K4Actor<K4ActorType.pc> {
     const userID: IDString = getUser().id as IDString;
-    const pcs: Array<K4Actor<K4ActorType.pc>> = getGame().actors.filter((actor: K4Actor): actor is K4Actor<K4ActorType.pc> => actor.is(K4ActorType.pc));
+    const pcs: Array<K4Actor<K4ActorType.pc>> = getActors().filter((actor): actor is K4Actor<K4ActorType.pc> => actor.is(K4ActorType.pc));
     const userPC = pcs.find((pc: K4Actor<K4ActorType.pc>) => pc.ownership[userID] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER);
     if (!userPC) {
       throw new Error(`User ${getUser().name} has no PC associated with them.`);
@@ -105,8 +133,8 @@ const DEV_DEBUG_CONFIG = {
 // #region === DEVELOPMENT CODE === ~
 function GlobalAssignment() {
   Hooks.once("ready", async () => {
-    const ACTOR = getGame().actors.values().next().value as Maybe<K4Actor>;
-    const ITEM = getGame().items.values().next().value as Maybe<K4Item>;
+    const ACTOR = getActors().values().next().value as Maybe<K4Actor>;
+    const ITEM = getItems().values().next().value as Maybe<K4Item>;
     const EMBED = ACTOR?.items.values().next().value as Maybe<K4Item>;
     const ACTORSHEET = ACTOR?.sheet;
 
@@ -126,7 +154,7 @@ function GlobalAssignment() {
       return archetypesThatHaveTrait.length === 1;
     }
     const getArchetypeReport = () => {
-      return Object.fromEntries([K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.darksecret].map((tType: K4ItemType) => [tType, Object.fromEntries((getGame().items as Collection<K4Item>).filter((item) => item.type === tType).map((item) => [item.name, whichArchetypesHave(item.name)]))]));
+      return Object.fromEntries([K4ItemType.advantage, K4ItemType.disadvantage, K4ItemType.darksecret].map((tType: K4ItemType) => [tType, Object.fromEntries((getItems() as Collection<K4Item>).filter((item) => item.type === tType).map((item) => [item.name, whichArchetypesHave(item.name)]))]));
     }
 
     Object.assign(globalThis, {

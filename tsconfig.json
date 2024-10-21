@@ -37,7 +37,7 @@
     ],
     "rootDir": ".",
     "outDir": "dist",
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,

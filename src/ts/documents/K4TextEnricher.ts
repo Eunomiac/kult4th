@@ -64,7 +64,7 @@ function formatForKult(str: string, iData: FoundryDoc|{system: K4Item.SystemSche
               if (actor) {
                 doc = actor.items.getName(docName ?? "");
               } else {
-                doc = getGame().items.getName(docName ?? "");
+                doc = getItems().getName(docName ?? "");
               }
               if (!doc) {
                 return `<span class="text-docLink" data-doc-name="${docName}" data-action="open">${docName}</span>`;

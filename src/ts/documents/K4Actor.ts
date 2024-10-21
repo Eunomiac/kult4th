@@ -275,8 +275,8 @@ interface K4Actor<Type extends K4ActorType = K4ActorType> {
   get type(): Type;
   get sheet(): Type extends K4ActorType.pc ? K4PCSheet : K4NPCSheet;
   // get ownership(): Record<IDString, number>;
-  get items(): EmbeddedCollection<K4Item, K4Actor>;
-  get effects(): EmbeddedCollection<K4ActiveEffect, K4Actor>;
+  get items(): foundry.abstract.EmbeddedCollection<K4Item, K4Actor>;
+  get effects(): foundry.abstract.EmbeddedCollection<K4ActiveEffect, K4Actor>;
   system: K4Actor.System<Type>;
 }
 // #endregion
@@ -388,8 +388,8 @@ class K4Actor extends Actor {
     if (!user.id) {
       throw new Error("Unable to determine ID of user.");
     }
-    const playerCharacters = getGame().actors.filter((actor: K4Actor): actor is K4Actor<K4ActorType.pc> => actor.type === K4ActorType.pc);
-    const ownedPlayerCharacter = playerCharacters.find((actor: K4Actor<K4ActorType.pc>) => actor.ownership[user.id as IDString] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER);
+    const playerCharacters = getActors().filter((actor: K4Actor): actor is K4Actor<K4ActorType.pc> => actor.type === K4ActorType.pc);
+    const ownedPlayerCharacter = playerCharacters.find((actor: K4Actor) => actor.ownership[user.id as IDString] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER);
     return ownedPlayerCharacter;
   }
 
@@ -409,10 +409,10 @@ class K4Actor extends Actor {
   get user(): Maybe<User> {
     if (!this.is(K4ActorType.pc)) {return undefined;}
     const ownerID = (Object.keys(this.ownership) as IDString[])
-      .filter((id: IDString) => getGame().users.get(id)?.isGM === false)
+      .filter((id: IDString) => getUsers().get(id)?.isGM === false)
       .find((id: IDString) => this.ownership[id] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER);
     if (!ownerID) {return undefined;}
-    return getGame().users.get(ownerID);
+    return getUsers().get(ownerID);
   }
 
   get charGenPhase(): K4CharGenPhase {
@@ -966,19 +966,19 @@ class K4Actor extends Actor {
 
     const allAdvantages = selAdvantages
       .map((adv) => adv.replace(/^!?/, ""))
-      .map((adv) => (getGame().items as Collection<K4Item<K4ItemType.advantage>>).getName(adv)!);
+      .map((adv) => (getItems() as Collection<K4Item<K4ItemType.advantage>>).getName(adv)!);
     const allDisadvantages = U.unique([
       ...selDisadvantages,
       ...extraDisadvantages
     ])
       .map((dis) => dis.replace(/^!?/, ""))
-      .map((dis) => (getGame().items as Collection<K4Item<K4ItemType.disadvantage>>).getName(dis)!);
+      .map((dis) => (getItems() as Collection<K4Item<K4ItemType.disadvantage>>).getName(dis)!);
     const allDarkSecrets = U.unique([
       ...selDarkSecrets,
       ...extraDarkSecrets
     ])
       .map((ds) => ds.replace(/^!?/, ""))
-      .map((ds) => (getGame().items as Collection<K4Item<K4ItemType.darksecret>>).getName(ds)!);
+      .map((ds) => (getItems() as Collection<K4Item<K4ItemType.darksecret>>).getName(ds)!);
 
     return {
       advantages: allAdvantages,
@@ -1041,7 +1041,7 @@ class K4Actor extends Actor {
     if (!this.is(K4ActorType.pc)) {return;}
     const pcData = this.system;
     let {selAdvantages, selDisadvantages, selDarkSecrets, extraDisadvantages, extraDarkSecrets} = pcData.charGen;
-    const item = getGame().items.getName(traitName) as Maybe<K4Item>;
+    const item = (getItems() as Collection<K4Item>).getName(traitName) as Maybe<K4Item>;
     if (!item) { return; }
     switch (item.type) {
       case K4ItemType.advantage: {

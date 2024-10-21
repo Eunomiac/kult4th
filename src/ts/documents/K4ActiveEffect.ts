@@ -798,7 +798,7 @@ const CUSTOM_FUNCTIONS = {
     }
 
     const user = filter === "gm"
-      ? getGame().users?.find((user: User) => user.isGM)
+      ? getUsers()?.find((user: User) => user.isGM)
       : actor.user;
     if (!user) {
       throw new Error(`[Prompt for Data] Unable to resolve user from filter '${filter}'.`)
@@ -1496,7 +1496,7 @@ class K4ActiveEffect extends ActiveEffect {
     // If the effect is unique, delete any existing effect with the same name
     if (effectExtendedData.isUnique) {
       const existingEffect = effectHost.effects.contents
-        .find((effect) => effect.name === effectExtendedData.name);
+        .find((effect: K4ActiveEffect) => effect.name === effectExtendedData.name);
       if (existingEffect) {
         await existingEffect.delete();
       }
@@ -1687,7 +1687,7 @@ class K4ActiveEffect extends ActiveEffect {
       kLog.log("Changes Step 0", {k4Changes: [...k4Changes], onceChanges: [...onceChanges]});
       /* === PROCESS CUSTOM CHANGES: STEP 1 - RequireItem Prerequisite Check === */
       // Filter out and run now any "RequireItem" changes. If any of them fail, remove both the ActiveEffect and the embedded Item.
-      ([onceChanges, k4Changes] = U.partition<K4Change>(k4Changes, (change: K4Change) => change.isRequireItemCheck))
+      ([onceChanges, k4Changes] = U.partition<K4Change>(k4Changes, (...args: unknown[]) => (args[0] as K4Change).isRequireItemCheck))
       kLog.log("Changes Step 1 (RequireItem)", {k4Changes: [...k4Changes], onceChanges: [...onceChanges]});
       if (onceChanges.some(async (change) => !(await change.apply(effect.actor)))) {
         await originItem?.delete();
@@ -1699,14 +1699,14 @@ class K4ActiveEffect extends ActiveEffect {
       // Though there is only one 'PromptForData' custom function currently defined, this structure allows for future expansion.
       // (Note: The "PromptForData" function will only run once; if the data it is seeking is already written to the actor's flags, it will do nothing.)
       kLog.log("Changes Step 2 (PromptForData)", {k4Changes: [...k4Changes], onceChanges: [...onceChanges]});
-      ([onceChanges, k4Changes] = U.partition<K4Change>(k4Changes, (change: K4Change) => change.isPromptOnCreate))
+      ([onceChanges, k4Changes] = U.partition<K4Change>(k4Changes, (...args: unknown[]) => (args[0] as K4Change).isPromptOnCreate))
       for (const change of onceChanges) {
         await change.apply(effect.actor);
       }
 
       /* === PROCESS CUSTOM CHANGES: STEP 3 - Permanent Effects Check === */
       // If any changes are permanent, apply them now and remove them from the effects array.
-      ([onceChanges, k4Changes] = U.partition<K4Change>(k4Changes, (change: K4Change) => change.isPermanentChange && !effect.eData.onChatSelection))
+      ([onceChanges, k4Changes] = U.partition<K4Change>(k4Changes, (...args: unknown[]) => (args[0] as K4Change).isPermanentChange && !(args[0] as K4Change).eData.onChatSelection))
       kLog.log("Changes Step 3 (PermanentChanges)", {k4Changes: [...k4Changes], onceChanges: [...onceChanges]});
       await Promise.all(onceChanges
         .map((change) => change.apply(effect.actor)));
@@ -1850,7 +1850,7 @@ class K4ActiveEffect extends ActiveEffect {
     if (!this.isOwnedByActor()) { return undefined; }
     return this.parent;
     // const [_, actorId] = this.origin.split(".");
-    // return getGame().actors.get(actorId);
+    // return getActors().get(actorId);
   }
   get eData(): K4ActiveEffect.ExtendedData {
     const eData = this.getFlag<K4ActiveEffect.ExtendedData>("data");

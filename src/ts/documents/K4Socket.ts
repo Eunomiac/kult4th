@@ -32,13 +32,13 @@ class K4Socket {
     const selfUser = getUser();
     if (!target) { return [selfUser]; }
     if (U.isDocID(target)) {
-      return [getGame().users.get(target) ?? undefined]
+      return [getUsers().get(target) ?? undefined]
         .filter((user: Maybe<User>) => user?.active) as User[];
     } else if (U.isDocUUID(target)) {
       return [(fromUuidSync(target) ?? undefined) as Maybe<User>]
         .filter((user: Maybe<User>) => user?.active) as User[];
     }
-    const allUsers = getGame().users.contents
+    const allUsers = getUsers().contents
       .filter((user: Maybe<User>) => user?.active) as User[];
     const [
       gmUsers,

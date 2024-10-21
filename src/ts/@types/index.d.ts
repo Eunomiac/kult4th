@@ -54,37 +54,37 @@ declare global {
       Roll: typeof K4Roll;
       Scene: typeof K4Scene;
   }
-}
+// }
 
-declare global {
+// declare global {
   const socketlib: SocketLib;
   const socket: Socket;
 
-  function fromUuidSync(uuid: string, options?: {
-    relative?: Document,
-    invalid?: boolean,
-    strict?: boolean
-  }): EntityDoc | null;
+  // function fromUuidSync(uuid: string, options?: {
+  //   relative?: Document,
+  //   invalid?: boolean,
+  //   strict?: boolean
+  // }): EntityDoc | null;
 
   function $clamp(element: HTMLElement, options?: ClampOptions): ClampResponse;
 
-  interface Game {
-    rolls: Collection<K4Roll>,
-  }
+  // interface Game {
+  //   rolls: Collection<K4Roll>,
+  // }
 
   interface CONFIG {
-    debug: {
-      logging: boolean,
-      hooks: boolean,
-      customFunctionParams: Record<string, SystemScalar[]>,
-      openReport: Maybe<string>,
-      openReports: Maybe<Record<string, DebugReport>>,
-      isDisablingCharGen: boolean
-    },
+    // debug: {
+    //   logging: boolean,
+    //   hooks: boolean,
+    //   customFunctionParams: Record<string, SystemScalar[]>,
+    //   openReport: Maybe<string>,
+    //   openReports: Maybe<Record<string, DebugReport>>,
+    //   isDisablingCharGen: boolean
+    // },
     K4: typeof K4Config,
-    compatibility: {
-      mode: number
-    }
+    // compatibility: {
+    //   mode: number
+    // }
   }
 
   const ACTOR: K4Actor;
@@ -109,6 +109,11 @@ declare global {
   interface SourceConfig {
     Actor: K4Actor.Source,
     Item: K4Item.Source
+  }
+
+  interface DataConfig {
+    Actor: K4Actor.System,
+    Item: K4Item.System
   }
 
   interface FlagConfig {

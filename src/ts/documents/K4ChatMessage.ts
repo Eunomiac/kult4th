@@ -760,14 +760,14 @@ class K4ChatMessage extends ChatMessage {
 
   static GetMessage(ref: string|JQuery|HTMLElement): Maybe<K4ChatMessage> {
     if (typeof ref === "string") {
-      return getGame().messages.get(ref) as Maybe<K4ChatMessage>;
+      return getMessages().get(ref) as Maybe<K4ChatMessage>;
     } else if (ref instanceof HTMLElement) {
       const message$ = $(ref).closest(".chat-message");
       const messageId = String(message$.data("messageId"));
-      return getGame().messages.get(messageId) as Maybe<K4ChatMessage>;
+      return getMessages().get(messageId) as Maybe<K4ChatMessage>;
     } else {
       const messageId = String($(ref).data("messageId"));
-      return getGame().messages.get(messageId) as Maybe<K4ChatMessage>;
+      return getMessages().get(messageId) as Maybe<K4ChatMessage>;
     }
   }
   /**
@@ -818,7 +818,7 @@ class K4ChatMessage extends ChatMessage {
       // If this is the last chat message, animate it and freeze any animations of currently-animating messages
       if (message.isLastMessage) {
         message.animate();
-        (getGame().messages as Collection<K4ChatMessage>)
+        (getMessages() as Collection<K4ChatMessage>)
           .filter((msg) => msg.isAnimated && msg.id !== message.id)
           .forEach((msg) => { msg.freeze(); });
       } else {
@@ -940,7 +940,7 @@ class K4ChatMessage extends ChatMessage {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   async #resolveUserSelectors(ref: UserRef): Promise<User[]> {
-    const users = getGame().users as Collection<User>;
+    const users = getUsers() as Collection<User>;
     if (ref === UserRef.any) {
       return Array.from(users);
     }
@@ -985,7 +985,7 @@ class K4ChatMessage extends ChatMessage {
     return K4ChatMessage.GetMessage(prevMessage);
   }
   get isLastMessage(): boolean {
-    return this.id === U.getLast(Array.from(getGame().messages as Collection<K4ChatMessage>)).id;
+    return this.id === U.getLast(Array.from(getMessages() as Collection<K4ChatMessage>)).id;
   }
   isChatRoll(): this is typeof this & {outcome: K4RollResult} {
     return (this.getFlag("kult4th", "isRoll") ?? false) as boolean;
@@ -1011,14 +1011,14 @@ class K4ChatMessage extends ChatMessage {
   }
   get actor(): Maybe<K4Actor> {
     if (!this.actorID) { return undefined; }
-    return getGame().actors.get(this.actorID);
+    return getActors().get(this.actorID);
   }
   get sourceItemID(): Maybe<string> {
     return this.getFlag("kult4th", "rollData.source") as Maybe<string>;
   }
   get sourceItem(): Maybe<K4Item> {
     if (!this.sourceItemID) { return undefined; }
-    const baseItem = getGame().items.get(this.sourceItemID);
+    const baseItem = getItems().get(this.sourceItemID);
     if (baseItem) { return baseItem; }
     if (this.actor) {
       const ownedItemUUID = `Actor.${this.actorID}.Item.${this.sourceItemID}`;

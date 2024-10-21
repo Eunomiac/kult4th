@@ -180,7 +180,7 @@ class K4Dialog extends Dialog {
     if (!itemID) {
       throw new Error("Item ID not found");
     }
-    const item = getGame().items.get(itemID);
+    const item = getItems().get(itemID);
     if (!item) {
       throw new Error(`Item with ID ${itemID} not found`);
     }
@@ -206,7 +206,7 @@ class K4Dialog extends Dialog {
     if (!itemID) {
       throw new Error("Item ID not found");
     }
-    const item = getGame().items.get(itemID);
+    const item = getItems().get(itemID);
     if (!item) {
       throw new Error(`Item with ID ${itemID} not found`);
     }

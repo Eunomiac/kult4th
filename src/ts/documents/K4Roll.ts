@@ -304,7 +304,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
   // #region === CONSTRUCTOR ===
   constructor(rollData: K4Roll.ConstructorData, actor?: K4Actor<K4ActorType.pc>) {
     const id = rollData.data?.id ?? U.getID();
-    actor ??= getGame().actors.get(rollData.data?.actorID ?? "") as Maybe<K4Actor<K4ActorType.pc>>;
+    actor ??= getActors().get(rollData.data?.actorID ?? "") as Maybe<K4Actor<K4ActorType.pc>>;
     if (!actor) {
       throw new Error(`Unable to find actor for roll ${id}`);
     }

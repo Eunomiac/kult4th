@@ -937,7 +937,7 @@ class K4PCSheet extends ActorSheet {
   //           .map((traitName) => traitName.replace(/^!/, ""))
   //       );
   //     }
-  //     return getGame().items
+  //     return getItems()
   //       .filter((item: any): item is K4Item<K4ItemType.disadvantage|K4ItemType.darksecret> =>
   //         item.type === type && !listedTraits.includes(item.name)
   //       );
@@ -1752,7 +1752,7 @@ class K4PCSheet extends ActorSheet {
 
     html.find("#item-test-button").on({
       click: this._promptItemSelection(
-        Array.from(getGame().items as Collection<K4Item>).filter((item) => item.type === K4ItemType.advantage)
+        Array.from(getItems() as Collection<K4Item>).filter((item) => item.type === K4ItemType.advantage)
       ).bind(this)
     });
 

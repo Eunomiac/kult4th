@@ -140,7 +140,7 @@ declare global {
    * @template R - The return type of the function being tested.
    * @template Type - The type of the function being tested, constrained to either `keyFunc` or `valFunc`.
    */
-  type testFunc<Type extends keyFunc<T, R> | valFunc<T, R> = keyFunc<T, R> | valFunc<T, R>, T = unknown, R = unknown> = (...args: Parameters<Type>) => boolean;
+  type testFunc<T = unknown, R = unknown, Type extends keyFunc<T, R> | valFunc<T, R> = keyFunc<T, R> | valFunc<T, R>> = (...args: Parameters<Type>) => boolean;
 
   /**
    * Represents a map function that takes the same parameters as either `keyFunc` or `valFunc` and returns the return type of the function being mapped.
@@ -149,7 +149,7 @@ declare global {
    * @template R - The return type of the function being mapped.
    * @template Type - The type of the function being mapped, constrained to either `keyFunc` or `valFunc`.
    */
-  type mapFunc<Type extends keyFunc<T, R> | valFunc<T, R> = keyFunc<T, R> | valFunc<T, R>, T = unknown, R = unknown> = (...args: Parameters<Type>) => ReturnType<Type>;
+  type mapFunc<T = unknown, R = unknown, Type extends keyFunc<T, R> | valFunc<T, R> = keyFunc<T, R> | valFunc<T, R>> = (...args: Parameters<Type>) => ReturnType<Type>;
 
   /**
    * Represents a type that can be used to check values. It can be a function that takes any number of unknown parameters and returns unknown,
@@ -159,7 +159,7 @@ declare global {
   // #endregion
 
   // #region BRANDED TYPES ~
-  declare const brand: unique symbol;
+const brand: unique symbol;
   type Brand<T, BrandName extends string> = T & { [brand]: BrandName };
 
   // number === Float type guard
@@ -222,7 +222,7 @@ declare global {
   };
 
   // Represents any document with update methods
-  type UpdateableDoc = FoundryDoc;
+  type UpdateableDoc = foundry.abstract.Document.Any;
 
   // Represents an Actor or Item document
   type EntityDoc = ActorDoc | ItemDoc;
@@ -257,10 +257,6 @@ declare global {
   // Utility Types for Variable Template Values
   interface ValueMax {min: number, max: number, value: number}
   type NamedValueMax = ValueMax & {name: string};
-
-  interface Scenes {
-    current: SceneDoc;
-  }
 
   // #region TinyMCE ~
   interface TinyMCEConfig {

@@ -292,7 +292,7 @@ export default class K4ItemSheet extends ItemSheet {
           if (itemDoc.isOwnedItem()) {
             $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet.render(true));
           } else {
-            $(elem).on("click", () => (Array.from(getGame().items as Collection<K4Item>))
+            $(elem).on("click", () => (Array.from(getItems() as Collection<K4Item>))
               .find((item) => item.type === K4ItemType.move && item.name === iName)
               ?.sheet.render(true));
           }
@@ -304,7 +304,7 @@ export default class K4ItemSheet extends ItemSheet {
           if (itemDoc.isOwnedItem()) {
             $(elem).on("click", () => parentActor?.getItemByName(iName)?.sheet.render(true));
           } else {
-            $(elem).on("click", () => (Array.from(getGame().items as Collection<K4Item>))
+            $(elem).on("click", () => (Array.from(getItems() as Collection<K4Item>))
               .find((item) => item.type === K4ItemType.move && item.name === iName)
               ?.sheet.render(true));
           }

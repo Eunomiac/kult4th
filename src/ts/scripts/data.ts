@@ -617,20 +617,20 @@ async function BUILD_ITEMS_FROM_DATA(): Promise<void> {
   }
 
   function clearAllActors(): Promise<unknown> {
-    return Promise.all((getGame().actors as Collection<K4Actor>).map((actor) => clearActor(actor)));
+    return Promise.all(getActors().map((actor) => clearActor(actor)));
   }
 
   // Await a Promise.all that deletes all the existing items
   await Promise.all([
     clearAllActors(),
-    Promise.all((getGame().items as Collection<K4Item>).map((item) => item.delete()))
+    Promise.all(getItems().map((item) => item.delete()))
   ]);
 
   // Create all the new items
-  await Item.create(itemSchemas as unknown as ItemDataConstructorData);
+  await K4Item.create(itemSchemas as foundry.abstract.Document.ConstructorDataFor<typeof K4Item>);
 
   // Initialize each actor with a new set of basic moves
-  await Promise.all((getGame().actors as Collection<K4Actor>).map((actor) => actor.initMovesAndEffects()));
+  await Promise.all(getActors().map((actor) => actor.initMovesAndEffects()));
 }
 
 //#endregion

@@ -39,21 +39,21 @@ class K4GMTracker {
       return true;
     },
     "AnnouncePreloadStart": async (userID: IDString, phase: K4GamePhase) => {
-      const user = getGame().users.get(userID);
+      const user = getUsers().get(userID);
       kLog.log(`{{AnnouncePreloadStart}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Start for '${U.uCase(phase)}' Phase`);
       const tracker = await K4GMTracker.Get();
       tracker.setUserLoadStatus(userID, phase, K4LoadStatus.loading);
       return true;
     },
     "AnnouncePreloadComplete": async (userID: IDString, phase: K4GamePhase, isAlreadyLoaded = false) => {
-      const user = getGame().users.get(userID);
+      const user = getUsers().get(userID);
       kLog.log(`{{AnnouncePreloadComplete}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Complete for '${U.uCase(phase)}' Phase`);
       const tracker = await K4GMTracker.Get();
       tracker.setUserLoadStatus(userID, phase, K4LoadStatus.loaded);
       return true;
     },
     "AnnouncePreloadError": async (userID: IDString, phase: K4GamePhase, error: string) => {
-      const user = getGame().users.get(userID);
+      const user = getUsers().get(userID);
       kLog.log(`{{AnnouncePreloadError}} User ${getUser().name} received Socket Call from ${user.name} to Announce Preload Error for '${U.uCase(phase)}' Phase: ${error}`);
       const tracker = await K4GMTracker.Get();
       tracker.setUserLoadStatus(userID, phase, K4LoadStatus.error);
@@ -77,8 +77,8 @@ class K4GMTracker {
       actorID: IDString,
       value: string
     ) => {
-      const user = getGame().users.get(userID);
-      const actor = getGame().actors.get(actorID);
+      const user = getUsers().get(userID);
+      const actor = getActors().get(actorID);
       kLog.log(`{{CharChange_Name}} User ${user.name} changed the name of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
       void tracker.updateSummaryOf(actorID);
@@ -90,8 +90,8 @@ class K4GMTracker {
       actorID: IDString,
       value: K4Archetype
     ) => {
-      const user = getGame().users.get(userID);
-      const actor = getGame().actors.get(actorID);
+      const user = getUsers().get(userID);
+      const actor = getActors().get(actorID);
       kLog.log(`{{CharChange_Archetype}} User ${user.name} changed the archetype of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
       void tracker.updateSummaryOf(actorID);
@@ -104,8 +104,8 @@ class K4GMTracker {
       attribute: K4CharAttribute,
       value: string
     ) => {
-      const user = getGame().users.get(userID);
-      const actor = getGame().actors.get(actorID) as K4Actor<K4ActorType.pc>;
+      const user = getUsers().get(userID);
+      const actor = getActors().get(actorID) as K4Actor<K4ActorType.pc>;
       kLog.log(`{{CharChange_Attributes}} User ${user.name} changed the value of attribute '${attribute}' of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
       void tracker.updateSummaryOf(actorID);
@@ -120,8 +120,8 @@ class K4GMTracker {
       isAdding: boolean,
       isArchetype?: boolean
     ) => {
-      const user = getGame().users.get(userID);
-      const actor = getGame().actors.get(actorID);
+      const user = getUsers().get(userID);
+      const actor = getActors().get(actorID);
       if (isAdding) {
         kLog.log(`{{CharChange_Advantage}} User ${user.name} added the ${traitType} '${value}' ${
           isArchetype ? `to archetype ${actor.archetype}` : "to extra traits"
@@ -140,8 +140,8 @@ class K4GMTracker {
       textBlock: string,
       value: string
     ) => {
-      const user = getGame().users.get(userID);
-      const actor = getGame().actors.get(actorID);
+      const user = getUsers().get(userID);
+      const actor = getActors().get(actorID);
       kLog.log(`{{CharChange_Text}} User ${user.name} changed '${textBlock}' of actor ${actor.name} to ${value}`);
       const tracker = await K4GMTracker.Get();
       void tracker.updateSummaryOf(actorID);
@@ -377,7 +377,7 @@ class K4GMTracker {
     if (!this._instancePromise) {
       this._instancePromise = new Promise((resolve) => {
         const checkTrackerItem = () => {
-          const trackerItem: Maybe<K4Item<K4ItemType.gmtracker>> = getGame().items.find((item: K4Item): item is K4Item<K4ItemType.gmtracker> => item.type === K4ItemType.gmtracker);
+          const trackerItem: Maybe<K4Item<K4ItemType.gmtracker>> = getItems().find((item: K4Item): item is K4Item<K4ItemType.gmtracker> => item.type === K4ItemType.gmtracker);
           if (trackerItem) {
             this._instance = new K4GMTracker(trackerItem);
             resolve(this._instance);
@@ -415,7 +415,7 @@ class K4GMTracker {
     }
 
     // For GM users, check if the tracker already exists
-    let trackerItem: Maybe<K4Item<K4ItemType.gmtracker>> = getGame().items.find((item: K4Item): item is K4Item<K4ItemType.gmtracker> => item.type === K4ItemType.gmtracker);
+    let trackerItem: Maybe<K4Item<K4ItemType.gmtracker>> = getItems().find((item: K4Item): item is K4Item<K4ItemType.gmtracker> => item.type === K4ItemType.gmtracker);
 
     if (!trackerItem) {
       // GM creates a new GMTracker item if it doesn't exist
@@ -616,7 +616,7 @@ class K4GMTracker {
 
   get playerCharacters(): Record<string, {actor: K4Actor<K4ActorType.pc>; owner: Maybe<User>; data: ChargenSummary; isOwnerOnline: boolean}> {
     return Object.fromEntries(
-      Array.from(getGame().actors as Collection<K4Actor>)
+      Array.from(getActors() as Collection<K4Actor>)
         .filter((actor): actor is K4Actor<K4ActorType.pc> => actor.type === K4ActorType.pc)
         .map((actor) => [actor.id, {
           actor,
@@ -628,7 +628,7 @@ class K4GMTracker {
   }
 
   async updateSummaryOf(actorID: IDString): Promise<void> {
-    const actor = getGame().actors.get(actorID) as Maybe<K4Actor<K4ActorType.pc>>;
+    const actor = getActors().get(actorID) as Maybe<K4Actor<K4ActorType.pc>>;
     if (!actor) {
       throw new Error(`[K4GMTracker] updateSummaryOf: Actor not found: ${actorID}`);
     }
@@ -687,7 +687,7 @@ class K4GMTracker {
   }
 
   get playerUsers(): User[] {
-    return getGame().users
+    return getUsers()
       .filter((user: User) => [CONST.USER_ROLES.PLAYER, CONST.USER_ROLES.TRUSTED].includes(user.role));
   }
 
@@ -749,7 +749,7 @@ class K4GMTracker {
           const actorId = select$.data("actor-id") as string;
 
           // Find the actor in the game
-          const actor: Maybe<K4Actor> = getGame().actors?.get(actorId);
+          const actor: Maybe<K4Actor> = getActors()?.get(actorId);
 
           if (!actor) {
             console.error(`Actor with ID ${actorId} not found.`);

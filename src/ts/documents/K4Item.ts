@@ -309,11 +309,11 @@ interface K4Item<T extends K4ItemType = K4ItemType> {
   get id(): IDString;
   get img(): string;
   get uuid(): UUIDString;
-  get name(): string;
+  // get name(): string;
   get type(): T;
-  get sheet(): K4ItemSheet;
+  // get sheet(): K4ItemSheet;
   // get effects(): Collection<K4ActiveEffect>;
-  system: K4Item.System<T>;
+  // system: K4Item.System<T>;
   parent: ActorDoc | null;
 }
 // #endregion
@@ -482,7 +482,7 @@ class K4Item extends Item {
     super._onCreate(...args);
     if (!getUser().isGM) { return; }
 
-    // If this has Change data in its system.rules schema, prepare a K4ActiveEffect to carry those Changes
+    // If this has Change data in its system.rules schema, prepare a K4ActiveEffect to carry those Changesa
     if (this.hasMainEffects()) {
       if (!this.parent) {
         // If this is a Primary document (i.e. not owned), simply create a K4ActiveEffect for the change data that will transfer to any future actor owner, containing change data for all changes. We don't have to worry about whether an item has been created pre-embedded in an Actor (see below).

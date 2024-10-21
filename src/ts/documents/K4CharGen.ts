@@ -388,7 +388,7 @@ class K4CharGen {
     // Strip "!" prefix (marking mandatory trait) so traitName can retrieve item
     // const {actor} = this;
     traitName = traitName.replace(/^!/g, "");
-    const traitItem = getGame().items.getName(traitName);
+    const traitItem = getItems().getName(traitName);
     if (!traitItem) {
       throw new Error(`Trait item "${traitName}" not found`);
     }
@@ -535,7 +535,7 @@ class K4CharGen {
   }
 
   getTraitAttribute(traitName: string): K4Attribute {
-    const traitItem = getGame().items.getName(traitName);
+    const traitItem = getItems().getName(traitName);
     if (!traitItem) {
       throw new Error(`Trait item "${traitName}" not found`);
     }
@@ -778,7 +778,7 @@ class K4CharGen {
 
     /** == COMPILE DATA FROM OTHER PLAYERS == **/
     const thisUser = getUser();
-    const otherUsers = Array.from(getGame().users as Collection<User>)
+    const otherUsers = Array.from(getUsers() as Collection<User>)
       .filter((user) => user.id !== thisUser.id);
     const [
       _gmUsers,
@@ -1542,7 +1542,7 @@ class K4CharGen {
       },
       click: async () => {
         if (longPressTriggered) {return;}
-        const traitItem = getGame().items.getName(trait) as Maybe<K4Item>;
+        const traitItem = getItems().getName(trait) as Maybe<K4Item>;
         if (!traitItem) {return;}
         // Scan the <body> element for all `.k4-item-sheet` elements and derive the highest z-index
         const highestZIndex = Math.max(...$("body").find(".k4-item-sheet").map((_i, sheet) =>
@@ -1722,7 +1722,7 @@ class K4CharGen {
             .map((traitName) => traitName.replace(/^!/, ""))
         );
       }
-      return getGame().items
+      return getItems()
         .filter((item: any): item is K4Item<K4ItemType.disadvantage | K4ItemType.darksecret> =>
           item.type === type && !listedTraits.includes(item.name)
         );
