@@ -105,7 +105,7 @@ export default class K4ItemSheet extends ItemSheet {
     }
 
     const self = this;
-    const itemDoc = this.document as K4Item;
+    const itemDoc = this.document;
     const parentActor: Maybe<K4Actor> = this.actor instanceof K4Actor ? this.actor : undefined;
 
     if (!this.isUnlocked) {
@@ -314,9 +314,9 @@ export default class K4ItemSheet extends ItemSheet {
       function createRollLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
           if (itemDoc.isOwnedItem()) {
-            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Rolling (Embedded) ${iName}`); });
+            $(elem).on("click", () => { kLog.log(`${parentActor?.name} Rolling (Embedded) ${iName}`); });
           } else {
-            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Rolling ${iName}`); });
+            $(elem).on("click", () => { kLog.log(`${parentActor?.name} Rolling ${iName}`); });
           }
         }
       }
@@ -324,9 +324,9 @@ export default class K4ItemSheet extends ItemSheet {
       function createChatLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
           if (itemDoc.isOwnedItem()) {
-            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Chatting (Embedded) ${iName}`); });
+            $(elem).on("click", () => { kLog.log(`${parentActor?.name} Chatting (Embedded) ${iName}`); });
           } else {
-            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Chatting ${iName}`); });
+            $(elem).on("click", () => { kLog.log(`${parentActor?.name} Chatting ${iName}`); });
           }
         }
       }
@@ -334,9 +334,9 @@ export default class K4ItemSheet extends ItemSheet {
       function createDeleteLinkFromName(elem: JQuery|HTMLElement, iName?: string): void {
         if (iName) {
           if (itemDoc.isOwnedItem()) {
-            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Deleting (Embedded) ${iName}`); });
+            $(elem).on("click", () => { kLog.log(`${parentActor?.name} Deleting (Embedded) ${iName}`); });
           } else {
-            $(elem).on("click", () => { kLog.log(`${self.actor?.name} Deleting ${iName}`); });
+            $(elem).on("click", () => { kLog.log(`${parentActor?.name} Deleting ${iName}`); });
           }
         }
       }

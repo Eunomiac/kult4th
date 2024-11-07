@@ -602,10 +602,10 @@ const ANIMATIONS = {
   }
 };
 
-interface K4PCSheet extends ActorSheet{
-  object: K4Actor<K4ActorType.pc>,
-  get actor(): K4Actor<K4ActorType.pc>
-}
+// interface K4PCSheet extends ActorSheet{
+//   object: K4Actor<K4ActorType.pc>,
+//   get actor(): K4Actor<K4ActorType.pc>
+// }
 class K4PCSheet extends ActorSheet {
   static PreInitialize() {
 

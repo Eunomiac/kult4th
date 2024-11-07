@@ -1497,7 +1497,7 @@ function objMerge<Tx, Ty>(
     } else if (val !== null && typeof val === "object") {
       // If source value is an object and not null, merge it into target value
       if (isUndefined(targetVal) && !(val instanceof Application)) {
-        const valPrototype = Object.getPrototypeOf(val) as ConstructorOf<typeof val>;
+        const valPrototype = Object.getPrototypeOf(val) as Constructor;
         target[key as KeyOf<typeof target>] = new valPrototype() as Tx[KeyOf<Tx>];
       }
       target[key as KeyOf<typeof target>] = objMerge(
@@ -2384,9 +2384,6 @@ const isDocUUID = (ref: unknown): ref is UUIDString => {
   const [docName, docID] = ref.split(/\./);
   if (!isDocID(docID)) { return false; }
   const {collections} = getGame();
-  if (!collections) {
-    throw new Error("[U.isDocUUID] Game not ready");
-  }
   return collections.has(docName);
 };
 
@@ -2413,9 +2410,6 @@ const parseDocRefToUUID = (ref: unknown): UUIDString => {
     return ref;
   } else if (isDocID(ref)) {
     const {collections} = getGame();
-    if (!collections) {
-      throw new Error("[U.parseDocRefToUUID] Game not ready");
-    }
     const doc = collections.find((collection) => collection.has(ref))?.get(ref);
     if (doc && "uuid" in doc) {
       return doc.uuid as UUIDString;
@@ -2443,7 +2437,7 @@ const loc = (locRef: string, formatDict: Record<string, string> = {}) => {
 const getSetting = <T = unknown>(setting: string, submenu?: string): Maybe<T> => {
   const settingPath = [submenu, setting].filter(isDefined).join(".");
   if (getGame().settings.settings.has(`${String(getGame().system.id)}.${String(settingPath)}`)) {
-    return getGame().settings.get(getGame().system.id, settingPath) as T;
+    return getGame().settings.get(getGame().system.id as ClientSettings.Namespace, settingPath as ClientSettings.Key) as T;
   }
   return undefined;
 };

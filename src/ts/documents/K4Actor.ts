@@ -394,7 +394,7 @@ class K4Actor<Type extends K4ActorType = K4ActorType> extends Actor {
    * @returns {boolean} True if the actor is of the specified type.
    */
   is<T extends K4ActorType = K4ActorType>(type: T): this is K4Actor<T> {
-    return this.type === type;
+    return this.type === type as T & Type;
   }
   // #endregion
 

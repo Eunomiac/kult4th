@@ -269,6 +269,7 @@ declare global {
      * Discriminated unions of item types by subType or other criteria
      */
     export type Parent<T extends Types.Parent = Types.Parent> = K4Item<T> & {
+      type: T;
       system: K4Item.System<T>;
     };
     export type Static<T extends Types.Static = Types.Static> = K4Item<T> & {
@@ -581,7 +582,7 @@ class K4Item<Type extends K4ItemType = K4ItemType> extends Item {
     if (this.is(K4ItemType.advantage, K4ItemType.disadvantage)) {
       const newHold = Math.max(this.system.currentHold + delta, 0);
       if (newHold !== this.system.currentHold) {
-        await this.update({"system.currentHold": newHold});
+        await this.update({system: {currentHold: newHold}});
       }
     }
   }
@@ -832,12 +833,13 @@ class K4Item<Type extends K4ItemType = K4ItemType> extends Item {
         this.triggerSummaryContext
       )
     ).replace(/This Move threatens Hold/g, "This Move Generates Hold");
+    const {parentItem} = this;
     const message = (await K4ChatMessage.create({
       content,
       speaker: K4ChatMessage.getSpeaker({alias: speaker ?? ""}),
       flags: {
         kult4th: {
-          cssClasses: [this.parentItem?.chatTheme ?? this.chatTheme],
+          cssClasses: parentItem && "chatTheme" in parentItem && parentItem.chatTheme ? parentItem.chatTheme : this.chatTheme,
           isSummary: false,
           isAnimated: true,
           isRoll: false,

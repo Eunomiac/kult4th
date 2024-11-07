@@ -193,10 +193,10 @@ const ANIMATIONS = {
   }
 };
 
-interface K4NPCSheet extends ActorSheet {
-  object: K4Actor<K4ActorType.npc>;
-  get actor(): K4Actor<K4ActorType.npc>;
-}
+// interface K4NPCSheet extends ActorSheet {
+//   object: K4Actor<K4ActorType.npc>;
+//   get actor(): K4Actor<K4ActorType.npc>;
+// }
 
 class K4NPCSheet extends ActorSheet {
   static PreInitialize() {

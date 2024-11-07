@@ -46,10 +46,13 @@ declare global {
     ChatMessage: {
       kult4th: {
         cssClasses: string[];
+        isSummary: boolean;
+        isAnimated: boolean;
         isRoll: boolean;
         isTrigger: boolean;
         rollOutcome: Maybe<K4RollResult>;
-        // rollData: Maybe<K4Roll.FlagData>;
+        isEdge: boolean;
+        rollData: K4Roll.Serialized.Base;
       }
     }
   }

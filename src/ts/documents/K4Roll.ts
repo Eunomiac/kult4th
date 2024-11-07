@@ -252,7 +252,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
     if (this.type === K4RollType.attribute) {
       return U.tCase(this.attribute);
     }
-    return (this.source as K4Item.Active).name;
+    return (this.source as K4Item & K4Item.Active).name;
   }
   public get attribute(): K4Roll.RollableAttribute|null {
     if (this._attribute instanceof Promise) {
@@ -314,7 +314,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
     this.img = img;
     this.type = type;
     this._attribute = attribute;
-    this.source = source;
+    this.source = source as K4Item<K4Item.Types.Active>;
     this.data.id = id;
     this.data.actorID = actor.id;
     getGame().rolls.set(id, this);
@@ -344,7 +344,11 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
         throw new Error(`Roll source must be of subType activeRolled: ${this.source.name} is of subType ${this.source.system.subType}`);
       }
       const {results} = (this.source as K4Item.Active).system;
-      return results[this.outcome];
+      const outcome = results[this.outcome];
+      if (!outcome) {
+        throw new Error(`No result found for outcome: ${this.outcome} in ${this.source.name}`);
+      }
+      return outcome;
     }
     return {
       result: ""
@@ -389,9 +393,9 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
 
     // getGame().dice3d.showForRoll(this); // Can't include if disabling canvas.
 
-    this.chatMessage = (await this.displayToChat()) as K4ChatMessage;
+    this.chatMessage = (await this.displayToChat());
 
-    return this.chatMessage;
+    return this.chatMessage ?? false;
   }
 
   public async displayToChat() {
@@ -408,7 +412,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
       attrType: this.attribute! in C.Attributes.Active ? "active" : "passive",
       modifiers: this.modifiers,
       rollerName: this.actor.name,
-      rollerImg: this.actor.img,
+      rollerImg: this.actor.img ?? "icons/svg/mystery-man.svg",
       result: this.getOutcomeData(),
       outcome: this.outcome,
       ...(this.source instanceof K4Item && this.source.isActiveItem())
@@ -416,7 +420,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
         source: this.source,
         sourceType: this.source.parentType,
         sourceName: this.source.name,
-        sourceImg: this.source.img
+        sourceImg: this.source.img ?? "icons/svg/mystery-man.svg"
       }
       : {
         source: this.source as K4Roll.RollableAttribute
@@ -477,7 +481,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
           rollOutcome: this.outcome,
           isEdge: false,
           rollData: this.serializeForStorage()
-        } as never
+        }
       }
     }))!;
   }

@@ -881,11 +881,11 @@ class K4ChatMessage extends ChatMessage {
     });
   }
   get cssClasses(): string[] {
-    return this.getFlag("kult4th", "cssClasses");
+    return (this as K4ChatMessage).getFlag("kult4th", "cssClasses");
   }
 
   get isAnimated(): boolean {
-    return !this.getFlag("kult4th", "cssClasses").includes("not-animating");
+    return !(this as K4ChatMessage).getFlag("kult4th", "cssClasses").includes("not-animating");
   }
   set isAnimated(value: boolean) {
     if (value) {
@@ -967,10 +967,14 @@ class K4ChatMessage extends ChatMessage {
       if (user.isGM) {
         return (await K4GMTracker.Get()).item;
       }
-      if (!user.character) {
+      const {character} = user;
+      if (!(character instanceof K4Actor)) {
         throw new Error(`User '${user.id}' has no character.`);
       }
-      return user.character;
+      if (!character.is(K4ActorType.pc)) {
+        throw new Error(`User '${user.id}' has a non-PC character.`);
+      }
+      return character;
     }));
   }
   // #endregion
@@ -992,10 +996,10 @@ class K4ChatMessage extends ChatMessage {
     return this.id === U.getLast(Array.from(getMessages())).id;
   }
   isChatRoll(): this is typeof this & {outcome: K4RollResult} {
-    return this.getFlag("kult4th", "isRoll");
+    return (this as K4ChatMessage).getFlag("kult4th", "isRoll");
   }
   get isChatTrigger(): boolean {
-    return this.getFlag("kult4th", "isTrigger");
+    return (this as K4ChatMessage).getFlag("kult4th", "isTrigger");
   }
   get isResult(): boolean {
     return Boolean(this.isChatRoll() || this.isChatTrigger);
@@ -1005,20 +1009,22 @@ class K4ChatMessage extends ChatMessage {
       return K4RollResult.completeSuccess;
     }
     if (this.isChatRoll()) {
-      return this.getFlag("kult4th", "rollOutcome") as Maybe<K4RollResult>;
+      return (this as K4ChatMessage).getFlag("kult4th", "rollOutcome");
     }
     return undefined;
   }
+  get rollData(): K4Roll.Serialized.Base {
+    return (this as K4ChatMessage).getFlag("kult4th", "rollData");
+  }
   get actorID(): Maybe<string> {
-    return this.speaker.actor
-      ?? this.getFlag("kult4th", "rollData.data.actorID") as Maybe<string>;
+    return this.speaker.actor ?? this.rollData.data.actorID;
   }
   get actor(): Maybe<K4Actor> {
     if (!this.actorID) { return undefined; }
     return getActors().get(this.actorID);
   }
   get sourceItemID(): Maybe<string> {
-    return this.getFlag("kult4th", "rollData.source") as Maybe<string>;
+    return this.rollData.source;
   }
   get sourceItem(): Maybe<K4Item> {
     if (!this.sourceItemID) { return undefined; }
@@ -1081,17 +1087,17 @@ class K4ChatMessage extends ChatMessage {
       // popover$.css("display", "flex");
     }));
   }
-  addClass(cls: ValueOrArray<string>, html?: JQuery) {
+  addClass(this: K4ChatMessage, cls: ValueOrArray<string>, html?: JQuery) {
     const classes = [cls].flat();
-    const curClasses = this.getFlag("kult4th", "cssClasses") as string[];
+    const curClasses = this.getFlag("kult4th", "cssClasses");
     if (classes.some((newCls) => !curClasses.includes(newCls))) {
       void this.setFlag("kult4th", "cssClasses", U.unique([...this.cssClasses, ...classes]))
           .then(() => { this.applyFlagCSSClasses(html); });
     }
   }
-  remClass(cls: ValueOrArray<string>, html?: JQuery) {
+  remClass(this: K4ChatMessage, cls: ValueOrArray<string>, html?: JQuery) {
     const remClasses = [cls].flat();
-    const curClasses = this.getFlag("kult4th", "cssClasses") as string[];
+    const curClasses = this.getFlag("kult4th", "cssClasses");
     if (remClasses.some((remCls) => curClasses.includes(remCls))) {
       void this.setFlag("kult4th", "cssClasses", this.cssClasses.filter((c) => !remClasses.includes(c)))
           .then(() => { this.applyFlagCSSClasses(html); });
@@ -1334,11 +1340,6 @@ class K4ChatMessage extends ChatMessage {
 
 }
 
-// #region -- K4ChatMessage INTERFACE -- ~
-interface K4ChatMessage {
-  content: string;
-}
-// #endregion
 
 // #ENDREGION
 
