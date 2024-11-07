@@ -1311,14 +1311,14 @@ export const Colors = {
                 : stroke.stops)
             }
           };
-        }) as mapFunc<valFunc<unknown, GradientDef>, unknown, GradientDef>
-      ) as Record<
+        }) as MapFunction/*  as mapFunc<valFunc<unknown, GradientDef>, unknown, GradientDef> */
+      )/*  as Record<
         K4ItemType,
         {
           fill: Partial<SVGGradientDef>,
           stroke: Partial<SVGGradientDef>;
         }
-      >).map((defs) => Object.values(defs)).flat()
+      > */).map((defs) => Object.values(defs)).flat()
     }
   },
 

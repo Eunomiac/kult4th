@@ -362,9 +362,9 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
     return Math.max(0, super.total);
   }
 
-  public chatMessage?: K4ChatMessage;
+  public chatMessage?: foundry.abstract.Document.ToConfiguredStored<typeof K4ChatMessage>;
 
-  public async evaluateToChat(): Promise<K4ChatMessage|false> {
+  public async evaluateToChat(): Promise<foundry.abstract.Document.ToConfiguredStored<typeof K4ChatMessage>|false> {
 
     // Collect all applicable K4ActiveEffects
     const applicableEffects = this.actor.effects
@@ -483,7 +483,7 @@ class K4Roll extends Roll<{id: IDString, actorID: IDString}> {
           rollData: this.serializeForStorage()
         }
       }
-    }))!;
+    })) as foundry.abstract.Document.ToConfiguredStored<typeof K4ChatMessage>;
   }
 
     /**
