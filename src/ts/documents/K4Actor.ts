@@ -268,15 +268,15 @@ declare global {
 // #endregion
 // #endregion
 // #region === K4ACTOR CLASS ===
-interface K4Actor<Type extends K4ActorType = K4ActorType> {
-  get id(): IDString;
-  get uuid(): UUIDString;
+// interface K4Actor<Type extends K4ActorType = K4ActorType> {
+//   get id(): IDString;
+//   get uuid(): UUIDString;
 
-  get effects(): foundry.abstract.EmbeddedCollection<K4ActiveEffect & foundry.abstract.Document.Any, K4Actor<Type> & foundry.abstract.Document.Any>;
-}
+//   get effects(): foundry.abstract.EmbeddedCollection<K4ActiveEffect & foundry.abstract.Document.Any, K4Actor<Type> & foundry.abstract.Document.Any>;
+// }
 class K4Actor<Type extends K4ActorType = K4ActorType> extends Actor {
-  declare type: Type;
-  declare system: K4Actor.System<Type>;
+  // declare type: Type;
+  // declare system: K4Actor.System<Type>;
   // #region INITIALIZATION ~
   /**
    * Pre-Initialization of the K4Actor class. This method should be run during the "init" hook.

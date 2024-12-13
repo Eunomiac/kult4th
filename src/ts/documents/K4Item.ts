@@ -301,12 +301,12 @@ declare global {
 // #ENDREGION
 // #endregion
 // #REGION === K4ITEM CLASS ===
-interface K4Item<Type extends K4ItemType = K4ItemType> {
-  get id(): IDString;
-  get uuid(): UUIDString;
+// interface K4Item<Type extends K4ItemType = K4ItemType> {
+//   get id(): IDString;
+//   get uuid(): UUIDString;
 
-  get effects(): foundry.abstract.EmbeddedCollection<K4ActiveEffect & foundry.abstract.Document.Any, K4Item<Type> & foundry.abstract.Document.Any>;
-}
+//   get effects(): foundry.abstract.EmbeddedCollection<K4ActiveEffect & foundry.abstract.Document.Any, K4Item<Type> & foundry.abstract.Document.Any>;
+// }
 class K4Item<Type extends K4ItemType = K4ItemType> extends Item {
   declare type: Type;
   declare system: K4Item.System<Type>;

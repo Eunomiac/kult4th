@@ -37,9 +37,9 @@ namespace K4ChatMessage {
 }
 // #endregion
 // #region -- INTERFACE AUGMENTATION ~
-interface K4ChatMessage {
-  get id(): IDString;
-}
+// interface K4ChatMessage {
+//   get id(): IDString;
+// }
 // #endregion
 // #endregion
 
