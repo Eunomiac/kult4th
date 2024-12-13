@@ -1,7 +1,7 @@
-import { Dragger, InertiaPlugin } from "../libraries";
-import K4CharGen from "./K4CharGen";
-import U from "../scripts/utilities";
-import K4Actor from "./K4Actor";
+import { Dragger, InertiaPlugin } from "../libraries.js";
+import K4CharGen from "./K4CharGen.js";
+import U from "../scripts/utilities.js";
+import K4Actor from "./K4Actor.js";
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class K4DebugDisplay {

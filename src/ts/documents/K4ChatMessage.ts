@@ -1,11 +1,11 @@
 // #region IMPORTS ~
-import C from "../scripts/constants";
-import U from "../scripts/utilities";
-import K4Actor, {K4ActorType} from "./K4Actor";
-import K4Item, {K4ItemType} from "./K4Item";
-import {K4RollResult} from "./K4Roll";
-import K4ActiveEffect, {UserRef} from "./K4ActiveEffect";
-import K4GMTracker from "../documents/K4GMTracker";
+import C from "../scripts/constants.js";
+import U from "../scripts/utilities.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
+import K4Item, {K4ItemType} from "./K4Item.js";
+import {K4RollResult} from "./K4Roll.js";
+import K4ActiveEffect, {UserRef} from "./K4ActiveEffect.js";
+import K4GMTracker from "../documents/K4GMTracker.js";
 // #endregion
 
 // #region TYPES ~

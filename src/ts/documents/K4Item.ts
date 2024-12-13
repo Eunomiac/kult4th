@@ -1,11 +1,11 @@
 // #region IMPORTS ~
-import U from "../scripts/utilities";
-import K4ItemSheet from "./K4ItemSheet";
-import K4ChatMessage from "./K4ChatMessage";
-import C, {K4Attribute} from "../scripts/constants";
-import K4Actor, {K4ActorType} from "./K4Actor";
-import K4Roll, {K4RollResult} from "./K4Roll";
-import K4ActiveEffect from "./K4ActiveEffect";
+import U from "../scripts/utilities.js";
+import K4ItemSheet from "./K4ItemSheet.js";
+import K4ChatMessage from "./K4ChatMessage.js";
+import C, {K4Attribute} from "../scripts/constants.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
+import K4Roll, {K4RollResult} from "./K4Roll.js";
+import K4ActiveEffect from "./K4ActiveEffect.js";
 import {InterfaceToObject, ConstructorDataType} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
 // #endregion
 

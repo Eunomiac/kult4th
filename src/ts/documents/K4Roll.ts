@@ -1,9 +1,9 @@
 // #region IMPORTS ~
-import U from "../scripts/utilities";
-import C, {K4Attribute} from "../scripts/constants";
-import K4Item, {K4ItemType, K4ItemSubType} from "./K4Item";
-import K4Actor, {K4ActorType} from "./K4Actor";
-import K4ChatMessage from "./K4ChatMessage";
+import U from "../scripts/utilities.js";
+import C, {K4Attribute} from "../scripts/constants.js";
+import K4Item, {K4ItemType, K4ItemSubType} from "./K4Item.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
+import K4ChatMessage from "./K4ChatMessage.js";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~

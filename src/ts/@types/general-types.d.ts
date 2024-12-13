@@ -1,16 +1,16 @@
 // #region IMPORTS ~
-import K4Actor, {K4ActorType} from "../documents/K4Actor";
-import K4Item from "../documents/K4Item";
-import K4PCSheet from "../documents/K4PCSheet";
-import K4NPCSheet from "../documents/K4NPCSheet";
-import K4ItemSheet from "../documents/K4ItemSheet";
-import K4ActiveEffect from "../documents/K4ActiveEffect";
-import K4ChatMessage from "../documents/K4ChatMessage";
-import K4Dialog from "../documents/K4Dialog";
-import K4Roll from "../documents/K4Roll";
-import K4Scene from "../documents/K4Scene";
+import K4Actor, {K4ActorType} from "../documents/K4Actor.js";
+import K4Item from "../documents/K4Item.js";
+import K4PCSheet from "../documents/K4PCSheet.js";
+import K4NPCSheet from "../documents/K4NPCSheet.js";
+import K4ItemSheet from "../documents/K4ItemSheet.js";
+import K4ActiveEffect from "../documents/K4ActiveEffect.js";
+import K4ChatMessage from "../documents/K4ChatMessage.js";
+import K4Dialog from "../documents/K4Dialog.js";
+import K4Roll from "../documents/K4Roll.js";
+import K4Scene from "../documents/K4Scene.js";
 
-import {Socket, SocketLib} from "./socketlib";
+import {Socket, SocketLib} from "./socketlib.js";
 // #endregion
 
 // #region CONFIGURATION OF SYSTEM CLASSES

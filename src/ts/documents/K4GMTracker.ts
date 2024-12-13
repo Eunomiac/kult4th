@@ -1,12 +1,12 @@
 // #region IMPORTS ~
-import C, {K4Attribute, K4GamePhase, K4Archetype} from "../scripts/constants";
-import U from "../scripts/utilities";
-import K4Actor, {K4ActorType} from "./K4Actor";
-import K4Item, {K4ItemType} from "./K4Item";
-import K4ItemSheet from "./K4ItemSheet";
-import K4Socket, {UserTargetRef} from "./K4Socket";
-import {ChargenSummary} from "./K4CharGen";
-import {ExpoScaleEase} from "../libraries";
+import C, {K4Attribute, K4GamePhase, K4Archetype} from "../scripts/constants.js";
+import U from "../scripts/utilities.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
+import K4Item, {K4ItemType} from "./K4Item.js";
+import K4ItemSheet from "./K4ItemSheet.js";
+import K4Socket, {UserTargetRef} from "./K4Socket.js";
+import {ChargenSummary} from "./K4CharGen.js";
+import {ExpoScaleEase} from "../libraries.js";
 // #endregion
 // #region -- TYPES ~
 

@@ -1,11 +1,11 @@
-import K4Actor, {K4ActorType} from "../documents/K4Actor";
-import K4ChatMessage from "../documents/K4ChatMessage";
-import K4Item from "../documents/K4Item";
+import K4Actor, {K4ActorType} from "../documents/K4Actor.js";
+import K4ChatMessage from "../documents/K4ChatMessage.js";
+import K4Item from "../documents/K4Item.js";
 
-import "./general-types";
-import "./system-types";
-import "./fvtt-types-config";
-import "./weird-hacks";
+import "./general-types.js";
+import "./system-types.js";
+import "./fvtt-types-config.js";
+import "./weird-hacks.js";
 
 declare module "virtual:colors" {
   export const Colors: Record<string, string>;

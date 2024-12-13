@@ -1,6 +1,6 @@
-import K4Actor, {K4ActorType} from "../documents/K4Actor";
-import K4Item, {K4ItemType} from "../documents/K4Item";
-import K4ActiveEffect from "../documents/K4ActiveEffect";
+import K4Actor, {K4ActorType} from "../documents/K4Actor.js";
+import K4Item, {K4ItemType} from "../documents/K4Item.js";
+import K4ActiveEffect from "../documents/K4ActiveEffect.js";
 
 type AnyDocument = foundry.abstract.Document.Any;
 type EmbeddedCollection<T extends AnyDocument, D extends AnyDocument> = foundry.abstract.EmbeddedCollection<T, D>;

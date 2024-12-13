@@ -2,30 +2,30 @@
 import "../scss/style.scss";
 
 import LogRocket from 'logrocket';
-import K4Config from "./scripts/config";
-import K4Actor, {K4ActorType} from "./documents/K4Actor";
-import K4Item, {K4ItemType} from "./documents/K4Item";
-import K4ItemSheet from "./documents/K4ItemSheet";
-import K4PCSheet from "./documents/K4PCSheet";
-import K4NPCSheet from "./documents/K4NPCSheet";
-import K4ActiveEffect from "./documents/K4ActiveEffect";
-import C, {Colors, K4GamePhase, Archetypes, K4Archetype} from "./scripts/constants";
-import InitializePopovers from "./scripts/popovers";
-import U from "./scripts/utilities";
-import {formatForKult, registerHandlebarHelpers as RegisterHandlebarHelpers} from "./scripts/helpers";
-import registerSettings from "./scripts/settings";
-import registerConsoleLogger from "./scripts/logger";
-import K4Alert from "./documents/K4Alert";
-import K4Sound from "./documents/K4Sound";
-import K4Roll from "./documents/K4Roll";
-import K4Dialog from "./documents/K4Dialog";
-import K4Socket, {UserTargetRef} from "./documents/K4Socket";
-import K4DebugDisplay from "./documents/K4DebugDisplay";
-import K4CharGen from "./documents/K4CharGen";
-import K4GMTracker from "./documents/K4GMTracker";
+import K4Config from "./scripts/config.js";
+import K4Actor, {K4ActorType} from "./documents/K4Actor.js";
+import K4Item, {K4ItemType} from "./documents/K4Item.js";
+import K4ItemSheet from "./documents/K4ItemSheet.js";
+import K4PCSheet from "./documents/K4PCSheet.js";
+import K4NPCSheet from "./documents/K4NPCSheet.js";
+import K4ActiveEffect from "./documents/K4ActiveEffect.js";
+import C, {Colors, K4GamePhase, Archetypes, K4Archetype} from "./scripts/constants.js";
+import InitializePopovers from "./scripts/popovers.js";
+import U from "./scripts/utilities.js";
+import {formatForKult, registerHandlebarHelpers as RegisterHandlebarHelpers} from "./scripts/helpers.js";
+import registerSettings from "./scripts/settings.js";
+import registerConsoleLogger from "./scripts/logger.js";
+import K4Alert from "./documents/K4Alert.js";
+import K4Sound from "./documents/K4Sound.js";
+import K4Roll from "./documents/K4Roll.js";
+import K4Dialog from "./documents/K4Dialog.js";
+import K4Socket, {UserTargetRef} from "./documents/K4Socket.js";
+import K4DebugDisplay from "./documents/K4DebugDisplay.js";
+import K4CharGen from "./documents/K4CharGen.js";
+import K4GMTracker from "./documents/K4GMTracker.js";
 
-import InitializeLibraries, {gsap} from "./libraries";
-import K4ChatMessage from "./documents/K4ChatMessage";
+import InitializeLibraries, {gsap} from "./libraries.js";
+import K4ChatMessage from "./documents/K4ChatMessage.js";
 // #endregion
 
 // #region === CONSTANTS === ~

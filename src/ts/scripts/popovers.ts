@@ -1,4 +1,4 @@
-import U from "./utilities";
+import U from "./utilities.js";
 
 // Define custom effect types
 interface PopoverEffectConfig {

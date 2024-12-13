@@ -1,6 +1,6 @@
 // #region IMPORTS ~
 
-import C, {K4Influence} from "./constants";
+import C, {K4Influence} from "./constants.js";
 
 // #endregion
 

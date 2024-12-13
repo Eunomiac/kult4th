@@ -1,4 +1,4 @@
-import {Colors, K4Attribute, K4Archetype} from "./constants";
+import {Colors, K4Attribute, K4Archetype} from "./constants.js";
 
 const K4Config = {
   colors: Colors,

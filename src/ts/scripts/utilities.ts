@@ -1,4 +1,4 @@
-import {gsap, MotionPathPlugin} from "../libraries";
+import {gsap, MotionPathPlugin} from "../libraries.js";
 
 // #region ▒▒▒▒▒▒▒ [HELPERS] Internal Functions, Data & References Used by Utility Functions ▒▒▒▒▒▒▒ ~
 

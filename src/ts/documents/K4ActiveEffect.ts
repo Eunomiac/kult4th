@@ -1,16 +1,16 @@
 // #region IMPORTS ~
-import C, {K4Attribute, K4ConditionType, K4WoundType} from "../scripts/constants";
-import U from "../scripts/utilities";
-import {formatForKult} from "../scripts/helpers";
-import K4Actor from "./K4Actor";
-import {K4ActorType} from "./K4Actor";
-import K4Item, {K4ItemType, K4ItemRange} from "./K4Item";
-import K4Roll, {K4RollResult} from "./K4Roll";
-import K4Scene from "./K4Scene";
-import K4ChatMessage from "./K4ChatMessage";
-import K4Dialog, {PromptInputType} from "./K4Dialog";
-import K4Alert, {AlertType} from "./K4Alert";
-import {UserTargetRef} from "./K4Socket";
+import C, {K4Attribute, K4ConditionType, K4WoundType} from "../scripts/constants.js";
+import U from "../scripts/utilities.js";
+import {formatForKult} from "../scripts/helpers.js";
+import K4Actor from "./K4Actor.js";
+import {K4ActorType} from "./K4Actor.js";
+import K4Item, {K4ItemType, K4ItemRange} from "./K4Item.js";
+import K4Roll, {K4RollResult} from "./K4Roll.js";
+import K4Scene from "./K4Scene.js";
+import K4ChatMessage from "./K4ChatMessage.js";
+import K4Dialog, {PromptInputType} from "./K4Dialog.js";
+import K4Alert, {AlertType} from "./K4Alert.js";
+import {UserTargetRef} from "./K4Socket.js";
 // #endregion
 
 // #region -- TYPES, ENUMS & FLAG CONFIGURATION -- ~

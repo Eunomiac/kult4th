@@ -1,7 +1,7 @@
 // #region IMPORTS ~
 
-import C from "./constants";
-import U from "./utilities";
+import C from "./constants.js";
+import U from "./utilities.js";
 
 // #endregion
 

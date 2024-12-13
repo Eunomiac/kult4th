@@ -1,7 +1,7 @@
 // #region IMPORTS ~
-import U from "./utilities";
-import {K4ItemType} from "../documents/K4Item";
-import {InfluenceKeys} from "./svgdata";
+import U from "./utilities.js";
+import {K4ItemType} from "../documents/K4Item.js";
+import {InfluenceKeys} from "./svgdata.js";
 // #endregion
 
 

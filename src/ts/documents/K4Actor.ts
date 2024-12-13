@@ -1,12 +1,12 @@
 // #region IMPORTS ~
-import K4Item, {K4ItemType} from "./K4Item";
-import K4PCSheet from "./K4PCSheet";
-import K4NPCSheet from "./K4NPCSheet";
-import K4CharGen from "./K4CharGen";
-import K4ActiveEffect from "./K4ActiveEffect";
-import C, {Archetypes, K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType, K4ActorType, K4CharGenPhase} from "../scripts/constants";
-import K4Socket, {UserTargetRef} from "./K4Socket";
-import U from "../scripts/utilities";
+import K4Item, {K4ItemType} from "./K4Item.js";
+import K4PCSheet from "./K4PCSheet.js";
+import K4NPCSheet from "./K4NPCSheet.js";
+import K4CharGen from "./K4CharGen.js";
+import K4ActiveEffect from "./K4ActiveEffect.js";
+import C, {Archetypes, K4Attribute, K4Archetype, K4Stability, K4ConditionType, K4WoundType, K4ActorType, K4CharGenPhase} from "../scripts/constants.js";
+import K4Socket, {UserTargetRef} from "./K4Socket.js";
+import U from "../scripts/utilities.js";
 import {InterfaceToObject} from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes.mjs";
 // #endregion
 

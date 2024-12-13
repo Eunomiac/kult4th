@@ -1,0 +1,61 @@
+{
+  "extends": "@tsconfig/node21/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "checkJs": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "isolatedModules": true,
+    "lib": [
+      "esnext",
+      "DOM"
+    ],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "paths": {
+      "*": [
+        "*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV12DistData/Data/systems/*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV12DevData/Data/systems/*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV12DistData/Data/modules/*",
+        "D:/Projects/.CODING/FoundryVTT/FoundryV12DevData/Data/modules/*",
+        "C:/FoundryVTT/v12/Foundry Virtual Tabletop/resources/app/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "typescript-eslint-language-service"
+      }
+    ],
+    "rootDir": ".",
+    "outDir": "dist",
+    "skipLibCheck": false,
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "esnext",
+    "traceResolution": false,
+    "types": [
+      "gsap",
+      "@league-of-foundry-developers/foundry-vtt-types"
+    ],
+  },
+  "include": [
+    "./src/ts/**/*.ts",
+    "./src/ts/**/*.hbs.ts",
+    "vite.config.ts",
+    ".dev/item-data-prev.ts"
+  ],
+  "exclude": [
+    "**/*.test.ts",
+    "eslint.config.mjs"
+  ]
+}

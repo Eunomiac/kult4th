@@ -1,8 +1,8 @@
 // #region IMPORTS ~
-import C, {K4Attribute} from "../scripts/constants";
-import U from "../scripts/utilities";
-import K4Actor, {K4ActorType} from "./K4Actor";
-import {gsap} from "../libraries";
+import C, {K4Attribute} from "../scripts/constants.js";
+import U from "../scripts/utilities.js";
+import K4Actor, {K4ActorType} from "./K4Actor.js";
+import {gsap} from "../libraries.js";
 // #endregion
 
 const ANIMATIONS = {

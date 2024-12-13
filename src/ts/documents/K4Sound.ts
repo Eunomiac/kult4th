@@ -1,10 +1,10 @@
 // #region IMPORTS ~
-import C from "../scripts/constants";
-import U from "../scripts/utilities";
-import {AlertPaths} from "../scripts/svgdata";
-import K4Actor from "./K4Actor";
-import {K4RollResult} from "./K4Roll";
-import K4ActiveEffect from "./K4ActiveEffect";
+import C from "../scripts/constants.js";
+import U from "../scripts/utilities.js";
+import {AlertPaths} from "../scripts/svgdata.js";
+import K4Actor from "./K4Actor.js";
+import {K4RollResult} from "./K4Roll.js";
+import K4ActiveEffect from "./K4ActiveEffect.js";
 // #endregion
 
 // #REGION === TYPES, ENUMS, INTERFACE AUGMENTATION === ~
