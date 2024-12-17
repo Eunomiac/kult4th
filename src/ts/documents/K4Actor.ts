@@ -216,11 +216,12 @@ declare global {
     export type Source<T extends K4ActorType = K4ActorType> =
       T extends K4ActorType.pc ? InterfaceToObject<SourceSchema.PC>
       : T extends K4ActorType.npc ? InterfaceToObject<SourceSchema.NPC>
-      : SourceSchema.Any;
+      : InterfaceToObject<SourceSchema.Any>;
+
     export type System<T extends K4ActorType = K4ActorType> =
       T extends K4ActorType.pc ? InterfaceToObject<SystemSchema.PC>
       : T extends K4ActorType.npc ? InterfaceToObject<SystemSchema.NPC>
-      : SystemSchema.Any;
+      : InterfaceToObject<SystemSchema.Any>;
 
     /**
      * The top-level schema for an Actor
@@ -301,6 +302,8 @@ class K4Actor<Type extends K4ActorType = K4ActorType> extends Actor {
   async initMovesAndEffects() {
     if (!this.is(K4ActorType.pc)) {return;}
     const promises: Array<Promise<unknown>> = [];
+
+    type Foo = Actor["type"]
 
     // Dynamically import PACKS to avoid circular dependency
     const { PACKS } = await import("../scripts/data.js");

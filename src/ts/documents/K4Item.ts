@@ -268,34 +268,17 @@ declare global {
     /**
      * Discriminated unions of item types by subType or other criteria
      */
-    export type Parent<T extends Types.Parent = Types.Parent> = K4Item<T> & {
-      type: T;
-      system: K4Item.System<T>;
-    };
-    export type Static<T extends Types.Static = Types.Static> = K4Item<T> & {
-      type: T;
-      system: System<T>
-    };
-    export type Passive<T extends Types.Passive = Types.Passive> = K4Item<T> & {
-      type: T;
-      system: System<T>
-    };
-    export type Active<T extends Types.Active = Types.Active> = K4Item<T> & {
-      type: T;
-      system: System<T>
-    };
-    export type HaveRules<T extends Types.HaveRules = Types.HaveRules> = K4Item<T> & {
-      type: T;
-      system: System<T>
-    };
-    export type HaveResults<T extends Types.HaveResults = Types.HaveResults> = K4Item<T> & {
-      type: T;
-      system: System<T>
-    };
-    export type HaveMainEffects<T extends Types.HaveMainEffects = Types.HaveMainEffects> = K4Item<T> & {
-      type: T;
-      system: System<T>;
-    };
+    export type Parent<T extends Types.Parent = Types.Parent> = K4Item<T>;
+    export type Static<T extends Types.Static = Types.Static> = K4Item<T>;
+    export type Passive<T extends Types.Passive = Types.Passive> = K4Item<T>;
+    export type Active<T extends Types.Active = Types.Active> = K4Item<T>;
+    export type HaveRules<T extends Types.HaveRules = Types.HaveRules> =
+      K4Item<T>;
+    export type HaveResults<T extends Types.HaveResults = Types.HaveResults> =
+      K4Item<T>;
+    export type HaveMainEffects<
+      T extends Types.HaveMainEffects = Types.HaveMainEffects,
+    > = K4Item<T>;
   }
 }
 // #ENDREGION

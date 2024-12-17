@@ -93,6 +93,7 @@ export enum K4WoundType {
   stablecritical = "stablecritical"
 }
 export enum K4ActorType {
+  base = "base",
   pc = "pc",
   npc = "npc"
 }

@@ -10,7 +10,7 @@ import K4Dialog from "../documents/K4Dialog.js";
 import K4Roll from "../documents/K4Roll.js";
 import K4Scene from "../documents/K4Scene.js";
 
-import {Socket, SocketLib} from "./socketlib.js";
+import {Socket, SocketLib} from "socketlib";
 // #endregion
 
 // #region CONFIGURATION OF SYSTEM CLASSES
@@ -276,26 +276,26 @@ declare global {
   type Brand<T, BrandName extends string> = T & {[brand]: BrandName;};
 
   // number === Float type guard
-  type Float = Brand<number, "Float">;
+  type Float = number; // Brand<number, "Float">;
   // number === Positive float type guard
-  type PosFloat = Brand<number & Float, "PosFloat">;
+  type PosFloat = number; // Brand<number & Float, "PosFloat">;
   // string === HTML code
-  type HTMLString = Brand<string, "HTMLString">; // e.g. "<p>Hello World</p>"
+  type HTMLString = string; // Brand<string, "HTMLString">; // e.g. "<p>Hello World</p>"
   // string === RGB color
-  type RGBColor = `rgb(${number}${FlexComma}${number}${FlexComma}${number})` |
-    `rgba(${number}${FlexComma}${number}${FlexComma}${number}${FlexComma}${number})`;
+  type RGBColor = string //   `rgb(${number}${FlexComma}${number}${FlexComma}${number})` |
+    // `rgba(${number}${FlexComma}${number}${FlexComma}${number}${FlexComma}${number})`;
   // string === Hex color
-  type HexColor = Brand<string, "HexColor">; // e.g. "#FF0000"
+  type HexColor = string // Brand<string, "HexColor">; // e.g. "#FF0000"
   // string === Document id
-  type IDString = Brand<string, "IDString">; // e.g. "5e4e7b1c322f2e1c"
+  type IDString = string // Brand<string, "IDString">; // e.g. "5e4e7b1c322f2e1c"
   // string === UUID
-  type UUIDString = Brand<string, "UUIDString">; // e.g. "Actor.5e4e7b1c322f2e1c"
+  type UUIDString = string; // Brand<string, "UUIDString">; // e.g. "Actor.5e4e7b1c322f2e1c"
   // string === Dotkey
-  type DotKey = Brand<string, "DotKey">; // e.g. "system.attributes.hp.value"
+  type DotKey = string; // Brand<string, "DotKey">; // e.g. "system.attributes.hp.value"
   // string === Dotkey appropriate for update() data object
-  type TargetKey = Brand<string & DotKey, "TargetKey">;
+  type TargetKey = string; // Brand<string & DotKey, "TargetKey">;
   // string === Dotkey pointing to a flag instead of the document schema
-  type TargetFlagKey = Brand<string & DotKey, "TargetFlagKey">;
+  type TargetFlagKey = string; // Brand<string & DotKey, "TargetFlagKey">;
   // #endregion
 
   // #region UTILITY TYPES ~
